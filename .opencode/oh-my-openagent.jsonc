@@ -1,0 +1,64 @@
+{
+  // Project-level oh-my-openagent config for umkm_tahu
+  // Injects UMKM domain context into every agent working on this project.
+  // Global config at ~/.config/opencode/oh-my-openagent.json handles model assignment.
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-openagent/dev/assets/oh-my-opencode.schema.json",
+
+  "agents": {
+    // Main orchestrator — knows the full project context
+    "sisyphus": {
+      "prompt_append": "file://./AGENTS.md"
+    },
+
+    // Code writer — knows design system, conventions, and verification commands
+    "sisyphus-junior": {
+      "prompt_append": "file://./AGENTS.md"
+    },
+
+    // Plan executor — knows architecture and file structure
+    "atlas": {
+      "prompt_append": "file://./AGENTS.md"
+    },
+
+    // Strategic planner — knows business domain and success criteria
+    "prometheus": {
+      "prompt_append": "file://./AGENTS.md"
+    },
+
+    // Architecture consultant — extended thinking enabled for hard decisions
+    "oracle": {
+      "prompt_append": "file://./AGENTS.md",
+      "thinking": {
+        "type": "enabled",
+        "budgetTokens": 100000
+      }
+    },
+
+    // Gap analyzer — knows what the project requires
+    "metis": {
+      "prompt_append": "file://./AGENTS.md"
+    }
+  },
+
+  "categories": {
+    // UI/frontend work — inject full design system context
+    "visual-engineering": {
+      "prompt_append": "You are working on a Next.js 15 + Tailwind CSS 3 app with a warm UMKM identity. Design system: background #FFFDF7 (warm cream), text #1C1917 (deep charcoal), accent #7C3AED (CTAs ONLY), soy amber #F59E0B (receivables/warnings), profit #059669, loss #DC2626. Always use .card-roomy, .page-stack, .section-stack, .grid-roomy, .receipt-card classes. Receipt-style left borders: purple sections 3px solid #7C3AED, amber sections 3px solid #F59E0B. UI copy must be Indonesian and human — see AGENTS.md microcopy standards. MAX 300 lines per write operation."
+    },
+
+    // Quick single-file fixes — surgical only
+    "quick": {
+      "prompt_append": "Use surgical edits only. Do not redesign or refactor beyond the requested change. Preserve existing behavior. Run npm run typecheck after any TypeScript change. MAX 300 lines per write operation."
+    },
+
+    // Architecture and business logic decisions
+    "ultrabrain": {
+      "prompt_append": "For architecture decisions, verify against src/domain/finance.ts, src/server/actions.ts, supabase/schema.sql, and AGENTS.md. The app uses Next.js 15 App Router with server components for data fetching and server actions for mutations. Supabase RLS is required on all tables. Confirmed daily cost: Rp 711.444. HPP per bungkus: Rp 4.087. Laba/hari: Rp 302.556."
+    },
+
+    // Deep autonomous research + execution
+    "deep": {
+      "prompt_append": "Working on umkm_tahu — a Next.js 15 + Supabase bookkeeping app for Indonesian UMKM. See AGENTS.md for full context. Always run npm run typecheck && npm test && npm run build to verify. MAX 300 lines per write operation."
+    }
+  }
+}

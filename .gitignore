@@ -1,0 +1,71 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+.pnp.*
+
+# Next.js
+.next/
+out/
+.next/cache/
+
+# Build / production
+dist/
+build/
+
+# Environment
+.env
+.env.*
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs and editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Tests / coverage
+coverage/
+.jest/
+
+# Caches
+.cache/
+.cache-loader/
+node_modules/.cache/
+
+# Vercel / deployment
+.vercel/
+.vercel_build_output/
+
+# Supabase local DB / secrets
+supabase/.env
+supabase/.db
+
+# Misc
+*.tgz
+*.local
+.DS_Store
+
+# Ignore built storybook (if present)
+.storybook/build/
+
+# OS generated files
+Thumbs.db
+
+# End of file
