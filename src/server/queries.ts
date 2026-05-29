@@ -207,6 +207,23 @@ export async function getDashboardSummary() {
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
     .slice(0, 6)
 
+  // Last 7 days net trend (omzet - expense per day) for the momentum sparkline.
+  const salesByDate = new Map<string, number>()
+  for (const s of monthSales) {
+    salesByDate.set(s.date, (salesByDate.get(s.date) ?? 0) + s.total_sales)
+  }
+  const expenseByDate = new Map<string, number>()
+  for (const e of monthExpenses) {
+    expenseByDate.set(e.date, (expenseByDate.get(e.date) ?? 0) + e.total)
+  }
+  const dailyTrend: { date: string; net: number }[] = []
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(now)
+    d.setDate(now.getDate() - i)
+    const iso = todayISOString(d)
+    dailyTrend.push({ date: iso, net: (salesByDate.get(iso) ?? 0) - (expenseByDate.get(iso) ?? 0) })
+  }
+
   const profitToday = calculateProfitSummary({
     totalSales: todayOmzet,
     totalProductionCost: todayExpenses
@@ -231,5 +248,6 @@ export async function getDashboardSummary() {
     hasIncompleteSalesData,
     unpaidCount: receivables.filter((r: { status: string }) => r.status === 'BELUM_LUNAS').length,
     todayActivity,
+    dailyTrend,
   }
 }

@@ -11,6 +11,7 @@ import { todayISOString } from '@/lib/format'
 import type { BusinessProfile, Customer } from '@/types/database'
 import { User, Package, Banknote, FileText, Info, Calendar, ShoppingBag, Save } from 'lucide-react'
 import SalesFormPreview from '@/components/sales-form-preview'
+import StickySubmitBar from '@/components/sticky-submit-bar'
 
 const SALES_ERROR_MESSAGES: Record<string, string> = {
   tanggal: 'Tanggal transaksi wajib diisi.',
@@ -45,7 +46,7 @@ export default async function CatatPenjualanPage({ searchParams }: PageProps) {
 
   return (
     <AppShell active="catat" title="Catat Penjualan" showBack backHref="/catat" width="default">
-      <form action={action} className="pb-4 grid grid-roomy lg:grid-cols-[minmax(0,1fr)_380px]">
+      <form action={action} className="pb-28 lg:pb-4 grid grid-roomy lg:grid-cols-[minmax(0,1fr)_380px]">
         <div className="section-stack min-w-0 slide-up-1">
 
         {/* Hero / context strip */}
@@ -267,23 +268,14 @@ export default async function CatatPenjualanPage({ searchParams }: PageProps) {
           </p>
         </FormSection>
 
-        {/* Mobile submit — visible below the form on small screens */}
-        <div className="lg:hidden section-stack">
-          <SubmitButton
-            pendingLabel="Menyimpan penjualan..."
-            className="btn-primary w-full"
-            style={{ minHeight: '52px' }}
-          >
-            <Save size={16} strokeWidth={2.5} />
-            Simpan Catatan Penjualan
-          </SubmitButton>
-          <p
-            className="text-xs text-center px-2"
-            style={{ color: 'var(--text-tertiary)' }}
-          >
-            Setelah disimpan, otomatis masuk ke Beranda dan Tagihan kalau ada sisa.
-          </p>
-        </div>
+        {/* Mobile: sticky submit bar with live total */}
+        <StickySubmitBar
+          multiply={['packs', 'price_per_pack']}
+          label="Simpan Penjualan"
+          pendingLabel="Menyimpan..."
+          variant="profit"
+          totalLabel="Total Jual"
+        />
         </div>
 
         {/* Sticky preview + submit (right column on desktop) */}

@@ -7,6 +7,9 @@ import MetricCard from '@/components/metric-card'
 import ActionMessage from '@/components/action-message'
 import HeroVerdict from '@/components/hero-verdict'
 import ActionButtonBig from '@/components/action-button-big'
+import CashflowChart from '@/components/cashflow-chart'
+import ActivityTimeline from '@/components/activity-timeline'
+import TrendSparkline from '@/components/trend-sparkline'
 import { formatRupiah } from '@/lib/format'
 import Link from 'next/link'
 import {
@@ -40,9 +43,9 @@ export default async function BerandaPage({ searchParams }: PageProps) {
   })
   const monthLabel = new Date().toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })
   const monthNet = summary.monthOmzet - summary.monthExpenseTotal
+  const weekNet = summary.dailyTrend.reduce((s, d) => s + d.net, 0)
   const flowTotal = summary.todayOmzet + summary.todayExpenseTotal
   const incomePercent = flowTotal > 0 ? Math.round((summary.todayOmzet / flowTotal) * 100) : 0
-  const expensePercent = flowTotal > 0 ? 100 - incomePercent : 0
 
 
   return (
@@ -132,16 +135,9 @@ export default async function BerandaPage({ searchParams }: PageProps) {
               <span className="badge-neutral">{flowTotal > 0 ? `${incomePercent}% masuk` : 'Belum ada'}</span>
             </div>
 
-            <div className="h-3 rounded-full overflow-hidden flex" style={{ background: 'var(--bg-subtle)' }}>
-              {flowTotal > 0 && (
-                <>
-                  <div style={{ width: `${incomePercent}%`, background: 'linear-gradient(90deg, #10B981, #059669)' }} />
-                  <div style={{ width: `${expensePercent}%`, background: 'linear-gradient(90deg, #FB7185, #F43F5E)' }} />
-                </>
-              )}
-            </div>
+            <CashflowChart income={summary.todayOmzet} expense={summary.todayExpenseTotal} />
 
-            <div className="grid grid-cols-3 gap-2 mt-4">
+            <div className="grid grid-cols-3 gap-2 mt-6">
               {[
                 { label: 'Penjualan', done: summary.todayOmzet > 0 },
                 { label: 'Biaya', done: summary.todayExpenseTotal > 0 },
@@ -178,38 +174,7 @@ export default async function BerandaPage({ searchParams }: PageProps) {
               </div>
             </div>
 
-            {summary.todayActivity.length > 0 ? (
-              <div className="space-y-2">
-                {summary.todayActivity.map((item) => (
-                  <div key={item.id} className="flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-[var(--bg-subtle)]">
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div
-                        className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-                        style={{ background: item.type === 'sale' ? 'var(--profit-bg)' : 'var(--loss-bg)' }}
-                      >
-                        {item.type === 'sale' ? (
-                          <ShoppingBag size={16} strokeWidth={2.25} color="var(--profit)" />
-                        ) : (
-                          <Receipt size={16} strokeWidth={2.25} color="var(--loss)" />
-                        )}
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-sm font-semibold truncate" style={{ color: 'var(--text-primary)' }}>{item.label}</p>
-                        <p className="text-xs truncate" style={{ color: 'var(--text-tertiary)' }}>{item.meta}</p>
-                      </div>
-                    </div>
-                    <p className="money-xs flex-shrink-0" style={{ color: item.type === 'sale' ? 'var(--profit)' : 'var(--loss)' }}>
-                      {item.type === 'sale' ? '+' : '-'}{formatRupiah(item.amount)}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="rounded-xl p-6 text-center" style={{ background: 'var(--bg-subtle)', border: '1px dashed var(--border-strong)' }}>
-                <p className="text-sm font-medium" style={{ color: 'var(--text-tertiary)' }}>Belum ada transaksi hari ini</p>
-                <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Transaksi yang dicatat akan muncul di sini.</p>
-              </div>
-            )}
+            <ActivityTimeline items={summary.todayActivity} />
           </div>
         </div>
 
@@ -243,28 +208,55 @@ export default async function BerandaPage({ searchParams }: PageProps) {
             <h2 className="section-heading">Ringkasan Bulan Ini</h2>
             <p className="text-xs font-medium capitalize" style={{ color: 'var(--text-muted)' }}>{monthLabel}</p>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-3 grid-roomy">
-            <div className="card card-roomy">
-              <p className="text-xs font-medium mb-1.5" style={{ color: 'var(--text-muted)' }}>Pemasukan</p>
-              <p className="money-sm" style={{ color: 'var(--text-primary)' }}>{formatRupiah(summary.monthOmzet)}</p>
+          <div className="grid grid-roomy lg:grid-cols-[1fr_1.1fr]">
+            <div className="grid grid-cols-2 lg:grid-cols-3 grid-roomy lg:col-span-1">
+              <div className="card card-roomy">
+                <p className="text-xs font-medium mb-1.5" style={{ color: 'var(--text-muted)' }}>Pemasukan</p>
+                <p className="money-sm" style={{ color: 'var(--text-primary)' }}>{formatRupiah(summary.monthOmzet)}</p>
+              </div>
+              <div className="card card-roomy">
+                <p className="text-xs font-medium mb-1.5" style={{ color: 'var(--text-muted)' }}>Pengeluaran</p>
+                <p className="money-sm" style={{ color: 'var(--text-primary)' }}>{formatRupiah(summary.monthExpenseTotal)}</p>
+              </div>
+              <div
+                className="col-span-2 lg:col-span-1 card card-roomy"
+                style={{
+                  background: monthNet >= 0
+                    ? 'linear-gradient(135deg, var(--profit-bg), var(--profit-bg-deep))'
+                    : 'linear-gradient(135deg, var(--loss-bg), var(--loss-bg-deep))',
+                  border: monthNet >= 0 ? '1px solid var(--profit-border)' : '1px solid var(--loss-border)',
+                }}
+              >
+                <p className="text-xs font-medium mb-1.5" style={{ color: monthNet >= 0 ? 'var(--profit-text)' : 'var(--loss-text)' }}>Laba Bersih</p>
+                <p className="money-sm" style={{ color: monthNet >= 0 ? 'var(--profit-text)' : 'var(--loss-text)' }}>
+                  {monthNet < 0 ? '-' : ''}{formatRupiah(Math.abs(monthNet))}
+                </p>
+              </div>
             </div>
+
+            {/* 7-day momentum */}
             <div className="card card-roomy">
-              <p className="text-xs font-medium mb-1.5" style={{ color: 'var(--text-muted)' }}>Pengeluaran</p>
-              <p className="money-sm" style={{ color: 'var(--text-primary)' }}>{formatRupiah(summary.monthExpenseTotal)}</p>
-            </div>
-            <div
-              className="col-span-2 lg:col-span-1 card card-roomy"
-              style={{
-                background: monthNet >= 0
-                  ? 'linear-gradient(135deg, var(--profit-bg), var(--profit-bg-deep))'
-                  : 'linear-gradient(135deg, var(--loss-bg), var(--loss-bg-deep))',
-                border: monthNet >= 0 ? '1px solid var(--profit-border)' : '1px solid var(--loss-border)',
-              }}
-            >
-              <p className="text-xs font-medium mb-1.5" style={{ color: monthNet >= 0 ? 'var(--profit-text)' : 'var(--loss-text)' }}>Laba Bersih</p>
-              <p className="money-sm" style={{ color: monthNet >= 0 ? 'var(--profit-text)' : 'var(--loss-text)' }}>
-                {monthNet < 0 ? '-' : ''}{formatRupiah(Math.abs(monthNet))}
-              </p>
+              <div className="flex items-center justify-between gap-3 mb-2">
+                <div>
+                  <h3 className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Tren 7 Hari</h3>
+                  <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Laba bersih harian</p>
+                </div>
+                <span
+                  className="badge-neutral"
+                  style={{
+                    background: weekNet >= 0 ? 'var(--profit-bg)' : 'var(--loss-bg)',
+                    color: weekNet >= 0 ? 'var(--profit-text)' : 'var(--loss-text)',
+                    border: `1px solid ${weekNet >= 0 ? 'var(--profit-border)' : 'var(--loss-border)'}`,
+                  }}
+                >
+                  {weekNet >= 0 ? '+' : '-'}{formatRupiah(Math.abs(weekNet))}
+                </span>
+              </div>
+              <TrendSparkline data={summary.dailyTrend} />
+              <div className="flex items-center justify-between mt-1">
+                <span className="text-[10px] font-medium" style={{ color: 'var(--text-muted)' }}>7 hari lalu</span>
+                <span className="text-[10px] font-medium" style={{ color: 'var(--text-muted)' }}>Hari ini</span>
+              </div>
             </div>
           </div>
         </div>
