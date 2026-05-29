@@ -30,16 +30,13 @@ const WIDTH_CLASS: Record<NonNullable<AppShellProps['width']>, string> = {
 export default function AppShell({ children, active, title, showBack, backHref, width = 'default' }: AppShellProps) {
   const containerClass = `app-container ${WIDTH_CLASS[width]}`
   return (
-    <div
-      className="min-h-screen flex flex-col tap-highlight-none gradient-mesh"
-      style={{ backgroundColor: 'var(--bg)' }}
-    >
+    <div className="min-h-screen flex flex-col tap-highlight-none gradient-mesh">
       <header
         className="sticky top-0 z-30 h-16 flex items-center"
         style={{
-          backgroundColor: 'rgba(255,253,247,0.88)',
-          backdropFilter: 'blur(18px) saturate(1.18)',
-          WebkitBackdropFilter: 'blur(18px) saturate(1.18)',
+          backgroundColor: 'rgba(255,255,255,0.85)',
+          backdropFilter: 'blur(16px) saturate(1.2)',
+          WebkitBackdropFilter: 'blur(16px) saturate(1.2)',
           borderBottom: '1px solid var(--border)',
         }}
       >
@@ -50,12 +47,10 @@ export default function AppShell({ children, active, title, showBack, backHref, 
               <Link
                 href={backHref}
                 aria-label="Kembali"
-                className="w-9 h-9 inline-flex items-center justify-center rounded-xl no-select transition-all active:scale-95"
+                className="w-9 h-9 inline-flex items-center justify-center rounded-xl no-select transition-all hover:bg-[var(--bg-subtle)] active:scale-95"
                 style={{
-                  backgroundColor: 'rgba(255,255,255,0.82)',
                   border: '1px solid var(--border)',
                   color: 'var(--text-secondary)',
-                  boxShadow: 'var(--shadow-xs)',
                 }}
               >
                 <ChevronLeft size={17} strokeWidth={2.5} />
@@ -79,17 +74,32 @@ export default function AppShell({ children, active, title, showBack, backHref, 
             <DesktopNavLink href="/pengaturan" label="Usaha" Icon={Store} active={active === 'pengaturan'} />
           </nav>
 
-          {/* Logout */}
-          <form action={logoutAction}>
-            <SubmitButton
-              pendingLabel="Keluar..."
-              className="btn-ghost"
-              style={{ padding: '0.4rem 0.75rem', fontSize: '0.75rem' }}
+          {/* Right cluster: quick record + logout */}
+          <div className="flex items-center gap-2">
+            <Link
+              href="/catat"
+              className="hidden md:inline-flex items-center gap-1.5 rounded-xl px-3.5 py-2 text-sm font-bold no-select transition-all hover:-translate-y-0.5 active:scale-[0.97]"
+              style={{
+                background: 'var(--accent-gradient)',
+                color: '#FFFFFF',
+                boxShadow: 'var(--shadow-accent-sm)',
+                letterSpacing: '-0.01em',
+              }}
             >
-              <LogOut size={12} strokeWidth={2.5} />
-              <span className="hidden sm:inline">Keluar</span>
-            </SubmitButton>
-          </form>
+              <Plus size={16} strokeWidth={2.75} />
+              Catat
+            </Link>
+            <form action={logoutAction}>
+              <SubmitButton
+                pendingLabel="Keluar..."
+                className="btn-ghost"
+                style={{ padding: '0.4rem 0.75rem', fontSize: '0.75rem' }}
+              >
+                <LogOut size={12} strokeWidth={2.5} />
+                <span className="hidden sm:inline">Keluar</span>
+              </SubmitButton>
+            </form>
+          </div>
         </div>
       </header>
 
@@ -105,7 +115,7 @@ export default function AppShell({ children, active, title, showBack, backHref, 
           paddingBottom: 'max(1rem, env(safe-area-inset-bottom))',
           paddingTop: '0.625rem',
           background:
-            'linear-gradient(to top, var(--bg) 55%, rgba(255,253,247,0.9) 80%, rgba(255,253,247,0))',
+            'linear-gradient(to top, var(--bg) 55%, rgba(250,251,252,0.9) 80%, rgba(250,251,252,0))',
           pointerEvents: 'none',
         }}
       >
@@ -113,7 +123,7 @@ export default function AppShell({ children, active, title, showBack, backHref, 
           className="max-w-md mx-auto rounded-2xl px-2 h-[72px] flex items-center justify-around relative no-select"
           aria-label="Navigasi bawah"
           style={{
-             backgroundColor: 'rgba(255,253,247,0.94)',
+             backgroundColor: 'rgba(255,255,255,0.94)',
              border: '1px solid var(--border)',
              boxShadow: 'var(--shadow-lg)',
             backdropFilter: 'blur(24px) saturate(1.25)',
@@ -129,14 +139,14 @@ export default function AppShell({ children, active, title, showBack, backHref, 
             <Wallet size={20} strokeWidth={active === 'piutang' ? 2.5 : 1.85} />
           </NavItem>
 
-          {/* Central FAB — sits above the bar, prominent accent */}
+          {/* Central FAB — sits above the bar, prominent accent + glow */}
           <Link
             href="/catat"
             aria-label="Catat transaksi"
             aria-current={active === 'catat' ? 'page' : undefined}
-            className="absolute left-1/2 -top-8 -translate-x-1/2 inline-flex items-center justify-center w-[62px] h-[62px] rounded-2xl transition-transform active:scale-95 no-select"
+            className="fab-glow absolute left-1/2 -top-8 -translate-x-1/2 inline-flex items-center justify-center w-[62px] h-[62px] rounded-2xl transition-transform active:scale-90 no-select"
             style={{
-              background: 'var(--accent)',
+              background: 'var(--accent-gradient)',
               border: '4px solid var(--bg)',
               color: '#FFFFFF',
               boxShadow: 'var(--shadow-accent)',
