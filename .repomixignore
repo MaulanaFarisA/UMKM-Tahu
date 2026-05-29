@@ -1,0 +1,38 @@
+# Dependencies
+node_modules
+.pnpm-store
+.yarn
+vendor
+
+# Build outputs
+.next
+dist
+build
+out
+coverage
+.cache
+.tmp
+temp
+tsconfig.tsbuildinfo
+
+# Environment and secrets
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+supabase/.env
+supabase/.db
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Generated Repomix output
+repomix-output.*

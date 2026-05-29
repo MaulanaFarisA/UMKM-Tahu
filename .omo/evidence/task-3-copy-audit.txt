@@ -1,0 +1,89 @@
+Task 3 — Copy Audit: Bahasa Indonesia Polish
+Date: 2026-05-25
+Auditor: Sisyphus-Junior
+
+=== AUDIT SCOPE ===
+9 user-facing routes audited for English copy, microcopy standard violations,
+and informal/formal tone mismatches per AGENTS.md.
+
+=== FILES WITH NO CHANGES NEEDED ===
+
+src/app/page.tsx
+  - Redirect-only server component. No user-facing copy. No changes needed.
+
+src/app/login/page.tsx
+  - All headings, labels, CTAs, helper text already in Bahasa Indonesia.
+  - "Email" and "Password" labels retained — universally understood terms in
+    Indonesian digital products, consistent with BukuWarung/Tokopedia conventions.
+  - No changes needed.
+
+src/app/register/page.tsx
+  - All headings, labels, CTAs, helper text already in Bahasa Indonesia.
+  - "Email" and "Password" labels retained (same rationale as login).
+  - No changes needed.
+
+src/app/catat/page.tsx
+  - All copy already in Bahasa Indonesia.
+  - Microcopy "Uang masuk hari ini" and "Biaya yang dikeluarkan" already correct.
+  - No changes needed.
+
+src/app/catat/penjualan/page.tsx
+  - All copy already in Bahasa Indonesia.
+  - "Kalau belum dibayar penuh, sisanya otomatis masuk ke Tagihan." — correct per
+    AGENTS.md standard.
+  - No changes needed.
+
+src/app/piutang/page.tsx
+  - All copy already in Bahasa Indonesia.
+  - "Belum Dibayar" used correctly throughout.
+  - No changes needed.
+
+=== FILES CHANGED ===
+
+src/app/beranda/page.tsx
+  CHANGE 1:
+    Before: "Total Omzet"  (month summary card label)
+    After:  "Uang Masuk Bulan Ini"
+    Reason: AGENTS.md microcopy standard — avoid "Omzet", use "Uang Masuk".
+            "Total Omzet" is accounting jargon; "Uang Masuk Bulan Ini" is
+            plain language the UMKM owner understands immediately.
+
+src/app/catat/pengeluaran/page.tsx
+  CHANGE 1:
+    Before: "Nama Pengeluaran"  (field label in Detail Pengeluaran section)
+    After:  "Nama Biaya"
+    Reason: "Pengeluaran" as a field label is redundant (the section is already
+            titled "Detail Pengeluaran"). "Nama Biaya" is shorter, clearer, and
+            matches the domain vocabulary used in project_brief.md ("nama item",
+            "biaya usaha"). Avoids repeating the section title in the label.
+
+src/app/pengaturan/page.tsx
+  CHANGE 1:
+    Before: title="Pengaturan Usaha"  (AppShell title prop)
+    After:  title="Profil Usaha Kamu"
+    Reason: AGENTS.md microcopy standard — "Pengaturan Usaha" → "Profil Usaha Kamu".
+            The h1 inside the page already said "Profil Usaha Kamu" correctly;
+            the AppShell title (shown in mobile header) was inconsistent.
+
+  CHANGE 2:
+    Before: placeholder="Nama usaha Anda"  (business_name input)
+    After:  placeholder="Nama usaha kamu"
+    Reason: AGENTS.md tone — app uses "kamu" (informal, warm) throughout.
+            "Anda" is formal and inconsistent with the rest of the UI copy.
+
+=== MICROCOPY STANDARDS COMPLIANCE CHECK ===
+
+Standard                          | Status
+----------------------------------|--------
+"Uang Masuk" not "Omzet"          | FIXED (beranda month summary)
+"Uang Keluar" not "Pengeluaran"   | PASS (already correct in beranda)
+"Belum Dibayar" not "Masih Ditagih"| PASS (already correct throughout)
+"Mau catat apa hari ini?"         | PASS (beranda quick actions heading)
+"Belum semua dicatat..."          | PASS (beranda warning chip)
+"Simpan Perubahan" not "Simpan Pengaturan" | PASS (pengaturan submit button)
+"Profil Usaha Kamu" not "Pengaturan Usaha" | FIXED (pengaturan AppShell title)
+"Semua pembeli sudah lunas hari ini" | PASS (beranda MetricCard sublabel)
+"Kalau belum dibayar penuh..."    | PASS (penjualan payment hint)
+
+=== VERIFICATION ===
+npm run typecheck — PASS (0 errors)

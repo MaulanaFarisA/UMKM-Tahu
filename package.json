@@ -9,7 +9,10 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "ai:pack": "npx repomix@latest",
+    "ai:pack:compress": "npx repomix@latest --compress",
+    "ai:pack:md": "npx repomix@latest --style markdown --output repomix-output.md"
   },
   "dependencies": {
     "@next/font": "^14.2.15",

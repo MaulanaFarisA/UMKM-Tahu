@@ -1,0 +1,87 @@
+Task 2: Decoration cleanup in src/app/globals.css
+Date: 2026-05-25
+File: src/app/globals.css (was 834 lines, now 802 lines)
+
+## Changes Made (surgical edits only)
+
+### REMOVED (dead code or visual noise):
+1. Body sitewide radial-gradient mesh (lines 122-125, ~4 lines)
+   - Was: `background-image: radial-gradient(...) ...; background-attachment: fixed;`
+   - Reason: Applied to EVERY page, added subtle but persistent purple/amber wash that
+     fought with intentional warm cream `--bg`. Pure visual noise on every screen.
+   - The hero-card already provides accent radial gradients where they belong.
+
+2. `.gradient-mesh-warm` utility (~5 lines)
+   - Reason: Zero usages in src/. Dead code.
+
+3. `.grain-overlay` + `.grain-overlay::after` SVG noise overlay (~13 lines)
+   - Reason: Zero usages in src/. Heavy SVG turbulence + mix-blend-mode, classic AI slop.
+
+### TONED DOWN (kept utility, reduced visual aggression):
+
+4. `.gradient-mesh` (used on login page right panel)
+   - Removed third radial gradient (green at center) - was overengineered
+   - Reduced opacity: 0.09 -> 0.06, 0.07 -> 0.05
+   - Result: still adds warm depth to the desktop login panel, less busy.
+
+5. `@keyframes float` and `.float`
+   - Travel: -8px -> -5px ; duration: 3.5s -> 4s
+   - Result: gentler, less attention-grabbing on login page decorative orbs.
+
+6. `@keyframes float-slow` and `.float-slow`
+   - Travel: -12px -> -7px ; rotation: 3deg -> 1.5deg ; duration: 5s -> 6s
+   - Result: subtler drift, more refined.
+
+7. `.dot-pattern`
+   - Dot opacity: 0.06 -> 0.04 ; spacing: 22px -> 24px
+   - Result: lighter, less distracting texture on login panel.
+
+## PRESERVED (intentional warm depth - NOT touched):
+- All design tokens (colors, shadows, radii, motion easings)
+- Card system: `.card`, `.card-subtle`, `.card-glass`, `.hero-card` + ::before/::after, `.receipt-card`
+- All button variants and their hover/active/focus states
+- Input field styles and focus rings
+- Money typography utilities
+- Badge utilities (profit/loss/warn/neutral)
+- Glow utilities (`.glow-accent` etc) - used for semantic emphasis
+- All keyframes for slide/fade/scale/pulse
+- `prefers-reduced-motion` media query (lines 659-666) - unchanged
+- Scrollbar styling
+- Safe-area, container, spacing utilities
+- Stagger animation classes (`.slide-up-1` through `.slide-up-6`)
+- Shimmer loading
+- Pulse-ring (used on FAB)
+- Divider
+
+## Verification
+
+$ npm run typecheck
+> tsc --noEmit
+(clean, zero errors)
+
+$ npm run test
+> vitest run
+
+ Test Files  7 passed (7)
+      Tests  98 passed (98)
+   Duration  4.24s
+
+## Usage Audit
+
+Searched src/ for the targeted utilities BEFORE editing:
+- `.gradient-mesh-warm` -> 0 usages (safe to remove)
+- `.grain-overlay` -> 0 usages (safe to remove)
+- body radial-gradient -> applied globally via `body { ... }`, no class consumers
+- `.gradient-mesh` -> 1 usage (login/page.tsx line 189) - kept, toned down
+- `.dot-pattern` -> 1 usage (login/page.tsx line 189) - kept, toned down
+- `.float` / `.float-slow` -> 3 usages (login/page.tsx decorative orbs) - kept, toned down
+
+## Constraints Honored
+- Only `src/app/globals.css` modified
+- Surgical edits only (no full-file rewrite)
+- Each edit operation well under 300 lines
+- No new dependencies
+- Reduced-motion support intact
+- Warm card shadow system intact
+- Hover transitions intact
+- Semantic color utilities intact

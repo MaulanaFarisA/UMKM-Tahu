@@ -1,5 +1,5 @@
 /**
- * Seed defaults from confirmed interview data (Ibu Pak Riyanto, May 2026).
+ * Seed defaults from the newest Buku Pengeluaran workbook for UMKM Tahu Pak Riyanto.
  * These are editable starting values, not permanent constants.
  * Used only for first-time business profile creation.
  *
@@ -31,7 +31,7 @@ export const SEED_DEFAULTS = {
 
 /**
  * Confirmed daily expense defaults for seeding initial expense records.
- * All values from wawancara keuangan May 2026.
+ * All values mirror the newest Buku Pengeluaran workbook and remain editable.
  */
 export const SEED_EXPENSE_DEFAULTS = {
   // Bahan baku

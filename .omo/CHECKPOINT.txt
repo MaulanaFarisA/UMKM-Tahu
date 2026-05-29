@@ -1,0 +1,46 @@
+﻿# UI Overhaul Plan — Session Checkpoint (2026-05-25 11:49 UTC)
+
+## Status: PLAN COMPLETE & READY FOR EXECUTION
+
+### What's Done
+- ✅ Full evaluation of umkm_tahu UI/UX completed
+- ✅ 4-question interview locked in (warm-cream refine, all 12 routes, tailwind reconciliation, tests-after)
+- ✅ Metis adversarial review completed (7 directive categories)
+- ✅ Oracle phase-2 verification: **CHECK [7/7] PASS | VERDICT: GO**
+- ✅ Plan generated: .omo/plans/ui-overhaul-pro-max.md (1906 lines, 24 tasks + 4 reviews)
+- ✅ User chose: **Start Work** (no high-accuracy Momus loop needed)
+
+### Files Ready
+- **Plan**: .omo/plans/ui-overhaul-pro-max.md — complete, Oracle-verified, ready to execute
+- **Draft**: .omo/drafts/ui-overhaul-pro-max.md — preserved for reference (will be deleted after /start-work)
+- **Evidence baseline**: .omo/evidence/task-1-* artifacts will be created when Wave 0 runs
+
+### Next Action
+Run this command to begin execution:
+`
+/start-work ui-overhaul-pro-max
+`
+
+This will:
+1. Register the plan as your active boulder
+2. Start Wave 0 (baseline audit + T1-T4 foundation tasks)
+3. Proceed through 6 waves with user gate at T11 (Beranda redesign)
+4. End with F1-F4 parallel reviews
+
+### Key Guardrails Locked In
+- Warm-cream identity preserved (no rebrand)
+- All 12 routes redesigned
+- Tailwind config reconciled to match globals.css
+- Tests-after + Playwright QA (no new test framework)
+- No new dependencies
+- User gate at T11 (Beranda) — must approve before remaining pages
+- 48 Playwright screenshots (12 routes × 4 viewports) as evidence
+
+### Optional Trade-offs (can adjust before /start-work)
+1. Login/Register: fully matching warm-cream (default) OR keep slight distinction?
+2. "Yang Perlu Dilakukan" card: remove (default) OR keep in some form?
+
+If both defaults look right, just run /start-work ui-overhaul-pro-max and you're off.
+
+---
+Session saved: 2026-05-25 11:49 UTC

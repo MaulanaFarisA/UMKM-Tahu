@@ -3,21 +3,40 @@ import { createServerClient } from '@/lib/supabase-server'
 import { createReceivablePaymentAction } from '@/server/actions'
 import { getReceivables } from '@/server/queries'
 import AppShell from '@/components/app-shell'
+import EmptyState from '@/components/empty-state'
+import ActionMessage from '@/components/action-message'
+import SubmitButton from '@/components/submit-button'
 import { formatRupiah, formatDate, todayISOString } from '@/lib/format'
 import Link from 'next/link'
 import {
-  CircleCheck,
+  AlertCircle,
   CircleDollarSign,
   ShoppingBag,
-  ChevronRight,
   Calendar,
-  Banknote,
+  CheckCircle2,
+  Send,
+  Users,
 } from 'lucide-react'
 
-export default async function PiutangPage() {
+const RECEIVABLE_ERROR_MESSAGES: Record<string, string> = {
+  data: 'Data pembayaran belum lengkap.',
+  bayar: 'Jumlah bayar harus lebih dari 0.',
+  bayar_lebih: 'Jumlah bayar tidak boleh lebih besar dari sisa tagihan.',
+  transaksi: 'Transaksi tagihan tidak ditemukan.',
+  simpan: 'Pembayaran belum berhasil disimpan. Coba ulang sebentar lagi.',
+}
+
+type PageProps = {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>
+}
+
+export default async function PiutangPage({ searchParams }: PageProps) {
   const supabase = await createServerClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
+  const params = await searchParams
+  const successKey = typeof params?.berhasil === 'string' ? params.berhasil : undefined
+  const errorKey = typeof params?.gagal === 'string' ? params.gagal : undefined
 
   const receivables = await getReceivables()
   const unpaid = receivables.filter((r) => r.status === 'BELUM_LUNAS')
@@ -30,171 +49,239 @@ export default async function PiutangPage() {
     <AppShell active="piutang" title="Tagihan" width="default">
       <div className="page-stack slide-up">
 
-        {/* Summary hero */}
+        {successKey === 'bayar' && (
+          <ActionMessage variant="success" title="Pembayaran tercatat">
+            Tagihan sudah diperbarui. Kalau sisa menjadi nol, pembeli pindah ke daftar sudah dibayar.
+          </ActionMessage>
+        )}
+
+        {errorKey && (
+          <ActionMessage variant="error" title="Pembayaran belum tercatat">
+            {RECEIVABLE_ERROR_MESSAGES[errorKey] ?? RECEIVABLE_ERROR_MESSAGES.simpan}
+          </ActionMessage>
+        )}
+
+        {/* Summary hero — urgency cue for unpaid receivables */}
         {unpaid.length > 0 && (
           <div
-            className="hero-card"
-            style={{ backgroundColor: '#FFFBEB', border: '1.5px solid #FDE68A', borderLeft: '4px solid #F59E0B' }}
+            className="ledger-receipt ledger-hero rounded-2xl p-5 md:p-6 relative overflow-hidden"
+            style={{
+              background: 'linear-gradient(135deg, var(--warn-bg) 0%, var(--warn-bg-deep) 100%)',
+              border: '1.5px solid var(--warn-border)',
+              borderLeft: '4px solid var(--warn)',
+            }}
           >
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2.5 mb-3">
               <div
-                className="w-7 h-7 rounded-lg flex items-center justify-center"
-                style={{ backgroundColor: '#FEF3C7' }}
+                className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+                style={{ backgroundColor: 'var(--warn-bg-deep)', border: '1px solid var(--warn-border)' }}
               >
-                <CircleDollarSign size={14} strokeWidth={2.5} color="#D97706" />
+                <CircleDollarSign size={16} strokeWidth={2.5} color="var(--warn)" />
               </div>
-              <p
-                className="text-xs font-bold uppercase tracking-widest"
-                style={{ color: '#92400E', letterSpacing: '0.08em' }}
-              >
-                Total Belum Dibayar
-              </p>
+              <div className="flex-1 min-w-0">
+                <p
+                  className="text-[11px] font-bold uppercase tracking-widest"
+                  style={{ color: 'var(--warn-text)', letterSpacing: '0.08em' }}
+                >
+                  Total belum dibayar
+                </p>
+              </div>
+              <span className="badge-warn">
+                <span
+                  className="w-1.5 h-1.5 rounded-full"
+                  style={{ backgroundColor: 'var(--warn)' }}
+                />
+                {unpaid.length} pembeli
+              </span>
             </div>
-            <p className="money-lg" style={{ color: '#F59E0B' }}>
+            <p className="money-lg" style={{ color: 'var(--warn-text)' }}>
               {formatRupiah(totalUnpaid)}
             </p>
-            <p className="text-xs mt-1.5 font-medium" style={{ color: '#92400E' }}>
-              dari {unpaid.length} pembeli belum lunas
-            </p>
-          </div>
-        )}
-
-        {/* Empty state */}
-        {receivables.length === 0 && (
-          <div className="card p-8 flex flex-col items-center text-center">
-            <div
-              className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4"
-              style={{ background: 'linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)' }}
-            >
-              <CircleCheck size={30} strokeWidth={2} color="#059669" />
+            <div className="flex items-center gap-1.5 mt-2">
+              <Users size={12} strokeWidth={2.25} color="var(--warn-text)" />
+              <p className="text-xs font-medium" style={{ color: 'var(--warn-text)' }}>
+                Tagih pelan-pelan, arus kas tetap lancar
+              </p>
             </div>
-            <p className="font-bold text-base mb-1" style={{ color: '#1A1714' }}>
-              Semua sudah lunas
-            </p>
-            <p className="text-sm mb-5" style={{ color: '#44403C' }}>
-              Semua pembeli sudah lunas hari ini.
-            </p>
-            <Link
-              href="/catat/penjualan"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm text-white transition-all active:scale-95"
-              style={{
-                background: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
-                boxShadow: '0 4px 12px rgba(124,58,237,0.3)',
-              }}
-            >
-              <ShoppingBag size={15} strokeWidth={2} />
-              Catat Penjualan
-            </Link>
           </div>
         )}
 
-        {/* Unpaid list */}
+        {/* Empty state — encouraging copy when no receivables exist */}
+        {receivables.length === 0 && (
+          <div className="card">
+            <EmptyState
+              title="Semua pembeli sudah lunas hari ini"
+              description="Belum ada tagihan yang menunggu dibayar. Begitu kamu catat penjualan dengan pembayaran sebagian, sisanya otomatis muncul di sini."
+              action={
+                <Link
+                  href="/catat/penjualan"
+                  className="btn-primary inline-flex items-center gap-2"
+                >
+                  <ShoppingBag size={15} strokeWidth={2.25} />
+                  Catat Penjualan
+                </Link>
+              }
+            />
+          </div>
+        )}
+
+        {/* Unpaid list — strong urgency, prominent payment CTA */}
         {unpaid.length > 0 && (
           <div className="section-stack">
-            <p className="section-heading">Belum Lunas ({unpaid.length})</p>
+            <div className="flex items-center gap-2">
+              <AlertCircle size={14} strokeWidth={2.5} color="var(--warn)" />
+              <p className="section-heading" style={{ marginBottom: 0 }}>
+                Belum Dibayar ({unpaid.length})
+              </p>
+            </div>
             <div className="grid grid-roomy lg:grid-cols-2">
-              {unpaid.map((r) => (
-              <div key={r.id} className="card card-roomy space-y-4" style={{ borderLeft: '3px solid #F59E0B' }}>
-                {/* Header */}
-                <div className="flex items-start justify-between">
-                  <div className="flex-1 min-w-0">
-                    <p className="font-bold text-base truncate" style={{ color: '#1A1714' }}>
-                      {r.customer?.name ?? 'Pembeli tidak dikenal'}
-                    </p>
-                    <div className="flex items-center gap-1.5 mt-0.5">
-                      <Calendar size={11} strokeWidth={2} color="#9C9690" />
-                      <p className="text-xs" style={{ color: '#9C9690' }}>{formatDate(r.date)}</p>
+              {unpaid.map((r) => {
+                const totalPaid = r.amount_paid + r.payments.reduce((s: number, p: { amount: number }) => s + p.amount, 0)
+                return (
+                  <div
+                    key={r.id}
+                    className="card card-roomy space-y-4"
+                    style={{
+                      borderLeft: '4px solid var(--warn)',
+                      background: 'linear-gradient(135deg, var(--bg-white) 0%, var(--warn-bg) 100%)',
+                    }}
+                  >
+                    {/* Header */}
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex-1 min-w-0">
+                        <p className="font-bold text-base truncate" style={{ color: 'var(--text-primary)' }}>
+                          {r.customer?.name ?? 'Pembeli tidak dikenal'}
+                        </p>
+                        <div className="flex items-center gap-1.5 mt-1">
+                          <Calendar size={11} strokeWidth={2.25} color="var(--text-muted)" />
+                          <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>{formatDate(r.date)}</p>
+                        </div>
+                      </div>
+                      <span className="badge-warn">
+                        <span
+                          className="w-1.5 h-1.5 rounded-full"
+                          style={{ backgroundColor: 'var(--warn)' }}
+                        />
+                        Belum Dibayar
+                      </span>
                     </div>
-                  </div>
-                  <span className="badge-loss ml-2 flex-shrink-0">Belum Lunas</span>
-                </div>
 
-                {/* Stats row */}
-                <div
-                  className="grid grid-cols-3 gap-2 rounded-xl p-3"
-                  style={{ backgroundColor: '#F5F4F0' }}
-                >
-                  <div className="text-center">
-                    <p className="text-xs mb-1" style={{ color: '#9C9690' }}>Total</p>
-                    <p className="money-xs" style={{ color: '#1A1714' }}>{formatRupiah(r.total_sales)}</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-xs mb-1" style={{ color: '#9C9690' }}>Dibayar</p>
-                    <p className="money-xs" style={{ color: '#059669' }}>
-                      {formatRupiah(r.amount_paid + r.payments.reduce((s: number, p: { amount: number }) => s + p.amount, 0))}
-                    </p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-xs mb-1" style={{ color: '#9C9690' }}>Sisa</p>
-                    <p className="money-xs" style={{ color: '#DC2626' }}>{formatRupiah(r.remaining)}</p>
-                  </div>
-                </div>
-
-                {/* Payment form */}
-                <form action={paymentAction} className="space-y-2">
-                  <input type="hidden" name="sales_transaction_id" value={r.id} />
-                  <input type="hidden" name="date" value={today} />
-                  <div className="flex gap-2">
-                    <div className="relative flex-1">
-                      <span
-                        className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold pointer-events-none"
-                        style={{ color: '#9C9690' }}
-                      >Rp</span>
-                      <input
-                        name="amount"
-                        type="number"
-                        min="1"
-                        max={r.remaining}
-                        placeholder="Jumlah bayar"
-                        className="input-field"
-                        style={{ fontSize: '0.875rem', padding: '0.625rem 0.875rem', paddingLeft: '2.25rem' }}
-                      />
-                    </div>
-                    <button
-                      type="submit"
-                      className="px-4 py-2 rounded-xl font-bold text-sm flex-shrink-0 text-white transition-all active:scale-95"
-                      style={{
-                        background: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
-                        boxShadow: '0 2px 8px rgba(124,58,237,0.25)',
-                      }}
+                    {/* Stats row */}
+                    <div
+                      className="grid grid-cols-3 gap-2 rounded-xl p-3"
+                      style={{ backgroundColor: 'var(--bg-subtle)', border: '1px solid var(--border-soft)' }}
                     >
-                      <Banknote size={15} strokeWidth={2} />
-                    </button>
+                      <div className="text-center min-w-0">
+                        <p className="text-[10px] uppercase tracking-wider mb-1 font-semibold" style={{ color: 'var(--text-muted)' }}>Total</p>
+                        <p className="money-xs truncate" style={{ color: 'var(--text-primary)' }}>{formatRupiah(r.total_sales)}</p>
+                      </div>
+                      <div className="text-center min-w-0" style={{ borderLeft: '1px solid var(--border)', borderRight: '1px solid var(--border)' }}>
+                        <p className="text-[10px] uppercase tracking-wider mb-1 font-semibold" style={{ color: 'var(--text-muted)' }}>Dibayar</p>
+                        <p className="money-xs truncate" style={{ color: 'var(--profit)' }}>
+                          {formatRupiah(totalPaid)}
+                        </p>
+                      </div>
+                      <div className="text-center min-w-0">
+                        <p className="text-[10px] uppercase tracking-wider mb-1 font-semibold" style={{ color: 'var(--text-muted)' }}>Sisa</p>
+                        <p className="money-xs truncate" style={{ color: 'var(--warn-text)' }}>{formatRupiah(r.remaining)}</p>
+                      </div>
+                    </div>
+
+                    {/* Payment form */}
+                    <form action={paymentAction} className="space-y-2">
+                      <input type="hidden" name="sales_transaction_id" value={r.id} />
+                      <input type="hidden" name="date" value={today} />
+                      <label htmlFor={`amount-${r.id}`} className="sr-only">
+                        Jumlah pembayaran untuk {r.customer?.name ?? 'pembeli'}
+                      </label>
+                      <div className="flex gap-2">
+                        <div className="relative flex-1">
+                          <span
+                            className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold pointer-events-none"
+                            style={{ color: 'var(--text-tertiary)' }}
+                          >Rp</span>
+                          <input
+                            id={`amount-${r.id}`}
+                            name="amount"
+                            type="number"
+                            inputMode="numeric"
+                            min="1"
+                            max={r.remaining}
+                            required
+                            placeholder="Jumlah bayar"
+                            className="input-field"
+                            style={{ paddingLeft: '2.25rem' }}
+                          />
+                        </div>
+                        <SubmitButton
+                          pendingLabel="Mencatat..."
+                          className="btn-primary flex-shrink-0"
+                          style={{ minWidth: '52px', padding: '0 1rem' }}
+                          aria-label={`Catat pembayaran dari ${r.customer?.name ?? 'pembeli'}`}
+                        >
+                          <Send size={15} strokeWidth={2.25} />
+                          <span className="hidden sm:inline">Bayar</span>
+                        </SubmitButton>
+                      </div>
+                      <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
+                        Maks. {formatRupiah(r.remaining)} · isi sebagian juga boleh
+                      </p>
+                    </form>
+                    <form action={paymentAction}>
+                      <input type="hidden" name="sales_transaction_id" value={r.id} />
+                      <input type="hidden" name="date" value={today} />
+                      <input type="hidden" name="amount" value={r.remaining} />
+                      <SubmitButton
+                        pendingLabel="Melunasi..."
+                        className="btn-secondary w-full"
+                        style={{ minHeight: '46px' }}
+                      >
+                        <CheckCircle2 size={15} strokeWidth={2.5} />
+                        Lunasi tagihan ini
+                      </SubmitButton>
+                    </form>
                   </div>
-                  <p className="text-xs" style={{ color: '#9C9690' }}>
-                    Maks. {formatRupiah(r.remaining)}
-                  </p>
-                </form>
-              </div>
-            ))}
+                )
+              })}
             </div>
           </div>
         )}
 
-        {/* Paid list */}
+        {/* Paid list — muted secondary visual weight */}
         {paid.length > 0 && (
           <div className="section-stack">
-            <p className="section-heading">Sudah Lunas ({paid.length})</p>
+            <p className="section-heading" style={{ color: 'var(--text-tertiary)' }}>
+              Sudah Dibayar ({paid.length})
+            </p>
             <div className="grid grid-roomy lg:grid-cols-2">
-            {paid.map((r) => (
-              <div
-                key={r.id}
-                className="card card-roomy flex items-center justify-between"
-              >
-                <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-sm truncate" style={{ color: '#1A1714' }}>
-                    {r.customer?.name ?? 'Pembeli tidak dikenal'}
-                  </p>
-                  <p className="text-xs mt-0.5" style={{ color: '#9C9690' }}>
-                    {formatDate(r.date)} · {formatRupiah(r.total_sales)}
-                  </p>
+              {paid.map((r) => (
+                <div
+                  key={r.id}
+                  className="card flex items-center justify-between gap-3"
+                  style={{
+                    padding: '0.875rem 1rem',
+                    backgroundColor: 'var(--bg-subtle)',
+                    border: '1px solid var(--border-soft)',
+                    boxShadow: 'none',
+                  }}
+                >
+                  <div className="flex-1 min-w-0">
+                    <p className="font-semibold text-sm truncate" style={{ color: 'var(--text-secondary)' }}>
+                      {r.customer?.name ?? 'Pembeli tidak dikenal'}
+                    </p>
+                    <p className="text-xs mt-0.5" style={{ color: 'var(--text-tertiary)' }}>
+                      {formatDate(r.date)} · {formatRupiah(r.total_sales)}
+                    </p>
+                  </div>
+                  <span className="badge-profit">
+                    <span
+                      className="w-1.5 h-1.5 rounded-full"
+                      style={{ backgroundColor: 'var(--profit)' }}
+                    />
+                    Sudah Dibayar
+                  </span>
                 </div>
-                <span className="badge-profit ml-3 flex-shrink-0">
-                  <CircleCheck size={10} strokeWidth={2.5} />
-                  Lunas
-                </span>
-              </div>
-            ))}
+              ))}
             </div>
           </div>
         )}

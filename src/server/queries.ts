@@ -1,9 +1,15 @@
 import { createServerClient } from '@/lib/supabase-server'
+import { todayISOString } from '@/lib/format'
 import {
   calculateRemainingReceivable,
   getReceivableStatus,
   calculateProfitSummary,
 } from '@/domain/finance'
+import {
+  isDistributionExpenseCategory,
+  isOtherExpenseCategory,
+  isProductionExpenseCategory,
+} from '@/domain/expense-categories'
 import type { SalesTransaction, ReceivablePayment, Expense } from '@/types/database'
 
 // ─── Business Profile ─────────────────────────────────────────────────────────
@@ -159,7 +165,7 @@ export async function getReceivables() {
 // ─── Dashboard ────────────────────────────────────────────────────────────────
 
 export async function getDashboardSummary() {
-  const today = new Date().toISOString().split('T')[0]
+  const today = todayISOString()
   const now = new Date()
   const year = now.getFullYear()
   const month = now.getMonth() + 1
@@ -180,17 +186,37 @@ export async function getDashboardSummary() {
   const totalReceivables = receivables.reduce((s: number, r: { remaining: number }) => s + r.remaining, 0)
   const hasUnconfirmedExpenses = monthExpenses.some((e: Expense) => e.confirmation_status === 'unconfirmed')
   const hasIncompleteSalesData = todaySales.length === 0
+  const todayActivity = [
+    ...todaySales.map((sale: SalesWithCustomer) => ({
+      id: `sale-${sale.id}`,
+      type: 'sale' as const,
+      label: sale.customer?.name ?? 'Pembeli umum',
+      meta: `${sale.packs} bungkus`,
+      amount: sale.total_sales,
+      createdAt: sale.created_at,
+    })),
+    ...todayExpenses.map((expense: Expense) => ({
+      id: `expense-${expense.id}`,
+      type: 'expense' as const,
+      label: expense.item_name,
+      meta: expense.unit ? `${expense.quantity} ${expense.unit}` : 'Biaya',
+      amount: expense.total,
+      createdAt: expense.created_at,
+    })),
+  ]
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+    .slice(0, 6)
 
   const profitToday = calculateProfitSummary({
     totalSales: todayOmzet,
     totalProductionCost: todayExpenses
-      .filter((e: Expense) => ['raw_material', 'additional_material', 'production'].includes(e.category))
+      .filter((e: Expense) => isProductionExpenseCategory(e.category))
       .reduce((s: number, e: Expense) => s + e.total, 0),
     distributionCost: todayExpenses
-      .filter((e: Expense) => e.category === 'distribution')
+      .filter((e: Expense) => isDistributionExpenseCategory(e.category))
       .reduce((s: number, e: Expense) => s + e.total, 0),
     otherCost: todayExpenses
-      .filter((e: Expense) => e.category === 'other')
+      .filter((e: Expense) => isOtherExpenseCategory(e.category))
       .reduce((s: number, e: Expense) => s + e.total, 0),
   })
 
@@ -204,5 +230,6 @@ export async function getDashboardSummary() {
     hasUnconfirmedExpenses,
     hasIncompleteSalesData,
     unpaidCount: receivables.filter((r: { status: string }) => r.status === 'BELUM_LUNAS').length,
+    todayActivity,
   }
 }

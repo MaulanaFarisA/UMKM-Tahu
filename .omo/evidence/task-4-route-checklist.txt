@@ -1,0 +1,48 @@
+# Task 4 — QA Route Checklist Evidence
+**Date:** 2026-05-25
+**Status:** Checklist created
+
+## Deliverable
+File: `.omo/evidence/qa-route-checklist.md`
+
+## Routes Documented (9 total)
+1. `/` — Landing / Login Page
+2. `/login` — Login Form
+3. `/register` — Register Form
+4. `/beranda` — Dashboard
+5. `/catat` — Record Menu
+6. `/catat/penjualan` — Sales Form
+7. `/catat/pengeluaran` — Expense Form
+8. `/piutang` — Receivables
+9. `/pengaturan` — Settings
+
+## Viewports Specified
+- Desktop: 1280×800
+- Mobile: 375×812
+
+## Evidence Naming Convention
+Pattern: `.omo/evidence/full-route-qa/{route-slug}-{viewport}.png`
+
+Example filenames:
+- `full-route-qa/landing-desktop.png`
+- `full-route-qa/landing-mobile.png`
+- `full-route-qa/beranda-desktop.png`
+- `full-route-qa/beranda-mobile.png`
+- etc.
+
+## Precondition
+Dev server startup: `npm run dev` (localhost:3000)
+
+## Mobile Overflow Checks
+Each route includes specific overflow validation instructions:
+- No horizontal scroll
+- All CTAs/buttons tappable
+- Form fields stack vertically
+- Interactive elements accessible
+
+## Next Steps (Task 15)
+1. Start dev server: `npm run dev`
+2. Use Playwright MCP to capture screenshots for all 9 routes × 2 viewports (18 total)
+3. Save evidence to `.omo/evidence/full-route-qa/`
+4. Verify no horizontal overflow on mobile
+5. Mark all routes as QA-passed

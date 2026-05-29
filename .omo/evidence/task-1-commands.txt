@@ -1,0 +1,45 @@
+Task 1: Token Alignment — Warm CSS Variables
+Date: 2026-05-25T08:22:54.862Z
+
+CHANGES MADE:
+1. tailwind.config.ts: Replaced cool-gray palette with warm CSS variable tokens
+   - bg: mapped to --bg, --bg-white, --bg-subtle, --bg-muted, --bg-deep, --bg-elevated
+   - border: mapped to --border, --border-strong, --border-accent, --border-soft
+   - text: mapped to --text-primary, --text-secondary, --text-tertiary, --text-muted, --text-accent, --text-inverse
+   - accent: mapped to --accent, --accent-hover, --accent-deep, --accent-light, --accent-mid, --accent-soft
+   - profit: mapped to --profit, --profit-bg, --profit-bg-deep, --profit-border, --profit-text
+   - loss: mapped to --loss, --loss-bg, --loss-bg-deep, --loss-border, --loss-text
+   - warn: mapped to --warn, --warn-bg, --warn-bg-deep, --warn-border, --warn-text
+   - info: mapped to --info, --info-bg, --info-border, --info-text
+
+2. src/app/layout.tsx: Changed body backgroundColor from hardcoded #F5F7FA to var(--bg)
+
+VERIFICATION:
+
+$ npm run typecheck
+> umkm-tahu@0.1.0 typecheck
+> tsc --noEmit
+[Exit code: 0 ✓]
+
+$ npm test
+> umkm-tahu@0.1.0 test
+> vitest run
+
+ ✓ src/domain/finance.test.ts (32 tests) 15ms
+ ✓ src/components/status-badge.test.tsx (7 tests) 94ms
+ ✓ src/components/form-section.test.tsx (14 tests) 155ms
+ ✓ src/components/info-banner.test.tsx (14 tests) 177ms
+ ✓ src/components/sales-form-preview.test.tsx (9 tests) 317ms
+ ✓ src/components/empty-state.test.tsx (11 tests) 335ms
+ ✓ src/components/expense-form-preview.test.tsx (11 tests) 398ms
+
+ Test Files: 7 passed (7)
+ Tests: 98 passed (98)
+ Duration: 4.83s
+[Exit code: 0 ✓]
+
+RESULT: ✓ All verification passed
+- TypeScript: clean, zero errors
+- Tests: 98/98 passing
+- Tailwind config: aligned with warm CSS variables from globals.css
+- Layout: body background now uses warm token

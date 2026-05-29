@@ -12,18 +12,23 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'Pembukuan Tahu',
-  description: 'Catat jualan, pengeluaran, dan uang belum dibayar dengan mudah.',
+  title: 'Buku Tahu',
+  description: 'Catat uang masuk, uang keluar, dan pembeli belum dibayar dari HP.',
   manifest: '/manifest.json',
+  icons: {
+    icon: '/icon.svg',
+    shortcut: '/icon.svg',
+    apple: '/icon-192.svg',
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'Pembukuan Tahu',
+    title: 'Buku Tahu',
   },
 }
 
 export const viewport: Viewport = {
-  themeColor: '#6941C6',
+  themeColor: '#FFFDF7',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -36,7 +41,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id" className={plusJakartaSans.variable}>
-      <body className={plusJakartaSans.className} style={{ backgroundColor: '#F5F7FA' }}>
+      <body className={plusJakartaSans.className} style={{ backgroundColor: 'var(--bg)' }}>
         {children}
       </body>
     </html>

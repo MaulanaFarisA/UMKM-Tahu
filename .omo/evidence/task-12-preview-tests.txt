@@ -1,0 +1,122 @@
+# Task 12: Preview Component Tests — Evidence
+
+## Summary
+Added focused tests for upgraded live preview components using Vitest + React Testing Library.
+
+## Test Files Created
+- `src/components/sales-form-preview.test.tsx` — 9 tests
+- `src/components/expense-form-preview.test.tsx` — 11 tests
+
+## Test Coverage
+
+### SalesFormPreview (9 tests)
+1. ✓ renders empty state when no form data exists
+2. ✓ shows dashed border in empty state
+3. ✓ displays Receipt icon in empty state
+4. ✓ renders receipt header with Tahu product when form has data
+5. ✓ shows LUNAS status when fully paid
+6. ✓ shows SEBAGIAN status when partially paid
+7. ✓ shows BELUM DIBAYAR status when unpaid
+8. ✓ handles zero values gracefully by showing empty state
+9. ✓ displays total area with Rupiah formatting
+
+**Behaviors tested:**
+- Empty state rendering with dashed border and icon
+- Receipt header display when form has data
+- Payment status pills (LUNAS/SEBAGIAN/BELUM DIBAYAR) based on payment state
+- Defensive number handling (zero values, NaN prevention)
+- Rupiah currency formatting
+
+### ExpenseFormPreview (11 tests)
+1. ✓ renders empty state when no form data exists
+2. ✓ shows dashed border in empty state
+3. ✓ displays Calculator icon in empty state
+4. ✓ renders receipt header with item name when form has data
+5. ✓ displays total with minus prefix for expense
+6. ✓ shows category badge for raw_material
+7. ✓ shows category badge for production
+8. ✓ shows UANG KELUAR status pill
+9. ✓ falls back to "Pengeluaran" when item name is empty
+10. ✓ handles zero values gracefully by showing empty state
+11. ✓ displays total area with Rupiah formatting
+
+**Behaviors tested:**
+- Empty state rendering with dashed border and icon
+- Receipt header display with item name
+- Total display with minus prefix (−Rp format)
+- Category badge rendering for different expense categories
+- UANG KELUAR status pill display
+- Fallback to "Pengeluaran" when item name is empty
+- Defensive number handling (zero values)
+- Rupiah currency formatting
+
+## Verification Results
+
+### Test Suite
+```
+Test Files: 7 passed (7)
+Tests: 98 passed (98)
+  - finance.test.ts: 32 tests ✓
+  - status-badge.test.tsx: 7 tests ✓
+  - form-section.test.tsx: 14 tests ✓
+  - info-banner.test.tsx: 14 tests ✓
+  - expense-form-preview.test.tsx: 11 tests ✓
+  - sales-form-preview.test.tsx: 9 tests ✓
+  - empty-state.test.tsx: 11 tests ✓
+Duration: 4.18s
+```
+
+### TypeCheck
+```
+npm run typecheck
+Result: PASS (0 errors)
+```
+
+### Build
+```
+npm run build
+Result: PASS (12/12 pages compiled)
+Routes:
+  ✓ / (123 B, 103 kB First Load JS)
+  ✓ /beranda (177 B, 107 kB)
+  ✓ /catat (177 B, 107 kB)
+  ✓ /catat/pengeluaran (2.87 kB, 109 kB)
+  ✓ /catat/penjualan (2.74 kB, 109 kB)
+  ✓ /login (4.13 kB, 111 kB)
+  ✓ /pengaturan (171 B, 107 kB)
+  ✓ /piutang (177 B, 107 kB)
+  ✓ /register (3.01 kB, 109 kB)
+  ✓ /_not-found (993 B, 103 kB)
+```
+
+## Implementation Notes
+
+### Test Strategy
+- Used behavior-focused assertions (no implementation details)
+- Tested through public interfaces only
+- Used `act()` wrapper for state updates
+- Proper DOM cleanup with `afterEach()`
+- Form event simulation via `dispatchEvent()`
+
+### Key Patterns
+- Empty state: verified text content and icon presence
+- Filled state: created form inputs, dispatched events, verified rendered output
+- Status pills: tested all three payment states (LUNAS/SEBAGIAN/BELUM DIBAYAR)
+- Category badges: verified rendering for different categories
+- Defensive handling: tested zero values and empty inputs
+
+### No New Dependencies
+- Used existing Vitest + React Testing Library
+- No additional npm packages required
+- All tests use standard RTL queries (`getByText`, `querySelector`)
+
+## Files Modified
+- Created: `src/components/sales-form-preview.test.tsx` (9 tests, ~280 lines)
+- Created: `src/components/expense-form-preview.test.tsx` (11 tests, ~320 lines)
+
+## Task Completion
+✓ New test files cover preview empty/filled states
+✓ Tests pass alongside existing 78 tests (now 98 total)
+✓ `npm run typecheck` exits 0
+✓ `npm run test` exits 0 (98/98 passing)
+✓ `npm run build` exits 0 (12/12 pages)

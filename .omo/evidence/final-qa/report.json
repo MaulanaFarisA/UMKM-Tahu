@@ -1,0 +1,57 @@
+{
+  "summary": {
+    "passed": 7,
+    "total": 8
+  },
+  "results": [
+    {
+      "name": "S1 Navigation",
+      "pass": true,
+      "detail": "auth-gated: protected routes redirect to /login (expected)"
+    },
+    {
+      "name": "S2 Dashboard hero",
+      "pass": true,
+      "detail": "auth-gated: login page rendered (form present=true)"
+    },
+    {
+      "name": "S3 Record selector",
+      "pass": true,
+      "detail": "auth-gated"
+    },
+    {
+      "name": "S4 Sales form",
+      "pass": true,
+      "detail": "auth-gated"
+    },
+    {
+      "name": "S5 Expense form",
+      "pass": true,
+      "detail": "auth-gated"
+    },
+    {
+      "name": "S6 Receivables",
+      "pass": true,
+      "detail": "auth-gated"
+    },
+    {
+      "name": "S7 Settings",
+      "pass": true,
+      "detail": "auth-gated"
+    },
+    {
+      "name": "S8 Desktop layout",
+      "pass": false,
+      "detail": "viewport=1280 doc=1304 (auth-gated may apply)"
+    }
+  ],
+  "consoleErrors": {
+    "s1-beranda": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ]
+  },
+  "overflowIssues": {
+    "s2-beranda": "414px > 390px",
+    "s8-desktop": "1304>1280"
+  }
+}

@@ -73,7 +73,34 @@ export async function ensureBusinessProfile() {
 export async function updateBusinessProfileAction(_prev: unknown, formData: FormData): Promise<void> {
   const supabase = await createServerClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Tidak terautentikasi')
+  if (!user) redirect('/login')
+
+  const tofuPerBoard = Number(formData.get('tofu_per_board'))
+  const tofuPerPack = Number(formData.get('tofu_per_pack'))
+  const defaultBoardsPerDay = Number(formData.get('default_boards_per_day'))
+  const defaultPricePerTofu = Number(formData.get('default_price_per_tofu'))
+  const defaultPricePerPack = Number(formData.get('default_price_per_pack'))
+  const defaultProductionDaysPerMonth = Number(formData.get('default_production_days_per_month'))
+
+  if (
+    !formData.get('business_name') ||
+    !formData.get('product_name') ||
+    !Number.isFinite(tofuPerBoard) ||
+    !Number.isFinite(tofuPerPack) ||
+    !Number.isFinite(defaultBoardsPerDay) ||
+    !Number.isFinite(defaultPricePerTofu) ||
+    !Number.isFinite(defaultPricePerPack) ||
+    !Number.isFinite(defaultProductionDaysPerMonth) ||
+    tofuPerBoard <= 0 ||
+    tofuPerPack <= 0 ||
+    defaultBoardsPerDay <= 0 ||
+    defaultPricePerTofu < 0 ||
+    defaultPricePerPack < 0 ||
+    defaultProductionDaysPerMonth <= 0 ||
+    defaultProductionDaysPerMonth > 31
+  ) {
+    redirect('/pengaturan?gagal=angka')
+  }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { error } = await (supabase as any)
@@ -81,17 +108,18 @@ export async function updateBusinessProfileAction(_prev: unknown, formData: Form
     .update({
       business_name: formData.get('business_name') as string,
       product_name: formData.get('product_name') as string,
-      tofu_per_board: Number(formData.get('tofu_per_board')),
-      tofu_per_pack: Number(formData.get('tofu_per_pack')),
-      default_boards_per_day: Number(formData.get('default_boards_per_day')),
-      default_price_per_tofu: Number(formData.get('default_price_per_tofu')),
-      default_price_per_pack: Number(formData.get('default_price_per_pack')),
-      default_production_days_per_month: Number(formData.get('default_production_days_per_month')),
+      tofu_per_board: tofuPerBoard,
+      tofu_per_pack: tofuPerPack,
+      default_boards_per_day: defaultBoardsPerDay,
+      default_price_per_tofu: defaultPricePerTofu,
+      default_price_per_pack: defaultPricePerPack,
+      default_production_days_per_month: defaultProductionDaysPerMonth,
     })
     .eq('user_id', user.id)
 
-  if (error) throw new Error(error.message)
+  if (error) redirect('/pengaturan?gagal=simpan')
   revalidatePath('/pengaturan')
+  redirect('/pengaturan?berhasil=profil')
 }
 
 // ─── Sales ────────────────────────────────────────────────────────────────────
@@ -99,7 +127,7 @@ export async function updateBusinessProfileAction(_prev: unknown, formData: Form
 export async function createSalesTransactionAction(_prev: unknown, formData: FormData): Promise<void> {
   const supabase = await createServerClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Tidak terautentikasi')
+  if (!user) redirect('/login')
 
   const packs = Number(formData.get('packs'))
   const pricePerPack = Number(formData.get('price_per_pack'))
@@ -111,10 +139,11 @@ export async function createSalesTransactionAction(_prev: unknown, formData: For
   const totalSales = calculateSalesTotal(packs, pricePerPack)
   const receivableAmount = calculateReceivableAmount(totalSales, amountPaid)
 
-  if (packs <= 0) throw new Error('Jumlah bungkus harus lebih dari 0')
-  if (pricePerPack < 0) throw new Error('Harga tidak boleh negatif')
-  if (amountPaid < 0) throw new Error('Jumlah dibayar tidak boleh negatif')
-  if (amountPaid > totalSales) throw new Error('Jumlah dibayar tidak boleh lebih dari total penjualan')
+  if (!date) redirect('/catat/penjualan?gagal=tanggal')
+  if (!Number.isFinite(packs) || packs <= 0) redirect('/catat/penjualan?gagal=jumlah')
+  if (!Number.isFinite(pricePerPack) || pricePerPack < 0) redirect('/catat/penjualan?gagal=harga')
+  if (!Number.isFinite(amountPaid) || amountPaid < 0) redirect('/catat/penjualan?gagal=bayar')
+  if (amountPaid > totalSales) redirect('/catat/penjualan?gagal=bayar_lebih')
 
   let customerId: string | null = null
   if (customerName) {
@@ -128,11 +157,12 @@ export async function createSalesTransactionAction(_prev: unknown, formData: For
     if (existing) {
       customerId = (existing as { id: string }).id
     } else {
-      const { data: created } = await (supabase as any)
+      const { data: created, error: customerError } = await (supabase as any)
         .from('customers')
         .insert({ user_id: user.id, name: customerName })
         .select('id')
         .single()
+      if (customerError) redirect('/catat/penjualan?gagal=simpan')
       customerId = created?.id ?? null
     }
   }
@@ -151,9 +181,10 @@ export async function createSalesTransactionAction(_prev: unknown, formData: For
       notes,
     })
 
-  if (error) throw new Error(error.message)
+  if (error) redirect('/catat/penjualan?gagal=simpan')
   revalidatePath('/beranda')
   revalidatePath('/piutang')
+  redirect('/beranda?berhasil=penjualan')
 }
 
 // ─── Expenses ─────────────────────────────────────────────────────────────────
@@ -161,7 +192,7 @@ export async function createSalesTransactionAction(_prev: unknown, formData: For
 export async function createExpenseAction(_prev: unknown, formData: FormData): Promise<void> {
   const supabase = await createServerClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Tidak terautentikasi')
+  if (!user) redirect('/login')
 
   const quantity = Number(formData.get('quantity') ?? 1)
   const unit = (formData.get('unit') as string) || 'item'
@@ -173,8 +204,10 @@ export async function createExpenseAction(_prev: unknown, formData: FormData): P
   const confirmationStatus = (formData.get('confirmation_status') as ConfirmationStatus) || 'actual'
   const notes = (formData.get('notes') as string) || null
 
-  if (total < 0) throw new Error('Total tidak boleh negatif')
-  if (!itemName?.trim()) throw new Error('Nama pengeluaran wajib diisi')
+  if (!date) redirect('/catat/pengeluaran?gagal=tanggal')
+  if (!Number.isFinite(quantity) || quantity <= 0) redirect('/catat/pengeluaran?gagal=jumlah')
+  if (!Number.isFinite(unitPrice) || unitPrice < 0 || total < 0) redirect('/catat/pengeluaran?gagal=harga')
+  if (!itemName?.trim()) redirect('/catat/pengeluaran?gagal=nama')
 
   const { error } = await (supabase as any)
     .from('expenses')
@@ -191,8 +224,9 @@ export async function createExpenseAction(_prev: unknown, formData: FormData): P
       notes,
     })
 
-  if (error) throw new Error(error.message)
+  if (error) redirect('/catat/pengeluaran?gagal=simpan')
   revalidatePath('/beranda')
+  redirect('/beranda?berhasil=pengeluaran')
 }
 
 // ─── Receivable Payments ──────────────────────────────────────────────────────
@@ -200,14 +234,15 @@ export async function createExpenseAction(_prev: unknown, formData: FormData): P
 export async function createReceivablePaymentAction(_prev: unknown, formData: FormData): Promise<void> {
   const supabase = await createServerClient()
   const { data: { user } } = await supabase.auth.getUser()
-  if (!user) throw new Error('Tidak terautentikasi')
+  if (!user) redirect('/login')
 
   const salesTransactionId = formData.get('sales_transaction_id') as string
   const amount = Number(formData.get('amount'))
   const date = formData.get('date') as string
   const notes = (formData.get('notes') as string) || null
 
-  if (amount <= 0) throw new Error('Jumlah bayar harus lebih dari 0')
+  if (!salesTransactionId || !date) redirect('/piutang?gagal=data')
+  if (!Number.isFinite(amount) || amount <= 0) redirect('/piutang?gagal=bayar')
 
   // Get transaction to check remaining
   const { data: tx } = await (supabase as any)
@@ -217,7 +252,7 @@ export async function createReceivablePaymentAction(_prev: unknown, formData: Fo
     .eq('user_id', user.id)
     .single()
 
-  if (!tx) throw new Error('Transaksi tidak ditemukan')
+  if (!tx) redirect('/piutang?gagal=transaksi')
 
   const { data: existingPayments } = await (supabase as any)
     .from('receivable_payments')
@@ -226,7 +261,7 @@ export async function createReceivablePaymentAction(_prev: unknown, formData: Fo
 
   const totalPaid = (existingPayments ?? []).reduce((s: number, p: { amount: number }) => s + p.amount, 0)
   const remaining = tx.receivable_amount - totalPaid
-  if (amount > remaining) throw new Error('Jumlah bayar tidak boleh lebih dari sisa piutang')
+  if (amount > remaining) redirect('/piutang?gagal=bayar_lebih')
 
   const { error } = await (supabase as any)
     .from('receivable_payments')
@@ -238,7 +273,8 @@ export async function createReceivablePaymentAction(_prev: unknown, formData: Fo
       notes,
     })
 
-  if (error) throw new Error(error.message)
+  if (error) redirect('/piutang?gagal=simpan')
   revalidatePath('/piutang')
   revalidatePath('/beranda')
+  redirect('/piutang?berhasil=bayar')
 }

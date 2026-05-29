@@ -1,0 +1,93 @@
+ ⚠ Your project has `@next/font` installed as a dependency, please use the built-in `next/font` instead. The `@next/font` package will be removed in Next.js 14. You can migrate by running `npx @next/codemod@latest built-in-next-font .`. Read more: https://nextjs.org/docs/messages/built-in-next-font
+ ⨯ SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>) {
+  page: '/login'
+}
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⨯ Error: ENOENT: no such file or directory, open 'C:\Users\FARIS\OneDrive\Dokumen\Fullstack Journey\Projects\umkm_tahu\.next\routes-manifest.json'
+    at async M (C:\Users\FARIS\OneDrive\Dokumen\Fullstack Journey\Projects\umkm_tahu\.next\server\app\login\page.js:1:14865) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\FARIS\\OneDrive\\Dokumen\\Fullstack Journey\\Projects\\umkm_tahu\\.next\\routes-manifest.json',
+  page: '/login'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'C:\Users\FARIS\OneDrive\Dokumen\Fullstack Journey\Projects\umkm_tahu\.next\routes-manifest.json'
+    at async M (C:\Users\FARIS\OneDrive\Dokumen\Fullstack Journey\Projects\umkm_tahu\.next\server\app\login\page.js:1:14865) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\FARIS\\OneDrive\\Dokumen\\Fullstack Journey\\Projects\\umkm_tahu\\.next\\routes-manifest.json',
+  page: '/login'
+}
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⨯ Error: ENOENT: no such file or directory, open 'C:\Users\FARIS\OneDrive\Dokumen\Fullstack Journey\Projects\umkm_tahu\.next\routes-manifest.json'
+    at async (C:\Users\FARIS\OneDrive\Dokumen\Fullstack Journey\Projects\umkm_tahu\.next\server\pages\_error.js:1:6810) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\FARIS\\OneDrive\\Dokumen\\Fullstack Journey\\Projects\\umkm_tahu\\.next\\routes-manifest.json'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'C:\Users\FARIS\OneDrive\Dokumen\Fullstack Journey\Projects\umkm_tahu\.next\routes-manifest.json'
+    at async (C:\Users\FARIS\OneDrive\Dokumen\Fullstack Journey\Projects\umkm_tahu\.next\server\pages\_error.js:1:6810) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\FARIS\\OneDrive\\Dokumen\\Fullstack Journey\\Projects\\umkm_tahu\\.next\\routes-manifest.json'
+}
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+Error: ENOENT: no such file or directory, open 'C:\Users\FARIS\OneDrive\Dokumen\Fullstack Journey\Projects\umkm_tahu\.next\routes-manifest.json'
+    at async M (C:\Users\FARIS\OneDrive\Dokumen\Fullstack Journey\Projects\umkm_tahu\.next\server\app\login\page.js:1:14865) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\FARIS\\OneDrive\\Dokumen\\Fullstack Journey\\Projects\\umkm_tahu\\.next\\routes-manifest.json',
+  page: '/login'
+}
+Error: ENOENT: no such file or directory, open 'C:\Users\FARIS\OneDrive\Dokumen\Fullstack Journey\Projects\umkm_tahu\.next\routes-manifest.json'
+    at async M (C:\Users\FARIS\OneDrive\Dokumen\Fullstack Journey\Projects\umkm_tahu\.next\server\app\login\page.js:1:14865) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\FARIS\\OneDrive\\Dokumen\\Fullstack Journey\\Projects\\umkm_tahu\\.next\\routes-manifest.json',
+  page: '/login'
+}
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⨯ Error: ENOENT: no such file or directory, open 'C:\Users\FARIS\OneDrive\Dokumen\Fullstack Journey\Projects\umkm_tahu\.next\routes-manifest.json'
+    at async (C:\Users\FARIS\OneDrive\Dokumen\Fullstack Journey\Projects\umkm_tahu\.next\server\pages\_error.js:1:6810) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\FARIS\\OneDrive\\Dokumen\\Fullstack Journey\\Projects\\umkm_tahu\\.next\\routes-manifest.json'
+}
+ ⨯ Error: ENOENT: no such file or directory, open 'C:\Users\FARIS\OneDrive\Dokumen\Fullstack Journey\Projects\umkm_tahu\.next\routes-manifest.json'
+    at async (C:\Users\FARIS\OneDrive\Dokumen\Fullstack Journey\Projects\umkm_tahu\.next\server\pages\_error.js:1:6810) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\FARIS\\OneDrive\\Dokumen\\Fullstack Journey\\Projects\\umkm_tahu\\.next\\routes-manifest.json'
+}
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+[Error: ENOENT: no such file or directory, open 'C:\Users\FARIS\OneDrive\Dokumen\Fullstack Journey\Projects\umkm_tahu\.next\routes-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\FARIS\\OneDrive\\Dokumen\\Fullstack Journey\\Projects\\umkm_tahu\\.next\\routes-manifest.json'
+}
+[Error: ENOENT: no such file or directory, open 'C:\Users\FARIS\OneDrive\Dokumen\Fullstack Journey\Projects\umkm_tahu\.next\routes-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\FARIS\\OneDrive\\Dokumen\\Fullstack Journey\\Projects\\umkm_tahu\\.next\\routes-manifest.json'
+}
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, rename 'C:\Users\FARIS\OneDrive\Dokumen\Fullstack Journey\Projects\umkm_tahu\.next\cache\webpack\client-development-fallback\0.pack.gz_' -> 'C:\Users\FARIS\OneDrive\Dokumen\Fullstack Journey\Projects\umkm_tahu\.next\cache\webpack\client-development-fallback\0.pack.gz'

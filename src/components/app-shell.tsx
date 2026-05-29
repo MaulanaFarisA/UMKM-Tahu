@@ -1,5 +1,7 @@
 import Link from 'next/link'
 import { logoutAction } from '@/server/actions'
+import BrandMark from '@/components/brand-mark'
+import SubmitButton from '@/components/submit-button'
 import {
   Home,
   Plus,
@@ -7,7 +9,6 @@ import {
   Store,
   LogOut,
   ChevronLeft,
-  ReceiptText,
   PlusCircle,
 } from 'lucide-react'
 
@@ -29,119 +30,126 @@ const WIDTH_CLASS: Record<NonNullable<AppShellProps['width']>, string> = {
 export default function AppShell({ children, active, title, showBack, backHref, width = 'default' }: AppShellProps) {
   const containerClass = `app-container ${WIDTH_CLASS[width]}`
   return (
-    <div className="min-h-screen flex flex-col tap-highlight-none" style={{ backgroundColor: '#FFFDF7' }}>
-
-      {/* Header */}
+    <div
+      className="min-h-screen flex flex-col tap-highlight-none gradient-mesh"
+      style={{ backgroundColor: 'var(--bg)' }}
+    >
       <header
-        className="sticky top-0 z-20 px-4 h-14 flex items-center justify-between"
+        className="sticky top-0 z-30 h-16 flex items-center"
         style={{
           backgroundColor: 'rgba(255,253,247,0.88)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
-          borderBottom: '1px solid rgba(231,227,220,0.8)',
+          backdropFilter: 'blur(18px) saturate(1.18)',
+          WebkitBackdropFilter: 'blur(18px) saturate(1.18)',
+          borderBottom: '1px solid var(--border)',
         }}
       >
-        <div className={`${containerClass} flex items-center justify-between`}>
-          <div className="flex items-center gap-2.5">
+        <div className={`${containerClass} flex items-center justify-between gap-3`}>
+          {/* Brand / back button */}
+          <div className="flex items-center gap-2.5 min-w-0">
             {showBack && backHref ? (
               <Link
                 href={backHref}
-                className="w-8 h-8 flex items-center justify-center rounded-xl transition-all active:scale-95"
-                style={{ backgroundColor: '#F5F4F0', border: '1px solid #E8E5DF' }}
-              >
-                <ChevronLeft size={16} strokeWidth={2.5} color="#4A4540" />
-              </Link>
-            ) : (
-              <div
-                className="w-8 h-8 flex items-center justify-center rounded-xl flex-shrink-0"
+                aria-label="Kembali"
+                className="w-9 h-9 inline-flex items-center justify-center rounded-xl no-select transition-all active:scale-95"
                 style={{
-                  background: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
-                  boxShadow: '0 2px 8px rgba(124,58,237,0.3)',
+                  backgroundColor: 'rgba(255,255,255,0.82)',
+                  border: '1px solid var(--border)',
+                  color: 'var(--text-secondary)',
+                  boxShadow: 'var(--shadow-xs)',
                 }}
               >
-                <ReceiptText size={15} strokeWidth={2.5} color="white" />
-              </div>
+                <ChevronLeft size={17} strokeWidth={2.5} />
+              </Link>
+            ) : (
+              <BrandMark size="sm" />
             )}
             <span
-              className="font-bold text-base tracking-tight"
-              style={{ color: '#1A1714', letterSpacing: '-0.02em' }}
+              className="font-extrabold text-[1rem] truncate"
+              style={{ color: 'var(--text-primary)', letterSpacing: '-0.04em' }}
             >
-              {title ?? 'Pembukuan Tahu'}
+              {title ?? 'Buku Tahu'}
             </span>
           </div>
 
-          {/* Desktop nav links */}
-          <nav className="desktop-nav items-center gap-1">
+          {/* Desktop nav */}
+          <nav className="desktop-nav items-center gap-1" aria-label="Navigasi utama">
             <DesktopNavLink href="/beranda" label="Beranda" Icon={Home} active={active === 'beranda'} />
             <DesktopNavLink href="/piutang" label="Tagihan" Icon={Wallet} active={active === 'piutang'} />
             <DesktopNavLink href="/catat" label="Catat" Icon={PlusCircle} active={active === 'catat'} highlight />
             <DesktopNavLink href="/pengaturan" label="Usaha" Icon={Store} active={active === 'pengaturan'} />
           </nav>
 
+          {/* Logout */}
           <form action={logoutAction}>
-            <button
-              type="submit"
+            <SubmitButton
+              pendingLabel="Keluar..."
               className="btn-ghost"
-              style={{ fontSize: '0.75rem', padding: '0.375rem 0.75rem' }}
+              style={{ padding: '0.4rem 0.75rem', fontSize: '0.75rem' }}
             >
-              <LogOut size={11} strokeWidth={2.5} />
-              Keluar
-            </button>
+              <LogOut size={12} strokeWidth={2.5} />
+              <span className="hidden sm:inline">Keluar</span>
+            </SubmitButton>
           </form>
         </div>
       </header>
 
-      {/* Main content */}
-      <main className={`flex-1 with-bottom-nav-pad pt-6 md:pt-8 lg:pt-10 ${containerClass}`}>
+      {/* Main */}
+        <main className={`flex-1 with-bottom-nav-pad pt-6 md:pt-8 lg:pt-10 ${containerClass}`}>
         {children}
       </main>
 
       {/* Bottom nav (mobile/tablet only) */}
       <div
-        className="mobile-bottom-nav fixed bottom-0 left-0 right-0 z-20 px-4 safe-bottom"
+        className="mobile-bottom-nav fixed bottom-0 left-0 right-0 z-30 px-4"
         style={{
-          paddingBottom: 'max(1.25rem, env(safe-area-inset-bottom))',
-          paddingTop: '0.5rem',
-          background: 'linear-gradient(to top, rgba(255,253,247,1) 60%, rgba(255,253,247,0))',
+          paddingBottom: 'max(1rem, env(safe-area-inset-bottom))',
+          paddingTop: '0.625rem',
+          background:
+            'linear-gradient(to top, var(--bg) 55%, rgba(255,253,247,0.9) 80%, rgba(255,253,247,0))',
+          pointerEvents: 'none',
         }}
       >
         <nav
-          className="max-w-lg mx-auto rounded-2xl px-2 h-16 flex items-center justify-around relative"
+          className="max-w-md mx-auto rounded-2xl px-2 h-[72px] flex items-center justify-around relative no-select"
+          aria-label="Navigasi bawah"
           style={{
-            backgroundColor: 'rgba(255,253,247,0.97)',
-            border: '1px solid rgba(231,227,220,0.9)',
-            boxShadow: '0 -1px 0 rgba(232,229,223,0.5), 0 8px 32px rgba(26,23,20,0.1)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
+             backgroundColor: 'rgba(255,253,247,0.94)',
+             border: '1px solid var(--border)',
+             boxShadow: 'var(--shadow-lg)',
+            backdropFilter: 'blur(24px) saturate(1.25)',
+            WebkitBackdropFilter: 'blur(24px) saturate(1.25)',
+            pointerEvents: 'auto',
           }}
         >
           <NavItem href="/beranda" label="Beranda" active={active === 'beranda'}>
-            <Home size={20} strokeWidth={active === 'beranda' ? 2.5 : 1.75} />
+            <Home size={20} strokeWidth={active === 'beranda' ? 2.5 : 1.85} />
           </NavItem>
 
           <NavItem href="/piutang" label="Tagihan" active={active === 'piutang'}>
-            <Wallet size={20} strokeWidth={active === 'piutang' ? 2.5 : 1.75} />
+            <Wallet size={20} strokeWidth={active === 'piutang' ? 2.5 : 1.85} />
           </NavItem>
 
-          {/* Central FAB */}
+          {/* Central FAB — sits above the bar, prominent accent */}
           <Link
             href="/catat"
-            className="flex items-center justify-center w-14 h-14 rounded-2xl -mt-7 transition-all active:scale-95 no-select"
+            aria-label="Catat transaksi"
+            aria-current={active === 'catat' ? 'page' : undefined}
+            className="absolute left-1/2 -top-8 -translate-x-1/2 inline-flex items-center justify-center w-[62px] h-[62px] rounded-2xl transition-transform active:scale-95 no-select"
             style={{
-              background: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 50%, #6D28D9 100%)',
-              boxShadow: '0 8px 20px rgba(124,58,237,0.4), 0 2px 8px rgba(124,58,237,0.2)',
+              background: 'var(--accent)',
+              border: '4px solid var(--bg)',
+              color: '#FFFFFF',
+              boxShadow: 'var(--shadow-accent)',
             }}
-            aria-label="Catat"
           >
-            <Plus size={26} strokeWidth={2.5} color="white" />
+            <Plus size={26} strokeWidth={2.75} />
           </Link>
+          {/* Reserve center slot so flex spacing stays even */}
+          <div className="w-[58px] flex-shrink-0" aria-hidden="true" />
 
           <NavItem href="/pengaturan" label="Usaha" active={active === 'pengaturan'}>
-            <Store size={20} strokeWidth={active === 'pengaturan' ? 2.5 : 1.75} />
+            <Store size={20} strokeWidth={active === 'pengaturan' ? 2.5 : 1.85} />
           </NavItem>
-
-          {/* Spacer for FAB */}
-          <div className="w-14" aria-hidden="true" />
         </nav>
       </div>
     </div>
@@ -162,22 +170,34 @@ function NavItem({
   return (
     <Link
       href={href}
-      className="flex flex-col items-center gap-1 px-3 py-1.5 rounded-xl min-w-[56px] transition-all no-select"
+      aria-current={active ? 'page' : undefined}
+      className="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-2xl min-w-[60px] transition-all no-select"
       style={{
-        backgroundColor: active ? 'rgba(124,58,237,0.08)' : 'transparent',
+        backgroundColor: active ? 'var(--accent-light)' : 'transparent',
+        boxShadow: active ? 'inset 0 1px 0 rgba(255,255,255,0.8)' : 'none',
       }}
     >
-      <span style={{ color: active ? '#7C3AED' : '#9C9690' }}>{children}</span>
+      <span style={{ color: active ? 'var(--accent)' : 'var(--text-muted)' }}>{children}</span>
       <span
-        className="text-xs font-semibold"
+        className="font-semibold"
         style={{
-          color: active ? '#7C3AED' : '#9C9690',
+          color: active ? 'var(--accent)' : 'var(--text-tertiary)',
           fontSize: '0.6875rem',
-          letterSpacing: '0.01em',
+          letterSpacing: '0.005em',
         }}
       >
         {label}
       </span>
+      <div
+        aria-hidden="true"
+        className="rounded-full transition-all duration-200"
+        style={{
+          width: active ? '18px' : '0px',
+          height: '3px',
+          backgroundColor: active ? 'var(--accent)' : 'transparent',
+          marginTop: '2px',
+        }}
+      />
     </Link>
   )
 }
@@ -199,18 +219,17 @@ function DesktopNavLink({
     return (
       <Link
         href={href}
-        className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-sm font-bold transition-all active:scale-95 no-select"
+        aria-current={active ? 'page' : undefined}
+        className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-2xl text-sm font-bold transition-all active:scale-[0.97] no-select"
         style={{
-          background: active
-            ? 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)'
-            : 'linear-gradient(135deg, #EDE9FE 0%, #DDD6FE 100%)',
-          color: active ? '#FFFFFF' : '#5B21B6',
-          border: active ? 'none' : '1px solid #C4B5FD',
-          boxShadow: active ? '0 4px 12px rgba(124,58,237,0.3)' : 'none',
-          letterSpacing: '-0.01em',
+          background: active ? 'var(--accent)' : 'var(--accent-light)',
+          color: active ? '#FFFFFF' : 'var(--accent-deep)',
+          border: active ? '1px solid var(--accent)' : '1px solid var(--border)',
+          boxShadow: active ? 'var(--shadow-accent-sm)' : 'var(--shadow-xs)',
+          letterSpacing: '-0.012em',
         }}
       >
-        <Icon size={15} strokeWidth={2.25} color={active ? '#FFFFFF' : '#7C3AED'} />
+        <Icon size={15} strokeWidth={2.25} color={active ? '#FFFFFF' : 'var(--accent)'} />
         {label}
       </Link>
     )
@@ -218,14 +237,16 @@ function DesktopNavLink({
   return (
     <Link
       href={href}
-      className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-semibold transition-all no-select"
+      aria-current={active ? 'page' : undefined}
+      className="inline-flex items-center gap-1.5 px-3 py-2 rounded-2xl text-sm font-semibold transition-all no-select"
       style={{
-        backgroundColor: active ? 'rgba(124,58,237,0.08)' : 'transparent',
-        color: active ? '#7C3AED' : '#4A4540',
+        backgroundColor: active ? 'var(--accent-light)' : 'transparent',
+        color: active ? 'var(--accent)' : 'var(--text-secondary)',
+        boxShadow: active ? 'var(--shadow-xs)' : 'none',
         letterSpacing: '-0.01em',
       }}
     >
-      <Icon size={15} strokeWidth={2} color={active ? '#7C3AED' : '#9C9690'} />
+      <Icon size={15} strokeWidth={2} color={active ? 'var(--accent)' : 'var(--text-tertiary)'} />
       {label}
     </Link>
   )

@@ -1,23 +1,29 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Receipt, Calculator } from 'lucide-react'
+import { Receipt, Calculator, Tag } from 'lucide-react'
+import { formatRupiah } from '@/lib/format'
+import { EXPENSE_CATEGORY_LABELS } from '@/domain/expense-categories'
 
 function formatRp(amount: number): string {
-  return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount)
+  if (!Number.isFinite(amount)) return 'Rp 0'
+  return formatRupiah(amount)
 }
 
-const CATEGORY_LABELS: Record<string, string> = {
-  raw_material: 'Bahan Baku',
-  additional_material: 'Bahan Tambahan',
-  production: 'Produksi',
-  distribution: 'Distribusi',
-  other: 'Lain-lain',
+function formatDateID(d: Date): string {
+  return new Intl.DateTimeFormat('id-ID', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+  }).format(d)
+}
+
+const CATEGORY_TONES: Record<string, { fg: string; bg: string; border: string }> = {
+  raw_material: { fg: 'var(--warn-text)', bg: 'var(--warn-bg-deep)', border: 'var(--warn-border)' },
+  additional_material: { fg: 'var(--accent-deep)', bg: 'var(--accent-light)', border: 'var(--border-accent)' },
+  production: { fg: 'var(--info-text)', bg: 'var(--info-bg)', border: 'var(--info-border)' },
+  distribution: { fg: 'var(--profit-text)', bg: 'var(--profit-bg)', border: 'var(--profit-border)' },
+  other: { fg: 'var(--text-secondary)', bg: 'var(--bg-subtle)', border: 'var(--border)' },
 }
 
 export default function ExpenseFormPreview() {
@@ -26,9 +32,19 @@ export default function ExpenseFormPreview() {
   const [unit, setUnit] = useState('item')
   const [itemName, setItemName] = useState('')
   const [category, setCategory] = useState('raw_material')
+  const [todayLabel, setTodayLabel] = useState('')
 
-  const total = Math.round(quantity * unitPrice)
-  const hasData = unitPrice > 0
+  useEffect(() => {
+    setTodayLabel(formatDateID(new Date()))
+  }, [])
+
+  const safeQty = Number.isFinite(quantity) && quantity > 0 ? quantity : 0
+  const safePrice = Number.isFinite(unitPrice) && unitPrice >= 0 ? unitPrice : 0
+  const total = Math.round(safeQty * safePrice)
+  const hasData = safePrice > 0 && safeQty > 0
+  const tone = CATEGORY_TONES[category] ?? CATEGORY_TONES.other
+  const categoryLabel = EXPENSE_CATEGORY_LABELS[category as keyof typeof EXPENSE_CATEGORY_LABELS] ?? category
+  const displayName = itemName.trim() || 'Pengeluaran'
 
   useEffect(() => {
     const form = document.querySelector('form')
@@ -64,58 +80,186 @@ export default function ExpenseFormPreview() {
   if (!hasData) {
     return (
       <div
-        className="rounded-2xl p-4 flex items-center gap-3"
-        style={{ backgroundColor: '#F5F4F0', border: '1px solid #E8E5DF' }}
+        className="ledger-receipt rounded-2xl"
+        style={{
+          background: 'var(--bg-white)',
+          borderTop: '1.5px dashed var(--border-strong)',
+          borderRight: '1.5px dashed var(--border-strong)',
+          borderBottom: '1.5px dashed var(--border-strong)',
+          borderLeft: '3px solid var(--warn)',
+        }}
+        aria-live="polite"
       >
+        {/* Header — mirrors filled-state structure */}
         <div
-          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-          style={{ backgroundColor: '#EEECE8' }}
+          className="px-5 py-4 flex items-start justify-between gap-3"
+          style={{
+            background: 'linear-gradient(135deg, var(--warn-bg) 0%, rgba(255,255,255,0) 100%)',
+            borderBottom: '1px dashed var(--border)',
+          }}
         >
-          <Calculator size={16} strokeWidth={2} color="#9C9690" />
+          <div className="min-w-0">
+            <p className="section-heading" style={{ color: 'var(--warn-text)' }}>
+              Pratinjau · Pengeluaran
+            </p>
+            <p
+              className="text-base font-bold mt-0.5"
+              style={{ color: 'var(--text-primary)', letterSpacing: '-0.02em' }}
+            >
+              Pratinjau Struk
+            </p>
+          </div>
+          <div
+            className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+            style={{ background: 'var(--bg-muted)' }}
+          >
+            <Calculator size={18} strokeWidth={2} color="var(--text-tertiary)" />
+          </div>
         </div>
-        <p className="text-sm" style={{ color: '#9C9690' }}>
-          Isi harga satuan untuk melihat total
-        </p>
+
+        {/* Empty body */}
+        <div className="px-5 py-6 text-center">
+          <p
+            className="text-xs font-medium leading-relaxed"
+            style={{ color: 'var(--text-tertiary)' }}
+          >
+            Isi jumlah & harga satuan untuk melihat total
+          </p>
+          <p
+            className="text-[10px] mt-1.5"
+            style={{ color: 'var(--text-muted)' }}
+          >
+            Total akan muncul di sini secara otomatis
+          </p>
+        </div>
       </div>
     )
   }
 
   return (
     <div
-      className="rounded-2xl p-4 space-y-3"
-      style={{ backgroundColor: '#FFFBEB', border: '1.5px solid #FDE68A' }}
+      className="ledger-receipt"
+      style={{
+        background: 'var(--bg-white)',
+        borderTop: '1px solid var(--border)',
+        borderRight: '1px solid var(--border)',
+        borderBottom: '1px solid var(--border)',
+        borderLeft: '3px solid var(--warn)',
+        boxShadow: 'var(--shadow-md)',
+      }}
+      aria-live="polite"
     >
-      <div className="flex items-center gap-2">
-        <Receipt size={13} strokeWidth={2} color="#D97706" />
-        <p className="section-heading" style={{ color: '#92400E' }}>Ringkasan Pengeluaran</p>
+      {/* Header */}
+      <div
+        className="px-5 py-4 flex items-start justify-between gap-3"
+        style={{
+          background: 'linear-gradient(135deg, var(--warn-bg) 0%, rgba(255,255,255,0) 100%)',
+          borderBottom: '1px dashed var(--border)',
+        }}
+      >
+        <div className="min-w-0">
+          <p className="section-heading" style={{ color: 'var(--warn-text)' }}>Pratinjau · Pengeluaran</p>
+          <p className="text-base font-bold mt-0.5" style={{ color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+            Struk Sementara
+          </p>
+        </div>
+        {todayLabel && (
+          <div className="text-right flex-shrink-0">
+            <p className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-tertiary)' }}>
+              Hari ini
+            </p>
+            <p className="text-xs font-semibold mt-0.5" style={{ color: 'var(--text-secondary)' }}>
+              {todayLabel}
+            </p>
+          </div>
+        )}
       </div>
 
-      <div
-        className="rounded-xl p-3"
-        style={{ backgroundColor: 'rgba(255,255,255,0.8)' }}
-      >
-        {itemName && (
-          <p className="text-xs font-semibold mb-1 truncate" style={{ color: '#1A1714' }}>
-            {itemName}
+      {/* Line item */}
+      <div className="px-5 py-4 space-y-3">
+        <div className="flex items-start justify-between gap-4">
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2">
+              <Receipt size={13} strokeWidth={2.5} color="var(--warn)" className="flex-shrink-0" />
+              <p className="text-sm font-bold truncate" style={{ color: 'var(--text-primary)' }}>
+                {displayName}
+              </p>
+            </div>
+            <p className="text-xs mt-1 font-medium" style={{ color: 'var(--text-tertiary)', fontVariantNumeric: 'tabular-nums' }}>
+              {safeQty.toLocaleString('id-ID')} {unit} × {formatRp(safePrice)}
+            </p>
+          </div>
+          <p className="money-xs flex-shrink-0" style={{ color: 'var(--text-primary)' }}>
+            {formatRp(total)}
           </p>
-        )}
-        <p className="text-xs mb-2" style={{ color: '#9C9690' }}>
-          {quantity} {unit} × {formatRp(unitPrice)}
-        </p>
-        <div className="flex items-baseline gap-2">
-          <p className="money-sm" style={{ color: '#D97706' }}>{formatRp(total)}</p>
+        </div>
+
+        {/* Category badge */}
+        <div className="flex items-center gap-1.5">
+          <Tag size={11} strokeWidth={2.5} color="var(--text-tertiary)" />
           <span
-            className="text-xs font-semibold px-2 py-0.5 rounded-full"
-            style={{ backgroundColor: '#FEF3C7', color: '#92400E' }}
+            className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full"
+            style={{
+              background: tone.bg,
+              color: tone.fg,
+              border: `1px solid ${tone.border}`,
+            }}
           >
-            {CATEGORY_LABELS[category] ?? category}
+            <span className="text-[10px] font-bold tracking-wider uppercase">
+              {categoryLabel}
+            </span>
           </span>
         </div>
       </div>
 
-      <p className="text-xs" style={{ color: '#92400E' }}>
-        Total dihitung otomatis: {quantity} × {formatRp(unitPrice)} = {formatRp(total)}
-      </p>
+      {/* Dashed divider */}
+      <div
+        className="mx-5"
+        style={{
+          height: '1px',
+          backgroundImage: 'repeating-linear-gradient(90deg, var(--border-strong) 0 6px, transparent 6px 12px)',
+        }}
+      />
+
+      {/* Total block */}
+      <div className="px-5 py-4">
+        <div className="flex items-end justify-between gap-3">
+          <div className="min-w-0">
+            <p className="section-heading" style={{ color: 'var(--text-tertiary)' }}>Total Pengeluaran</p>
+            <p className="money-lg mt-1" style={{ color: 'var(--loss-text)' }}>
+              −{formatRp(total)}
+            </p>
+          </div>
+          <span
+            className="stamp-badge flex-shrink-0"
+            style={{
+              background: 'var(--loss-bg)',
+              color: 'var(--loss-text)',
+              border: '1px solid var(--loss-border)',
+            }}
+          >
+            <span
+              className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+              style={{ background: 'var(--loss)' }}
+            />
+            <span className="text-[10px] font-bold tracking-wider">UANG KELUAR</span>
+          </span>
+        </div>
+      </div>
+
+      {/* Formula helper */}
+      <div
+        className="mx-5 mb-4 px-3 py-2 rounded-lg"
+        style={{
+          background: 'var(--bg-subtle)',
+          border: '1px solid var(--border)',
+        }}
+      >
+        <p className="text-[11px] font-medium leading-snug" style={{ color: 'var(--text-tertiary)', fontVariantNumeric: 'tabular-nums' }}>
+          {safeQty.toLocaleString('id-ID')} {unit} × {formatRp(safePrice)} ={' '}
+          <span className="font-bold" style={{ color: 'var(--text-secondary)' }}>{formatRp(total)}</span>
+        </p>
+      </div>
     </div>
   )
 }

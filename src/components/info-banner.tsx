@@ -10,46 +10,72 @@ interface InfoBannerProps {
 
 const variantConfig = {
   info: {
-    bg: '#EDE9FE',
-    border: '#C4B5FD',
-    color: '#5B21B6',
+    bg: 'var(--accent-light)',
+    border: 'var(--border-accent)',
+    accent: 'var(--accent)',
+    color: 'var(--accent-deep)',
+    iconBg: 'rgba(124,58,237,0.12)',
     Icon: Info,
-    iconColor: '#7C3AED',
+    iconColor: 'var(--accent)',
   },
   warn: {
-    bg: '#FFFBEB',
-    border: '#FDE68A',
-    color: '#92400E',
+    bg: 'var(--warn-bg)',
+    border: 'var(--warn-border)',
+    accent: 'var(--warn)',
+    color: 'var(--warn-text)',
+    iconBg: 'rgba(245,158,11,0.14)',
     Icon: TriangleAlert,
     iconColor: '#D97706',
   },
   success: {
-    bg: '#ECFDF5',
-    border: '#A7F3D0',
-    color: '#065F46',
+    bg: 'var(--profit-bg)',
+    border: 'var(--profit-border)',
+    accent: 'var(--profit)',
+    color: 'var(--profit-text)',
+    iconBg: 'rgba(5,150,105,0.12)',
     Icon: CheckCircle,
-    iconColor: '#059669',
+    iconColor: 'var(--profit)',
   },
   tip: {
-    bg: '#F5F4F0',
-    border: '#E8E5DF',
-    color: '#4A4540',
+    bg: 'var(--bg-subtle)',
+    border: 'var(--border)',
+    accent: 'var(--text-muted)',
+    color: 'var(--text-secondary)',
+    iconBg: 'rgba(168,162,158,0.18)',
     Icon: Sparkles,
-    iconColor: '#9C9690',
+    iconColor: 'var(--text-tertiary)',
   },
 }
 
-export default function InfoBanner({ variant = 'info', children, className = '' }: InfoBannerProps) {
+export default function InfoBanner({
+  variant = 'info',
+  children,
+  className = '',
+}: InfoBannerProps) {
   const config = variantConfig[variant]
   const { Icon } = config
 
   return (
     <div
-      className={`rounded-xl p-3.5 flex items-start gap-2.5 ${className}`}
-      style={{ backgroundColor: config.bg, border: `1px solid ${config.border}` }}
+      role="status"
+      className={`surface-polish rounded-xl p-3.5 flex items-start gap-3 ${className}`}
+      style={{
+        backgroundColor: config.bg,
+        border: `1px solid ${config.border}`,
+        borderLeft: `4px solid ${config.accent}`,
+        boxShadow: 'var(--shadow-xs)',
+      }}
     >
-      <Icon size={14} strokeWidth={2} color={config.iconColor} className="flex-shrink-0 mt-0.5" />
-      <div className="text-xs" style={{ color: config.color }}>
+      <div
+        className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+        style={{ backgroundColor: config.iconBg, border: `1px solid ${config.border}` }}
+      >
+        <Icon size={14} strokeWidth={2.25} color={config.iconColor} />
+      </div>
+      <div
+        className="text-xs leading-relaxed pt-1 flex-1 min-w-0"
+        style={{ color: config.color }}
+      >
         {children}
       </div>
     </div>

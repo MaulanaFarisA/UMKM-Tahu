@@ -23,6 +23,7 @@ export function formatDate(dateStr: string): string {
   }).format(new Date(dateStr))
 }
 
-export function todayISOString(): string {
-  return new Date().toISOString().split('T')[0]
+export function todayISOString(date = new Date()): string {
+  const timezoneOffsetMs = date.getTimezoneOffset() * 60_000
+  return new Date(date.getTime() - timezoneOffsetMs).toISOString().split('T')[0]
 }

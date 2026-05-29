@@ -1,10 +1,10 @@
 {
-  "name": "Pembukuan Tahu",
-  "short_name": "Pembukuan",
-  "description": "Catat jualan, pengeluaran, dan uang belum dibayar dengan mudah.",
+  "name": "Buku Tahu",
+  "short_name": "Buku Tahu",
+  "description": "Catat uang masuk, uang keluar, dan pembeli belum dibayar dari HP.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0F0F13",
+  "background_color": "#FFFDF7",
   "theme_color": "#7C3AED",
   "orientation": "portrait",
   "icons": [

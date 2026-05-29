@@ -1,0 +1,374 @@
+
+> umkm-tahu@0.1.0 dev
+> next dev
+
+   ▲ Next.js 15.5.18
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.56.1:3000
+   - Environments: .env.local
+   - Experiments (use with caution):
+     · serverActions
+
+ ✓ Starting...
+ ✓ Ready in 2.4s
+ ○ Compiling /login ...
+ ✓ Compiled /login in 4.6s (809 modules)
+ GET /login 200 in 5602ms
+ ✓ Compiled in 1220ms (264 modules)
+ ✓ Compiled in 263ms (264 modules)
+ ✓ Compiled in 223ms (264 modules)
+ ✓ Compiled in 177ms (264 modules)
+ ✓ Compiled in 192ms (264 modules)
+ ✓ Compiled in 161ms (264 modules)
+ ✓ Compiled in 170ms (264 modules)
+ ✓ Compiled in 218ms (264 modules)
+ ✓ Compiled in 208ms (264 modules)
+ ✓ Compiled in 186ms (264 modules)
+ ✓ Compiled in 176ms (264 modules)
+ ✓ Compiled in 162ms (264 modules)
+ ✓ Compiled in 168ms (264 modules)
+ ✓ Compiled in 159ms (264 modules)
+ ✓ Compiled in 136ms (264 modules)
+ ✓ Compiled in 159ms (264 modules)
+ ✓ Compiled in 156ms (264 modules)
+ GET /login 200 in 150ms
+ ✓ Compiled in 438ms (264 modules)
+ ✓ Compiled in 406ms (264 modules)
+ GET /login 200 in 435ms
+ ✓ Compiled in 216ms (264 modules)
+ GET /login 200 in 200ms
+ GET /login 200 in 334ms
+ ✓ Compiled in 325ms (264 modules)
+ GET /login 200 in 400ms
+ ✓ Compiled in 251ms (264 modules)
+ GET /login 200 in 278ms
+ ✓ Compiled in 214ms (264 modules)
+ ✓ Compiled in 192ms (264 modules)
+ GET /login 200 in 239ms
+ ✓ Compiled in 269ms (264 modules)
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 2.9s (1156 modules)
+ ✓ Compiled in 173ms (417 modules)
+ GET /login 500 in 3905ms
+ ✓ Compiled in 448ms (417 modules)
+ GET /login 200 in 341ms
+ ✓ Compiled in 334ms (417 modules)
+ GET /login 200 in 218ms
+ ✓ Compiled in 240ms (417 modules)
+ GET /login 200 in 330ms
+ ✓ Compiled in 227ms (417 modules)
+ GET /login 200 in 241ms
+ ✓ Compiled in 237ms (417 modules)
+ GET /login 200 in 239ms
+ ✓ Compiled in 211ms (417 modules)
+ GET /login 200 in 224ms
+ ✓ Compiled in 199ms (417 modules)
+ GET /login 200 in 210ms
+ ✓ Compiled in 194ms (417 modules)
+ GET /login 200 in 228ms
+ ✓ Compiled in 249ms (417 modules)
+ GET /login 200 in 286ms
+ ✓ Compiled in 230ms (417 modules)
+ GET /login 200 in 239ms
+ ✓ Compiled in 254ms (417 modules)
+ GET /login 200 in 270ms
+ ✓ Compiled in 246ms (417 modules)
+ GET /login 200 in 267ms
+ ✓ Compiled in 230ms (417 modules)
+ GET /login 200 in 235ms
+ ✓ Compiled in 212ms (417 modules)
+ GET /login 200 in 238ms
+ ✓ Compiled in 248ms (417 modules)
+ GET /login 200 in 330ms
+ ✓ Compiled in 213ms (417 modules)
+ GET /login 200 in 222ms
+ ✓ Compiled in 248ms (417 modules)
+ GET /login 200 in 265ms
+ ✓ Compiled in 237ms (417 modules)
+ GET /login 200 in 290ms
+ ✓ Compiled in 277ms (417 modules)
+ GET /login 200 in 347ms
+ ✓ Compiled in 283ms (417 modules)
+ GET /login 200 in 289ms
+ ✓ Compiled in 275ms (417 modules)
+ GET /login 200 in 287ms
+ ✓ Compiled in 227ms (417 modules)
+ GET /login 200 in 250ms
+ ✓ Compiled in 245ms (417 modules)
+ GET /login 200 in 252ms
+ ✓ Compiled in 220ms (417 modules)
+ GET /login 200 in 233ms
+ ✓ Compiled in 203ms (417 modules)
+ GET /login 200 in 210ms
+ ✓ Compiled in 206ms (417 modules)
+ GET /login 200 in 240ms
+ ✓ Compiled in 232ms (417 modules)
+ GET /login 200 in 254ms
+ ✓ Compiled in 238ms (417 modules)
+ GET /login 200 in 238ms
+ ✓ Compiled in 204ms (417 modules)
+ GET /login 200 in 218ms
+ ✓ Compiled in 205ms (417 modules)
+ GET /login 200 in 218ms
+ ✓ Compiled in 218ms (417 modules)
+ GET /login 200 in 225ms
+ ✓ Compiled in 210ms (417 modules)
+ GET /login 200 in 229ms
+ ✓ Compiled in 226ms (417 modules)
+ GET /login 200 in 234ms
+ ✓ Compiled in 218ms (417 modules)
+ GET /login 200 in 229ms
+ ✓ Compiled in 196ms (417 modules)
+ GET /login 200 in 202ms
+ ✓ Compiled in 196ms (417 modules)
+ GET /login 200 in 228ms
+ ✓ Compiled in 231ms (417 modules)
+ GET /login 200 in 232ms
+ ✓ Compiled in 215ms (417 modules)
+ GET /login 200 in 223ms
+ ✓ Compiled in 192ms (417 modules)
+ GET /login 200 in 203ms
+ ✓ Compiled in 203ms (417 modules)
+ GET /login 200 in 225ms
+ ✓ Compiled in 221ms (417 modules)
+ GET /login 200 in 264ms
+ ✓ Compiled in 227ms (417 modules)
+ GET /login 200 in 239ms
+ ✓ Compiled in 220ms (417 modules)
+ GET /login 200 in 231ms
+ ✓ Compiled in 203ms (417 modules)
+ GET /login 200 in 219ms
+ ✓ Compiled in 211ms (417 modules)
+ GET /login 200 in 230ms
+ ✓ Compiled in 227ms (417 modules)
+ GET /login 200 in 234ms
+ ✓ Compiled in 196ms (417 modules)
+ GET /login 200 in 220ms
+ ✓ Compiled in 228ms (417 modules)
+ GET /login 200 in 245ms
+ ✓ Compiled in 235ms (417 modules)
+ GET /login 200 in 245ms
+ ✓ Compiled in 232ms (417 modules)
+ GET /login 200 in 244ms
+ ✓ Compiled in 208ms (417 modules)
+ GET /login 200 in 218ms
+ ✓ Compiled in 204ms (417 modules)
+ GET /login 200 in 220ms
+ ✓ Compiled in 214ms (417 modules)
+ GET /login 200 in 236ms
+ ✓ Compiled in 223ms (417 modules)
+ GET /login 200 in 237ms
+ ✓ Compiled in 231ms (417 modules)
+ GET /login 200 in 246ms
+ ✓ Compiled in 227ms (417 modules)
+ GET /login 200 in 322ms
+ ✓ Compiled in 244ms (417 modules)
+ GET /login 200 in 338ms
+ ✓ Compiled in 255ms (417 modules)
+ GET /login 200 in 260ms
+ ✓ Compiled in 250ms (417 modules)
+ GET /login 200 in 275ms
+ ✓ Compiled in 314ms (417 modules)
+ GET /login 200 in 333ms
+ ✓ Compiled in 219ms (417 modules)
+ GET /login 200 in 229ms
+ ✓ Compiled in 249ms (417 modules)
+ GET /login 200 in 286ms
+ ✓ Compiled in 270ms (417 modules)
+ GET /login 200 in 318ms
+ ✓ Compiled in 267ms (417 modules)
+ GET /login 200 in 247ms
+ ✓ Compiled in 225ms (417 modules)
+ GET /login 200 in 295ms
+ ✓ Compiled in 415ms (417 modules)
+ GET /login 200 in 385ms
+ ✓ Compiled in 224ms (417 modules)
+ GET /login 200 in 246ms
+ ✓ Compiled in 211ms (417 modules)
+ GET /login 200 in 230ms
+ ✓ Compiled in 206ms (417 modules)
+ GET /login 200 in 213ms
+ ✓ Compiled in 217ms (417 modules)
+ GET /login 200 in 225ms
+ ✓ Compiled in 201ms (417 modules)
+ GET /login 200 in 139ms
+ ✓ Compiled in 207ms (417 modules)
+ GET /login 200 in 261ms
+ ✓ Compiled in 228ms (417 modules)
+ GET /login 200 in 251ms
+ ✓ Compiled in 242ms (417 modules)
+ GET /login 200 in 246ms
+ ✓ Compiled in 218ms (417 modules)
+ GET /login 200 in 228ms
+ ✓ Compiled in 212ms (417 modules)
+ GET /login 200 in 210ms
+ ✓ Compiled in 192ms (417 modules)
+ GET /login 200 in 201ms
+ ✓ Compiled in 217ms (417 modules)
+ GET /login 200 in 235ms
+ ✓ Compiled in 215ms (417 modules)
+ GET /login 200 in 219ms
+ ✓ Compiled in 186ms (417 modules)
+ GET /login 200 in 204ms
+ ✓ Compiled in 209ms (417 modules)
+ GET /login 200 in 216ms
+ ✓ Compiled in 209ms (417 modules)
+ GET /login 200 in 220ms
+ ✓ Compiled in 222ms (417 modules)
+ GET /login 200 in 247ms
+ ✓ Compiled in 227ms (417 modules)
+ GET /login 200 in 253ms
+ ✓ Compiled in 215ms (417 modules)
+ GET /login 200 in 222ms
+ ✓ Compiled in 204ms (417 modules)
+ GET /login 200 in 217ms
+ ✓ Compiled in 196ms (417 modules)
+ GET /login 200 in 236ms
+ ✓ Compiled in 236ms (417 modules)
+ GET /login 200 in 236ms
+ ✓ Compiled in 205ms (417 modules)
+ GET /login 200 in 220ms
+ ✓ Compiled in 214ms (417 modules)
+ GET /login 200 in 221ms
+ ✓ Compiled in 215ms (417 modules)
+ GET /login 200 in 221ms
+ ✓ Compiled in 196ms (417 modules)
+ GET /login 200 in 204ms
+ ✓ Compiled in 191ms (417 modules)
+ GET /login 200 in 212ms
+ ✓ Compiled in 229ms (417 modules)
+ GET /login 200 in 234ms
+ ✓ Compiled in 205ms (417 modules)
+ GET /login 200 in 232ms
+ ✓ Compiled in 226ms (417 modules)
+ GET /login 200 in 203ms
+ ✓ Compiled in 198ms (417 modules)
+ GET /login 200 in 214ms
+ ✓ Compiled in 214ms (417 modules)
+ GET /login 200 in 224ms
+ ✓ Compiled in 191ms (417 modules)
+ GET /login 200 in 202ms
+ ✓ Compiled in 201ms (417 modules)
+ GET /login 200 in 217ms
+ ✓ Compiled in 212ms (417 modules)
+ GET /login 200 in 212ms
+ ✓ Compiled in 210ms (417 modules)
+ GET /login 200 in 256ms
+ ✓ Compiled in 230ms (417 modules)
+ GET /login 200 in 209ms
+ ✓ Compiled in 200ms (417 modules)
+ GET /login 200 in 286ms
+ ✓ Compiled in 220ms (417 modules)
+ GET /login 200 in 226ms
+ ✓ Compiled in 216ms (417 modules)
+ GET /login 200 in 232ms
+ ✓ Compiled in 217ms (417 modules)
+ GET /login 200 in 242ms
+ ✓ Compiled in 239ms (417 modules)
+ GET /login 200 in 241ms
+ ✓ Compiled in 249ms (417 modules)
+ GET /login 200 in 311ms
+ ✓ Compiled in 301ms (417 modules)
+ GET /login 200 in 347ms
+ ✓ Compiled in 252ms (417 modules)
+ GET /login 200 in 243ms
+ ✓ Compiled in 203ms (417 modules)
+ GET /login 200 in 222ms
+ ✓ Compiled in 204ms (417 modules)
+ GET /login 200 in 200ms
+ ✓ Compiled in 198ms (417 modules)
+ GET /login 200 in 202ms
+ ✓ Compiled in 206ms (417 modules)
+ GET /login 200 in 228ms
+ ✓ Compiled in 223ms (417 modules)
+ GET /login 200 in 221ms
+ ✓ Compiled in 183ms (417 modules)
+ GET /login 200 in 205ms
+ ✓ Compiled in 203ms (417 modules)
+ GET /login 200 in 224ms
+ ✓ Compiled in 209ms (417 modules)
+ GET /login 200 in 229ms
+ ✓ Compiled in 206ms (417 modules)
+ GET /login 200 in 204ms
+ ✓ Compiled in 209ms (417 modules)
+ GET /login 200 in 233ms
+ ✓ Compiled in 247ms (417 modules)
+ GET /login 200 in 259ms
+ ✓ Compiled in 214ms (417 modules)
+ GET /login 200 in 226ms
+ ✓ Compiled in 213ms (417 modules)
+ GET /login 200 in 225ms
+ ✓ Compiled in 229ms (417 modules)
+ GET /login 200 in 244ms
+ ✓ Compiled in 239ms (417 modules)
+ GET /login 200 in 271ms
+ ✓ Compiled in 247ms (417 modules)
+ GET /login 200 in 249ms
+ ✓ Compiled in 233ms (417 modules)
+ GET /login 200 in 247ms
+ ✓ Compiled in 232ms (417 modules)
+ GET /login 200 in 239ms
+ ✓ Compiled in 237ms (417 modules)
+ GET /login 200 in 253ms
+ ✓ Compiled in 211ms (417 modules)
+ GET /login 200 in 219ms
+ ✓ Compiled in 208ms (417 modules)
+ GET /login 200 in 222ms
+ ✓ Compiled in 204ms (417 modules)
+ GET /login 200 in 216ms
+ ✓ Compiled in 207ms (417 modules)
+ GET /login 200 in 225ms
+ ✓ Compiled in 255ms (417 modules)
+ GET /login 200 in 287ms
+ ✓ Compiled in 241ms (417 modules)
+ GET /login 200 in 243ms
+ ✓ Compiled in 234ms (417 modules)
+ GET /login 200 in 245ms
+ ✓ Compiled in 230ms (417 modules)
+ GET /login 200 in 254ms
+ ✓ Compiled in 206ms (417 modules)
+ GET /login 200 in 206ms
+ ✓ Compiled in 190ms (417 modules)
+ GET /login 200 in 204ms
+ ✓ Compiled in 210ms (417 modules)
+ GET /login 200 in 224ms
+ ✓ Compiled in 216ms (417 modules)
+ GET /login 200 in 226ms
+ ✓ Compiled in 227ms (417 modules)
+ GET /login 200 in 247ms
+ ✓ Compiled in 206ms (417 modules)
+ GET /login 200 in 393ms
+ ✓ Compiled in 287ms (417 modules)
+ GET /login 200 in 274ms
+ ✓ Compiled in 228ms (417 modules)
+ GET /login 200 in 242ms
+ ✓ Compiled in 229ms (417 modules)
+ GET /login 200 in 115ms
+ GET /login 200 in 41ms
+ GET /login 200 in 46ms
+ GET /login 200 in 39ms
+ GET /login 200 in 38ms
+ GET /login 200 in 36ms
+ GET /login 200 in 42ms
+ GET /login 200 in 346ms
+ ✓ Compiled in 497ms (1156 modules)
+ ✓ Compiled in 210ms (417 modules)
+ ✓ Compiled in 196ms (417 modules)
+ ✓ Compiled in 263ms (417 modules)
+ ✓ Compiled in 202ms (417 modules)
+ ✓ Compiled in 392ms (416 modules)
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 1167ms (1156 modules)
+ ✓ Compiled in 242ms (417 modules)
+ ✓ Compiled in 839ms (417 modules)
+ ✓ Compiled in 4.8s (417 modules)
+ ✓ Compiled in 1955ms (417 modules)
+ ✓ Compiled in 1155ms (417 modules)
+ ✓ Compiled in 1740ms (1156 modules)
+ ✓ Compiled in 1703ms (1156 modules)
+ ✓ Compiled in 168ms (417 modules)
+ ✓ Compiled in 677ms (1156 modules)
+ GET /login 500 in 15367ms
+ GET /login 500 in 1497ms
+ GET /login 500 in 15435ms
+ GET /login 500 in 1498ms

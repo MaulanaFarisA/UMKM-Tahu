@@ -9,7 +9,14 @@ import {
   calculateRemainingReceivable,
   getReceivableStatus,
   calculateProfitSummary,
+  calculateExpenseLineTotal,
+  calculateWorkbookExpenseSummary,
 } from './finance'
+import {
+  WORKBOOK_EXPECTED_TOTALS,
+  WORKBOOK_EXPENSE_LINES,
+  WORKBOOK_PRODUCTION_FACTS,
+} from './workbook-facts'
 
 describe('safeDivide', () => {
   it('divides normally', () => {
@@ -17,6 +24,31 @@ describe('safeDivide', () => {
   })
   it('returns 0 when divisor is 0', () => {
     expect(safeDivide(100, 0)).toBe(0)
+  })
+})
+
+describe('workbook Pengeluaran formulas', () => {
+  it('calculates Kedelai bahan baku total from the newest workbook', () => {
+    const kedelai = WORKBOOK_EXPENSE_LINES.find((line) => line.itemName === 'Kedelai')
+
+    expect(kedelai).toBeTruthy()
+    expect(calculateExpenseLineTotal(kedelai!.quantity, kedelai!.unitPrice)).toBe(545000)
+  })
+
+  it('calculates workbook HPP and margin per bungkus from daily expense groups', () => {
+    const summary = calculateWorkbookExpenseSummary({
+      lines: WORKBOOK_EXPENSE_LINES,
+      boardsPerDay: WORKBOOK_PRODUCTION_FACTS.boardsPerDay,
+      tofuPerBoard: WORKBOOK_PRODUCTION_FACTS.tofuPerBoard,
+      tofuPerPack: WORKBOOK_PRODUCTION_FACTS.tofuPerPack,
+      pricePerPack: WORKBOOK_PRODUCTION_FACTS.pricePerPack,
+    })
+
+    expect(summary.bahanBaku).toBe(WORKBOOK_EXPECTED_TOTALS.bahanBaku)
+    expect(summary.biayaProduksi).toBe(WORKBOOK_EXPECTED_TOTALS.biayaProduksiRounded)
+    expect(summary.totalPacksPerDay).toBe(WORKBOOK_EXPECTED_TOTALS.totalPacksPerDay)
+    expect(summary.hppPerPack).toBe(WORKBOOK_EXPECTED_TOTALS.hppPerPackRounded)
+    expect(summary.marginPerPack).toBe(WORKBOOK_EXPECTED_TOTALS.marginPerPackRounded)
   })
 })
 

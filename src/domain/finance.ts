@@ -32,6 +32,83 @@ export function calculateProduction(input: ProductionInput): ProductionResult {
 
 // ─── Cost Allocation ─────────────────────────────────────────────────────────
 
+export function calculateExpenseLineTotal(quantity: number, unitPrice: number): number {
+  const safeQty = Number.isFinite(quantity) ? quantity : 0
+  const safePrice = Number.isFinite(unitPrice) ? unitPrice : 0
+  return Math.round(safeQty * safePrice)
+}
+
+export interface WorkbookExpenseSummaryLine {
+  group:
+    | 'bahan_baku'
+    | 'bahan_tambahan'
+    | 'operasional_produksi'
+    | 'pemasaran_distribusi'
+    | 'lain_lain'
+  quantity: number
+  unitPrice: number
+}
+
+export interface WorkbookExpenseSummaryInput {
+  lines: readonly WorkbookExpenseSummaryLine[]
+  boardsPerDay: number
+  tofuPerBoard: number
+  tofuPerPack: number
+  pricePerPack: number
+}
+
+export interface WorkbookExpenseSummaryResult {
+  bahanBaku: number
+  bahanTambahan: number
+  operasionalProduksi: number
+  pemasaranDistribusi: number
+  lainLain: number
+  biayaProduksi: number
+  totalPengeluaran: number
+  totalPacksPerDay: number
+  hppPerPack: number
+  marginPerPack: number
+}
+
+export function calculateWorkbookExpenseSummary(
+  input: WorkbookExpenseSummaryInput
+): WorkbookExpenseSummaryResult {
+  const totalFor = (group: WorkbookExpenseSummaryLine['group']) =>
+    Math.round(
+      input.lines
+        .filter((line) => line.group === group)
+        .reduce(
+          (sum, line) => sum + calculateExpenseLineTotal(line.quantity, line.unitPrice),
+          0
+        )
+    )
+
+  const bahanBaku = totalFor('bahan_baku')
+  const bahanTambahan = totalFor('bahan_tambahan')
+  const operasionalProduksi = totalFor('operasional_produksi')
+  const pemasaranDistribusi = totalFor('pemasaran_distribusi')
+  const lainLain = totalFor('lain_lain')
+  const biayaProduksi = bahanBaku + bahanTambahan + operasionalProduksi
+  const totalPengeluaran = biayaProduksi + pemasaranDistribusi + lainLain
+  const totalPacksPerDay = Math.floor(
+    safeDivide(input.boardsPerDay * input.tofuPerBoard, input.tofuPerPack)
+  )
+  const hppPerPack = Math.round(safeDivide(biayaProduksi, totalPacksPerDay))
+
+  return {
+    bahanBaku,
+    bahanTambahan,
+    operasionalProduksi,
+    pemasaranDistribusi,
+    lainLain,
+    biayaProduksi,
+    totalPengeluaran,
+    totalPacksPerDay,
+    hppPerPack,
+    marginPerPack: input.pricePerPack - hppPerPack,
+  }
+}
+
 /**
  * Allocates a weekly cost to a daily cost.
  * Used for wood fuel and electricity which are billed weekly.

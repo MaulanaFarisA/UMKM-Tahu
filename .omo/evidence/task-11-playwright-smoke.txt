@@ -1,0 +1,10 @@
+Playwright mobile smoke result
+==============================
+Viewport: 390x844
+Attempted URL: http://localhost:3000/catat/pengeluaran
+Observed URL: http://localhost:3000/login
+Result: BLOCKED by expected authentication redirect; unauthenticated browser session cannot reach expense form.
+Evidence screenshot: .omo/evidence/task-11-login-redirect-mobile.png
+Console errors: .omo/evidence/task-11-playwright-console-errors.txt
+
+Kedelai workbook example coverage is verified by automated component tests rather than browser form entry because no authenticated test session/credentials were available in this continuation.

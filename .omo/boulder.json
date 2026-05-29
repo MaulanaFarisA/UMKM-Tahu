@@ -1,0 +1,51 @@
+{
+  "schema_version": 2,
+  "active_work_id": "business-expense-excel-accuracy-20260527",
+  "works": {
+    "business-expense-excel-accuracy-20260527": {
+      "work_id": "business-expense-excel-accuracy-20260527",
+      "active_plan": "C:\\Users\\FARIS\\OneDrive\\Dokumen\\Fullstack Journey\\Projects\\umkm_tahu\\.omo\\plans\\business-expense-excel-accuracy.md",
+      "plan_name": "business-expense-excel-accuracy",
+      "status": "active",
+      "started_at": "2026-05-27T17:52:27.083Z",
+      "updated_at": "2026-05-27T17:52:27.083Z",
+      "session_ids": [
+        "ses_195bcc4b5ffeMlWlGqeH1zBFGB"
+      ],
+      "session_origins": {
+        "ses_195bcc4b5ffeMlWlGqeH1zBFGB": "direct"
+      },
+      "agent": "atlas",
+      "task_sessions": {}
+    },
+    "umkm-tahu-frontend-polish-a1b2c3d4": {
+      "work_id": "umkm-tahu-frontend-polish-a1b2c3d4",
+      "active_plan": "C:\\Users\\FARIS\\OneDrive\\Dokumen\\Fullstack Journey\\Projects\\umkm_tahu\\.omo\\plans\\umkm-tahu-frontend-polish.md",
+      "plan_name": "umkm-tahu-frontend-polish",
+      "status": "active",
+      "started_at": "2026-05-25T08:20:50.951Z",
+      "updated_at": "2026-05-25T08:20:50.951Z",
+      "session_ids": [
+        "ses_1a2036b79ffep51J59TS5rrK6k"
+      ],
+      "session_origins": {
+        "ses_1a2036b79ffep51J59TS5rrK6k": "direct"
+      },
+      "agent": "atlas",
+      "task_sessions": {}
+    }
+  },
+  "active_plan": "C:\\Users\\FARIS\\OneDrive\\Dokumen\\Fullstack Journey\\Projects\\umkm_tahu\\.omo\\plans\\business-expense-excel-accuracy.md",
+  "started_at": "2026-05-27T17:52:27.083Z",
+  "status": "active",
+  "updated_at": "2026-05-27T17:52:27.083Z",
+  "session_ids": [
+    "ses_195bcc4b5ffeMlWlGqeH1zBFGB"
+  ],
+  "session_origins": {
+    "ses_195bcc4b5ffeMlWlGqeH1zBFGB": "direct"
+  },
+  "plan_name": "business-expense-excel-accuracy",
+  "task_sessions": {},
+  "agent": "atlas"
+}

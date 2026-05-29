@@ -55,6 +55,25 @@ npm test           # Run Vitest tests
 npm run lint       # ESLint
 ```
 
+## AI Context Export
+
+Use Repomix to generate an AI-friendly snapshot of the codebase when you need to share project context with an LLM.
+
+```bash
+npm run ai:pack           # Generate repomix-output.xml
+npm run ai:pack:compress  # Generate a smaller compressed snapshot
+npm run ai:pack:md        # Generate repomix-output.md
+```
+
+Before sharing generated output outside your machine:
+
+1. Review `.repomixignore` and `.gitignore`.
+2. Confirm `.env.local`, credentials, Supabase secrets, and private data are excluded.
+3. Open and skim the generated `repomix-output.*` file.
+4. Delete the generated output after use if you do not need it locally.
+
+Generated `repomix-output.*` files are ignored and should not be committed.
+
 ## Domain Assumptions
 
 Angka berikut adalah default awal dari Excel pembukuan. Semua bisa diubah di Pengaturan Usaha.

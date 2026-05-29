@@ -1,0 +1,82 @@
+Task 4: Add focused tests for shared UI components
+Date: 2026-05-25
+Status: COMPLETED
+
+=== TEST RESULTS ===
+
+Test Files: 5 passed (5)
+Total Tests: 78 passed (78)
+  - 32 existing tests (finance.test.ts) - all passing
+  - 46 new component tests - all passing
+
+Duration: 6.58s
+
+=== NEW TEST FILES CREATED ===
+
+1. src/components/status-badge.test.tsx (7 tests)
+   - Tests for LUNAS, BELUM_LUNAS, actual, estimated, unconfirmed variants
+   - Verifies correct visible text for each status
+   - Tests badge rendering and styling
+
+2. src/components/empty-state.test.tsx (11 tests)
+   - Tests title rendering
+   - Tests optional description rendering
+   - Tests optional action button/link rendering
+   - Tests layout structure (flex column, centered)
+   - Tests complete empty state with all props
+
+3. src/components/info-banner.test.tsx (14 tests)
+   - Tests all 4 tone variants: info, warn, success, tip
+   - Tests correct visible text for each variant
+   - Tests icon rendering for each variant
+   - Tests default variant behavior
+   - Tests styling and custom className
+   - Tests children content rendering
+
+4. src/components/form-section.test.tsx (14 tests)
+   - Tests title rendering
+   - Tests children rendering (single, multiple, JSX)
+   - Tests optional icon rendering
+   - Tests icon sizing
+   - Tests card styling and custom className
+   - Tests layout structure (header, title element)
+   - Tests complete form section with all props
+
+=== VERIFICATION RESULTS ===
+
+✓ npm run test: 78/78 tests passing
+✓ npm run typecheck: 0 errors
+✓ npm run build: Successfully compiled all 12 pages
+
+=== TEST APPROACH ===
+
+- Used Vitest 3.2.4 with React Testing Library
+- Focused on user-visible behavior, not CSS implementation details
+- Tests assert text content, element presence, and roles
+- Avoided brittle snapshot tests and CSS class assertions
+- All tests follow existing finance.test.ts style
+- No new dependencies added (React Testing Library already installed)
+
+=== KEY DECISIONS ===
+
+1. Removed jest-dom matchers - used native DOM assertions instead
+2. Focused on behavior-level tests through public interfaces
+3. Avoided testing CSS class names directly (implementation detail)
+4. Tests verify what users see and interact with
+5. All 32 existing tests remain passing
+
+=== FILES MODIFIED ===
+
+- vitest.config.ts: No changes needed (already configured correctly)
+- Created: src/components/status-badge.test.tsx
+- Created: src/components/empty-state.test.tsx
+- Created: src/components/info-banner.test.tsx
+- Created: src/components/form-section.test.tsx
+
+=== NEXT STEPS ===
+
+All component tests are now in place and passing. The test suite provides:
+- Confidence that shared UI components render correctly
+- Protection against regressions in component behavior
+- Clear documentation of component capabilities through tests
+- Foundation for future component enhancements
