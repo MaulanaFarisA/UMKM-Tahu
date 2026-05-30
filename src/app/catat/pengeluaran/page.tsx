@@ -19,6 +19,7 @@ import {
   ReceiptText,
 } from 'lucide-react'
 import ExpenseFormPreview from '@/components/expense-form-preview'
+import StickySubmitBar from '@/components/sticky-submit-bar'
 import { EXPENSE_CATEGORY_OPTIONS } from '@/domain/expense-categories'
 
 const STATUSES = [
@@ -53,7 +54,7 @@ export default async function CatatPengeluaranPage({ searchParams }: PageProps) 
 
   return (
     <AppShell active="catat" title="Catat Pengeluaran" showBack backHref="/catat" width="default">
-      <form action={action} className="slide-up pb-4 grid grid-roomy lg:grid-cols-[minmax(0,1fr)_380px]">
+      <form action={action} className="slide-up pb-28 lg:pb-4 grid grid-roomy lg:grid-cols-[minmax(0,1fr)_380px]">
         <div className="section-stack min-w-0">
 
           <div
@@ -352,15 +353,14 @@ export default async function CatatPengeluaranPage({ searchParams }: PageProps) 
             </div>
           </div>
 
-          {/* Mobile-only submit (sticky preview lives below on mobile) */}
-          <SubmitButton
-            pendingLabel="Menyimpan pengeluaran..."
-            className="btn-danger w-full lg:hidden"
-            style={{ minHeight: '52px' }}
-          >
-            <TrendingDown size={16} strokeWidth={2.5} />
-            Simpan Catatan Pengeluaran
-          </SubmitButton>
+          {/* Mobile: sticky submit bar with live total */}
+          <StickySubmitBar
+            multiply={['quantity', 'unit_price']}
+            label="Simpan Pengeluaran"
+            pendingLabel="Menyimpan..."
+            variant="loss"
+            totalLabel="Total Biaya"
+          />
         </div>
 
         {/* Sticky preview + submit (right column on desktop) */}
