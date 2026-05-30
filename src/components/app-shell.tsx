@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { logoutAction } from '@/server/actions'
 import BrandMark from '@/components/brand-mark'
 import SubmitButton from '@/components/submit-button'
+import SpeedDialFab from '@/components/speed-dial-fab'
 import {
   Home,
   Plus,
@@ -139,22 +140,7 @@ export default function AppShell({ children, active, title, showBack, backHref, 
             <Wallet size={20} strokeWidth={active === 'piutang' ? 2.5 : 1.85} />
           </NavItem>
 
-          {/* Central FAB — sits above the bar, prominent accent + glow */}
-          <Link
-            href="/catat"
-            aria-label="Catat transaksi"
-            aria-current={active === 'catat' ? 'page' : undefined}
-            className="fab-glow absolute left-1/2 -top-8 -translate-x-1/2 inline-flex items-center justify-center w-[62px] h-[62px] rounded-2xl transition-transform active:scale-90 no-select"
-            style={{
-              background: 'var(--accent-gradient)',
-              border: '4px solid var(--bg)',
-              color: '#FFFFFF',
-              boxShadow: 'var(--shadow-accent)',
-            }}
-          >
-            <Plus size={26} strokeWidth={2.75} />
-          </Link>
-          {/* Reserve center slot so flex spacing stays even */}
+          {/* Reserve center slot for the speed-dial FAB (rendered outside the nav) */}
           <div className="w-[58px] flex-shrink-0" aria-hidden="true" />
 
           <NavItem href="/pengaturan" label="Usaha" active={active === 'pengaturan'}>
@@ -162,6 +148,9 @@ export default function AppShell({ children, active, title, showBack, backHref, 
           </NavItem>
         </nav>
       </div>
+
+      {/* Speed-dial FAB (mobile/tablet) — rendered outside nav to avoid blur trap */}
+      <SpeedDialFab active={active === 'catat'} />
     </div>
   )
 }

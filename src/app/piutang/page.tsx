@@ -6,6 +6,8 @@ import AppShell from '@/components/app-shell'
 import EmptyState from '@/components/empty-state'
 import ActionMessage from '@/components/action-message'
 import SubmitButton from '@/components/submit-button'
+import ProgressRing from '@/components/progress-ring'
+import Celebration from '@/components/celebration'
 import { formatRupiah, formatDate, todayISOString } from '@/lib/format'
 import Link from 'next/link'
 import {
@@ -47,6 +49,7 @@ export default async function PiutangPage({ searchParams }: PageProps) {
 
   return (
     <AppShell active="piutang" title="Tagihan" width="default">
+      <Celebration trigger={successKey === 'bayar' ? 'paid' : ''} />
       <div className="page-stack slide-up">
 
         {successKey === 'bayar' && (
@@ -137,6 +140,8 @@ export default async function PiutangPage({ searchParams }: PageProps) {
             <div className="grid grid-roomy lg:grid-cols-2">
               {unpaid.map((r) => {
                 const totalPaid = r.amount_paid + r.payments.reduce((s: number, p: { amount: number }) => s + p.amount, 0)
+                const paidRatio = r.total_sales > 0 ? totalPaid / r.total_sales : 0
+                const paidPct = Math.round(paidRatio * 100)
                 return (
                   <div
                     key={r.id}
@@ -147,23 +152,21 @@ export default async function PiutangPage({ searchParams }: PageProps) {
                     }}
                   >
                     {/* Header */}
-                    <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3.5">
+                      <ProgressRing ratio={paidRatio} label={`${paidPct}%`} sublabel="dibayar" />
                       <div className="flex-1 min-w-0">
                         <p className="font-bold text-base truncate" style={{ color: 'var(--text-primary)' }}>
                           {r.customer?.name ?? 'Pembeli tidak dikenal'}
                         </p>
-                        <div className="flex items-center gap-1.5 mt-1">
+                        <div className="flex items-center gap-1.5 mt-1 mb-2">
                           <Calendar size={11} strokeWidth={2.25} color="var(--text-muted)" />
                           <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>{formatDate(r.date)}</p>
                         </div>
+                        <span className="badge-warn">
+                          <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: 'var(--warn)' }} />
+                          Belum Lunas
+                        </span>
                       </div>
-                      <span className="badge-warn">
-                        <span
-                          className="w-1.5 h-1.5 rounded-full"
-                          style={{ backgroundColor: 'var(--warn)' }}
-                        />
-                        Belum Dibayar
-                      </span>
                     </div>
 
                     {/* Stats row */}

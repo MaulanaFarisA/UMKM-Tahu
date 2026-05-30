@@ -114,11 +114,14 @@ export default function HeroVerdict({
                 -
               </span>
             )}
-            <CountUp
-              value={Math.abs(netProfit)}
-              className="money-hero"
-              style={{ color: t.money, fontSize: 'clamp(2.5rem, 9vw, 3.75rem)' }}
-            />
+            <span className="relative inline-flex">
+              <CountUp
+                value={Math.abs(netProfit)}
+                className="money-hero"
+                style={{ color: t.money, fontSize: 'clamp(2.5rem, 9vw, 3.75rem)' }}
+              />
+              {isProfit && hasData && <span aria-hidden className="money-sheen" />}
+            </span>
           </div>
 
           {hasData ? (
