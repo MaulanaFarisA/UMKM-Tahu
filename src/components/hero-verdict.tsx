@@ -108,17 +108,17 @@ export default function HeroVerdict({
             {headline}
           </p>
 
-          <div className="flex items-baseline gap-2 mt-1">
+          <div className="flex items-baseline gap-2 mt-1 min-w-0">
             {hasData && isLoss && (
               <span className="text-3xl font-extrabold leading-none" style={{ color: t.money, opacity: 0.7 }}>
                 -
               </span>
             )}
-            <span className="relative inline-flex">
+            <span className="relative inline-flex min-w-0">
               <CountUp
                 value={Math.abs(netProfit)}
-                className="money-hero"
-                style={{ color: t.money, fontSize: 'clamp(2.5rem, 9vw, 3.75rem)' }}
+                className="money-hero block truncate"
+                style={{ color: t.money, fontSize: 'clamp(1.875rem, 8vw, 3.25rem)' }}
               />
               {isProfit && hasData && <span aria-hidden className="money-sheen" />}
             </span>
@@ -152,7 +152,9 @@ export default function HeroVerdict({
         {/* Right: the two big actions */}
         <div className="flex flex-col gap-3 justify-center">
           <p className="section-heading">Catat sekarang</p>
-          {children}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-3">
+            {children}
+          </div>
         </div>
       </div>
     </section>

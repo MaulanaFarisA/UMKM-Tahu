@@ -91,7 +91,7 @@ export default async function BerandaPage({ searchParams }: PageProps) {
         </HeroVerdict>
 
         {/* Today's pulse — metric trio */}
-        <div className="grid grid-cols-2 lg:grid-cols-3 grid-roomy slide-up-2">
+        <div className="grid grid-cols-2 md:grid-cols-3 grid-roomy slide-up-2">
           <MetricCard
             label="Uang Masuk"
             value={summary.todayOmzet}
@@ -106,7 +106,7 @@ export default async function BerandaPage({ searchParams }: PageProps) {
             sublabel={summary.todayExpenseTotal > 0 ? 'Hari ini' : 'Belum ada catatan'}
             animate
           />
-          <div className="col-span-2 lg:col-span-1">
+          <div className="col-span-2 md:col-span-1">
             <MetricCard
               label="Belum Dibayar"
               value={summary.totalReceivables}
@@ -120,7 +120,7 @@ export default async function BerandaPage({ searchParams }: PageProps) {
 
 
         {/* Cashflow + activity */}
-        <div className="grid grid-roomy lg:grid-cols-[0.95fr_1.05fr] slide-up-3">
+        <div className="grid grid-roomy md:grid-cols-2 lg:grid-cols-[0.95fr_1.05fr] slide-up-3">
           <div className="card card-roomy">
             <div className="flex items-center justify-between gap-3 mb-5">
               <div className="flex items-center gap-2.5">
@@ -209,7 +209,7 @@ export default async function BerandaPage({ searchParams }: PageProps) {
             <p className="text-xs font-medium capitalize" style={{ color: 'var(--text-muted)' }}>{monthLabel}</p>
           </div>
           <div className="grid grid-roomy lg:grid-cols-[1fr_1.1fr]">
-            <div className="grid grid-cols-2 lg:grid-cols-3 grid-roomy lg:col-span-1">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 grid-roomy lg:col-span-1">
               <div className="card card-roomy">
                 <p className="text-xs font-medium mb-1.5" style={{ color: 'var(--text-muted)' }}>Pemasukan</p>
                 <p className="money-sm" style={{ color: 'var(--text-primary)' }}>{formatRupiah(summary.monthOmzet)}</p>
@@ -219,7 +219,7 @@ export default async function BerandaPage({ searchParams }: PageProps) {
                 <p className="money-sm" style={{ color: 'var(--text-primary)' }}>{formatRupiah(summary.monthExpenseTotal)}</p>
               </div>
               <div
-                className="col-span-2 lg:col-span-1 card card-roomy"
+                className="col-span-2 md:col-span-1 lg:col-span-1 card card-roomy"
                 style={{
                   background: monthNet >= 0
                     ? 'linear-gradient(135deg, var(--profit-bg), var(--profit-bg-deep))'

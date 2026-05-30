@@ -137,7 +137,7 @@ export default async function PiutangPage({ searchParams }: PageProps) {
                 Belum Dibayar ({unpaid.length})
               </p>
             </div>
-            <div className="grid grid-roomy lg:grid-cols-2">
+            <div className="grid grid-roomy md:grid-cols-2">
               {unpaid.map((r) => {
                 const totalPaid = r.amount_paid + r.payments.reduce((s: number, p: { amount: number }) => s + p.amount, 0)
                 const paidRatio = r.total_sales > 0 ? totalPaid / r.total_sales : 0
@@ -256,7 +256,7 @@ export default async function PiutangPage({ searchParams }: PageProps) {
             <p className="section-heading" style={{ color: 'var(--text-tertiary)' }}>
               Sudah Dibayar ({paid.length})
             </p>
-            <div className="grid grid-roomy lg:grid-cols-2">
+            <div className="grid grid-roomy md:grid-cols-2">
               {paid.map((r) => (
                 <div
                   key={r.id}

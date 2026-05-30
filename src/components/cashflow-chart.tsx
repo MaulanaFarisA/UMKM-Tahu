@@ -52,8 +52,8 @@ export default function CashflowChart({ income, expense }: CashflowChartProps) {
   const expenseOffset = incomeRatio * c
 
   return (
-    <div className="flex items-center gap-5 flex-wrap sm:flex-nowrap">
-      <div className="relative flex-shrink-0" style={{ width: size, height: size }}>
+    <div className="flex items-center justify-center sm:justify-start gap-5 flex-wrap sm:flex-nowrap">
+      <div className="relative flex-shrink-0 mx-auto sm:mx-0" style={{ width: size, height: size }}>
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="-rotate-90">
           {/* Track */}
           <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="var(--bg-subtle)" strokeWidth={stroke} />
