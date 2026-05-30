@@ -261,3 +261,12 @@ select.input-field { background-image: url("data:image/svg+xml,%3Csvg xmlns='htt
 @media (prefers-reduced-motion: reduce) {
   .speeddial-item { animation: none; }
 }
+
+
+/* Gentle float for the auth product glimpse */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.float { animation: float 4s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .float { animation: none; } }
