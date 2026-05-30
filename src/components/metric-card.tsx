@@ -28,7 +28,7 @@ export default function MetricCard({ label, value, type = 'default', sublabel, h
         {href && <ArrowUpRight size={14} strokeWidth={2} color="var(--text-muted)" className="flex-shrink-0" />}
       </div>
       {animate ? (
-        <CountUp value={value} format={formatRupiah} className="money-md" style={{ color: tone.valueColor }} />
+        <CountUp value={value} className="money-md" style={{ color: tone.valueColor }} />
       ) : (
         <p className="money-md" style={{ color: tone.valueColor }}>{formatRupiah(value)}</p>
       )}

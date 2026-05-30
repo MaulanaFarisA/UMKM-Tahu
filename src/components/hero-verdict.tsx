@@ -116,7 +116,6 @@ export default function HeroVerdict({
             )}
             <CountUp
               value={Math.abs(netProfit)}
-              format={formatRupiah}
               className="money-hero"
               style={{ color: t.money, fontSize: 'clamp(2.5rem, 9vw, 3.75rem)' }}
             />

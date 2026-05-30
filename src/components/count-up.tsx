@@ -1,15 +1,27 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { formatRupiah } from '@/lib/format'
+
+type FormatVariant = 'rupiah' | 'number'
 
 interface CountUpProps {
   value: number
-  /** Format the numeric value into a display string (e.g. formatRupiah) */
-  format?: (n: number) => string
+  /**
+   * How to format the animated value. A string variant is used (not a function)
+   * so the component can be rendered by Server Components without crossing the
+   * RSC boundary with a function prop.
+   */
+  format?: FormatVariant
   /** Duration in ms */
   duration?: number
   className?: string
   style?: React.CSSProperties
+}
+
+function formatValue(n: number, variant: FormatVariant): string {
+  if (variant === 'number') return Math.round(n).toLocaleString('id-ID')
+  return formatRupiah(n)
 }
 
 /**
@@ -18,7 +30,7 @@ interface CountUpProps {
  */
 export default function CountUp({
   value,
-  format = (n) => String(Math.round(n)),
+  format = 'rupiah',
   duration = 750,
   className,
   style,
@@ -62,7 +74,7 @@ export default function CountUp({
 
   return (
     <span className={className} style={style}>
-      {format(display)}
+      {formatValue(display, format)}
     </span>
   )
 }
