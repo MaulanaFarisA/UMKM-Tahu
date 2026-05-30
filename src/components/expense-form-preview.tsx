@@ -47,14 +47,15 @@ export default function ExpenseFormPreview() {
   const displayName = itemName.trim() || 'Pengeluaran'
 
   useEffect(() => {
-    const form = document.querySelector('form')
-    if (!form) return
-
-    const qtyInput = form.querySelector<HTMLInputElement>('[name="quantity"]')
-    const priceInput = form.querySelector<HTMLInputElement>('[name="unit_price"]')
-    const unitInput = form.querySelector<HTMLSelectElement>('[name="unit"]')
-    const nameInput = form.querySelector<HTMLInputElement>('[name="item_name"]')
-    const catInput = form.querySelector<HTMLSelectElement>('[name="category"]')
+    // Query inputs directly from document — Next 15 / React 19 renders an extra
+    // hidden wrapper <form> for server actions, so scoping to the first <form>
+    // would miss the visible inputs (this was why the preview never updated).
+    const qtyInput = document.querySelector<HTMLInputElement>('[name="quantity"]')
+    const priceInput = document.querySelector<HTMLInputElement>('[name="unit_price"]')
+    const unitInput = document.querySelector<HTMLSelectElement>('[name="unit"]')
+    const nameInput = document.querySelector<HTMLInputElement>('[name="item_name"]')
+    const catInput = document.querySelector<HTMLSelectElement>('[name="category"]')
+    if (!qtyInput && !priceInput && !nameInput) return
 
     const onQty = () => setQuantity(Number(qtyInput?.value ?? 1))
     const onPrice = () => setUnitPrice(Number(priceInput?.value ?? 0))
@@ -62,17 +63,28 @@ export default function ExpenseFormPreview() {
     const onName = () => setItemName(nameInput?.value ?? '')
     const onCat = () => setCategory(catInput?.value ?? 'raw_material')
 
+    // 'input' for typing, 'change' so quick-action buttons (which dispatch
+    // change/input events) are also reflected immediately.
     qtyInput?.addEventListener('input', onQty)
+    qtyInput?.addEventListener('change', onQty)
     priceInput?.addEventListener('input', onPrice)
+    priceInput?.addEventListener('change', onPrice)
     unitInput?.addEventListener('change', onUnit)
     nameInput?.addEventListener('input', onName)
+    nameInput?.addEventListener('change', onName)
     catInput?.addEventListener('change', onCat)
+
+    // Sync once on mount in case fields already have values (defaultValue / quick-fill)
+    onQty(); onPrice(); onUnit(); onName(); onCat()
 
     return () => {
       qtyInput?.removeEventListener('input', onQty)
+      qtyInput?.removeEventListener('change', onQty)
       priceInput?.removeEventListener('input', onPrice)
+      priceInput?.removeEventListener('change', onPrice)
       unitInput?.removeEventListener('change', onUnit)
       nameInput?.removeEventListener('input', onName)
+      nameInput?.removeEventListener('change', onName)
       catInput?.removeEventListener('change', onCat)
     }
   }, [])

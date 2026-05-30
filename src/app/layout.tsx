@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from 'next/font/google'
 // Ignore missing type declarations for global CSS side-effect import
 // @ts-ignore: Implicit any for CSS import
 import './globals.css'
+import NumberInputGuard from '@/components/number-input-guard'
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -31,7 +32,6 @@ export const viewport: Viewport = {
   themeColor: '#FAFBFC',
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
 }
 
 export default function RootLayout({
@@ -42,6 +42,7 @@ export default function RootLayout({
   return (
     <html lang="id" className={plusJakartaSans.variable}>
       <body className={plusJakartaSans.className} style={{ backgroundColor: 'var(--bg)' }}>
+        <NumberInputGuard />
         {children}
       </body>
     </html>

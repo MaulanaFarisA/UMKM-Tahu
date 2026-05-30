@@ -45,7 +45,7 @@ export default async function CatatPenjualanPage({ searchParams }: PageProps) {
   const action = createSalesTransactionAction.bind(null, null)
 
   return (
-    <AppShell active="catat" title="Catat Penjualan" showBack backHref="/catat" width="default">
+    <AppShell active="catat" title="Catat Penjualan" showBack backHref="/catat" width="default" hideBottomNav>
       <form action={action} className="pb-28 lg:pb-4 grid grid-roomy lg:grid-cols-[minmax(0,1fr)_380px]">
         <div className="section-stack min-w-0 slide-up-1">
 

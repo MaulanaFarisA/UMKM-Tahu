@@ -20,6 +20,8 @@ interface AppShellProps {
   showBack?: boolean
   backHref?: string
   width?: 'narrow' | 'default' | 'wide'
+  /** Hide the mobile bottom nav + FAB (used on focused flows like the record forms) */
+  hideBottomNav?: boolean
 }
 
 const WIDTH_CLASS: Record<NonNullable<AppShellProps['width']>, string> = {
@@ -28,7 +30,7 @@ const WIDTH_CLASS: Record<NonNullable<AppShellProps['width']>, string> = {
   wide: 'app-container-wide',
 }
 
-export default function AppShell({ children, active, title, showBack, backHref, width = 'default' }: AppShellProps) {
+export default function AppShell({ children, active, title, showBack, backHref, width = 'default', hideBottomNav = false }: AppShellProps) {
   const containerClass = `app-container ${WIDTH_CLASS[width]}`
   return (
     <div className="min-h-screen flex flex-col tap-highlight-none gradient-mesh">
@@ -105,10 +107,12 @@ export default function AppShell({ children, active, title, showBack, backHref, 
       </header>
 
       {/* Main */}
-        <main className={`flex-1 with-bottom-nav-pad pt-6 md:pt-8 lg:pt-10 ${containerClass}`}>
+        <main className={`flex-1 ${hideBottomNav ? 'pb-6' : 'with-bottom-nav-pad'} pt-6 md:pt-8 lg:pt-10 ${containerClass}`}>
         {children}
       </main>
 
+      {!hideBottomNav && (
+        <>
       {/* Bottom nav (mobile/tablet only) */}
       <div
         className="mobile-bottom-nav fixed bottom-0 left-0 right-0 z-30 px-4"
@@ -151,6 +155,8 @@ export default function AppShell({ children, active, title, showBack, backHref, 
 
       {/* Speed-dial FAB (mobile/tablet) — rendered outside nav to avoid blur trap */}
       <SpeedDialFab active={active === 'catat'} />
+        </>
+      )}
     </div>
   )
 }

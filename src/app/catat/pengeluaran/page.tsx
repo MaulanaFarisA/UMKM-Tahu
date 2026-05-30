@@ -53,7 +53,7 @@ export default async function CatatPengeluaranPage({ searchParams }: PageProps) 
   const action = createExpenseAction.bind(null, null)
 
   return (
-    <AppShell active="catat" title="Catat Pengeluaran" showBack backHref="/catat" width="default">
+    <AppShell active="catat" title="Catat Pengeluaran" showBack backHref="/catat" width="default" hideBottomNav>
       <form action={action} className="slide-up pb-28 lg:pb-4 grid grid-roomy lg:grid-cols-[minmax(0,1fr)_380px]">
         <div className="section-stack min-w-0">
 
