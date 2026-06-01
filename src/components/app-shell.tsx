@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { logoutAction } from '@/server/actions'
 import BrandMark from '@/components/brand-mark'
 import SubmitButton from '@/components/submit-button'
-import SpeedDialFab from '@/components/speed-dial-fab'
 import {
   Home,
   Plus,
@@ -117,44 +116,42 @@ export default function AppShell({ children, active, title, showBack, backHref, 
       <div
         className="mobile-bottom-nav fixed bottom-0 left-0 right-0 z-30 px-4"
         style={{
-          paddingBottom: 'max(1rem, env(safe-area-inset-bottom))',
-          paddingTop: '0.625rem',
+          paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))',
+          paddingTop: '0.5rem',
           background:
             'linear-gradient(to top, var(--bg) 55%, rgba(250,251,252,0.9) 80%, rgba(250,251,252,0))',
           pointerEvents: 'none',
         }}
       >
         <nav
-          className="max-w-md mx-auto rounded-2xl px-2 h-[72px] flex items-center justify-around relative no-select"
+          className="max-w-sm mx-auto rounded-2xl grid grid-cols-4 items-stretch gap-1 px-2 py-2 no-select"
           aria-label="Navigasi bawah"
           style={{
-             backgroundColor: 'rgba(255,255,255,0.94)',
-             border: '1px solid var(--border)',
-             boxShadow: 'var(--shadow-lg)',
+            backgroundColor: 'rgba(255,255,255,0.96)',
+            border: '1px solid var(--border)',
+            boxShadow: 'var(--shadow-lg)',
             backdropFilter: 'blur(24px) saturate(1.25)',
             WebkitBackdropFilter: 'blur(24px) saturate(1.25)',
             pointerEvents: 'auto',
           }}
         >
           <NavItem href="/beranda" label="Beranda" active={active === 'beranda'}>
-            <Home size={20} strokeWidth={active === 'beranda' ? 2.5 : 1.85} />
+            <Home size={21} strokeWidth={active === 'beranda' ? 2.5 : 1.85} />
           </NavItem>
 
           <NavItem href="/piutang" label="Tagihan" active={active === 'piutang'}>
-            <Wallet size={20} strokeWidth={active === 'piutang' ? 2.5 : 1.85} />
+            <Wallet size={21} strokeWidth={active === 'piutang' ? 2.5 : 1.85} />
           </NavItem>
 
-          {/* Reserve center slot for the speed-dial FAB (rendered outside the nav) */}
-          <div className="w-[58px] flex-shrink-0" aria-hidden="true" />
+          <NavItem href="/catat" label="Catat" active={active === 'catat'} accent>
+            <Plus size={21} strokeWidth={2.6} />
+          </NavItem>
 
           <NavItem href="/pengaturan" label="Usaha" active={active === 'pengaturan'}>
-            <Store size={20} strokeWidth={active === 'pengaturan' ? 2.5 : 1.85} />
+            <Store size={21} strokeWidth={active === 'pengaturan' ? 2.5 : 1.85} />
           </NavItem>
         </nav>
       </div>
-
-      {/* Speed-dial FAB (mobile/tablet) — rendered outside nav to avoid blur trap */}
-      <SpeedDialFab active={active === 'catat'} />
         </>
       )}
     </div>
@@ -165,22 +162,47 @@ function NavItem({
   href,
   label,
   active,
+  accent,
   children,
 }: {
   href: string
   label: string
   active: boolean
+  accent?: boolean
   children: React.ReactNode
 }) {
+  if (accent) {
+    return (
+      <Link
+        href={href}
+        aria-current={active ? 'page' : undefined}
+        className="flex flex-col items-center justify-center gap-1 py-1.5 rounded-xl transition-all active:scale-95 no-select"
+      >
+        <span
+          className="inline-flex items-center justify-center w-9 h-9 rounded-xl"
+          style={{
+            background: 'var(--accent-gradient)',
+            color: '#FFFFFF',
+            boxShadow: active ? 'var(--shadow-accent)' : 'var(--shadow-accent-sm)',
+          }}
+        >
+          {children}
+        </span>
+        <span
+          className="font-bold"
+          style={{ color: 'var(--accent)', fontSize: '0.6875rem', letterSpacing: '0.005em' }}
+        >
+          {label}
+        </span>
+      </Link>
+    )
+  }
   return (
     <Link
       href={href}
       aria-current={active ? 'page' : undefined}
-      className="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-2xl min-w-[60px] transition-all no-select"
-      style={{
-        backgroundColor: active ? 'var(--accent-light)' : 'transparent',
-        boxShadow: active ? 'inset 0 1px 0 rgba(255,255,255,0.8)' : 'none',
-      }}
+      className="flex flex-col items-center justify-center gap-1 py-1.5 rounded-xl transition-all active:scale-95 no-select"
+      style={{ backgroundColor: active ? 'var(--accent-light)' : 'transparent' }}
     >
       <span style={{ color: active ? 'var(--accent)' : 'var(--text-muted)' }}>{children}</span>
       <span
@@ -193,16 +215,6 @@ function NavItem({
       >
         {label}
       </span>
-      <div
-        aria-hidden="true"
-        className="rounded-full transition-all duration-200"
-        style={{
-          width: active ? '18px' : '0px',
-          height: '3px',
-          backgroundColor: active ? 'var(--accent)' : 'transparent',
-          marginTop: '2px',
-        }}
-      />
     </Link>
   )
 }
