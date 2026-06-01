@@ -22,9 +22,12 @@ const toneMap = {
 export default function MetricCard({ label, value, type = 'default', sublabel, href, animate = false }: MetricCardProps) {
   const tone = toneMap[type]
   const content = (
-    <div className="card card-roomy h-full" style={{ borderLeft: `3px solid ${tone.accent}` }}>
+    <div className="card card-roomy h-full">
       <div className="flex items-start justify-between gap-2 mb-2">
-        <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: 'var(--text-tertiary)' }}>{label}</p>
+        <div className="flex items-center gap-1.5">
+          <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: tone.accent }} />
+          <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: 'var(--text-tertiary)' }}>{label}</p>
+        </div>
         {href && <ArrowUpRight size={14} strokeWidth={2} color="var(--text-muted)" className="flex-shrink-0" />}
       </div>
       {animate ? (

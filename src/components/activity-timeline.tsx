@@ -33,27 +33,26 @@ export default function ActivityTimeline({ items }: { items: ActivityItem[] }) {
       {/* Connecting line */}
       <span
         aria-hidden
-        className="absolute top-3 bottom-3 left-[18px] w-px"
+        className="absolute top-3 bottom-3 left-[14px] w-px"
         style={{ background: 'var(--border)' }}
       />
       {items.map((item, idx) => {
         const isSale = item.type === 'sale'
         const time = formatTime(item.createdAt)
         return (
-          <li key={item.id} className="relative flex items-center gap-3 py-2.5" style={{ animation: `slideUp 0.4s var(--ease-spring) ${0.05 * idx}s both` }}>
+          <li key={item.id} className="relative flex items-center gap-3 py-2" style={{ animation: `slideUp 0.4s var(--ease-spring) ${0.05 * idx}s both` }}>
             {/* Node */}
             <span
-              className="relative z-10 w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0"
+              className="relative z-10 w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
               style={{
                 background: isSale ? 'var(--profit-bg)' : 'var(--loss-bg)',
                 border: `2px solid ${isSale ? 'var(--profit-border)' : 'var(--loss-border)'}`,
-                boxShadow: '0 0 0 4px var(--bg-white)',
               }}
             >
               {isSale ? (
-                <ShoppingBag size={15} strokeWidth={2.4} color="var(--profit)" />
+                <ShoppingBag size={13} strokeWidth={2.4} color="var(--profit)" />
               ) : (
-                <Receipt size={15} strokeWidth={2.4} color="var(--loss)" />
+                <Receipt size={13} strokeWidth={2.4} color="var(--loss)" />
               )}
             </span>
             {/* Body */}

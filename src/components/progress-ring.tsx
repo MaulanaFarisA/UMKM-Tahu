@@ -18,8 +18,8 @@ interface ProgressRingProps {
  */
 export default function ProgressRing({
   ratio,
-  size = 64,
-  stroke = 7,
+  size = 48,
+  stroke = 5,
   label,
   sublabel,
   tone = 'warn',

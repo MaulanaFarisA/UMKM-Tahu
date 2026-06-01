@@ -137,7 +137,7 @@ export default async function PiutangPage({ searchParams }: PageProps) {
                 Belum Dibayar ({unpaid.length})
               </p>
             </div>
-            <div className="grid grid-roomy md:grid-cols-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {unpaid.map((r) => {
                 const totalPaid = r.amount_paid + r.payments.reduce((s: number, p: { amount: number }) => s + p.amount, 0)
                 const paidRatio = r.total_sales > 0 ? totalPaid / r.total_sales : 0
@@ -145,7 +145,7 @@ export default async function PiutangPage({ searchParams }: PageProps) {
                 return (
                   <div
                     key={r.id}
-                    className="card card-roomy space-y-4"
+                    className="card card-roomy space-y-3"
                     style={{
                       borderLeft: '4px solid var(--warn)',
                       background: 'linear-gradient(135deg, var(--bg-white) 0%, var(--warn-bg) 100%)',
@@ -171,7 +171,7 @@ export default async function PiutangPage({ searchParams }: PageProps) {
 
                     {/* Stats row */}
                     <div
-                      className="grid grid-cols-3 gap-2 rounded-xl p-3"
+                      className="grid grid-cols-3 gap-2 rounded-xl p-2.5"
                       style={{ backgroundColor: 'var(--bg-subtle)', border: '1px solid var(--border-soft)' }}
                     >
                       <div className="text-center min-w-0">
@@ -234,14 +234,15 @@ export default async function PiutangPage({ searchParams }: PageProps) {
                       <input type="hidden" name="sales_transaction_id" value={r.id} />
                       <input type="hidden" name="date" value={today} />
                       <input type="hidden" name="amount" value={r.remaining} />
-                      <SubmitButton
-                        pendingLabel="Melunasi..."
-                        className="btn-secondary w-full"
-                        style={{ minHeight: '46px' }}
-                      >
-                        <CheckCircle2 size={15} strokeWidth={2.5} />
-                        Lunasi tagihan ini
-                      </SubmitButton>
+                      <div className="flex justify-end">
+                        <SubmitButton
+                          pendingLabel="Melunasi..."
+                          className="btn-secondary"
+                        >
+                          <CheckCircle2 size={15} strokeWidth={2.5} />
+                          Lunasi tagihan ini
+                        </SubmitButton>
+                      </div>
                     </form>
                   </div>
                 )

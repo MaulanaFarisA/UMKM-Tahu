@@ -88,7 +88,7 @@ export default function HeroVerdict({
       <span aria-hidden className="aurora" style={{ width: 280, height: 280, top: -120, right: -60, background: t.auroraA }} />
       <span aria-hidden className="aurora" style={{ width: 220, height: 220, bottom: -110, left: -40, background: t.auroraB }} />
 
-      <div className="relative grid lg:grid-cols-[1.15fr_1fr] gap-6 lg:gap-8 p-6 md:p-8">
+      <div className="relative grid lg:grid-cols-[1.15fr_1fr] gap-4 lg:gap-6 p-5 md:p-6">
         {/* Left: verdict */}
         <div className="min-w-0">
           <div className="flex items-center gap-2.5 flex-wrap">
@@ -125,7 +125,7 @@ export default function HeroVerdict({
           </div>
 
           {hasData ? (
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-5">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-3">
               <Stat dot="var(--profit)" label="Masuk" value={formatRupiah(todayOmzet)} />
               <Stat dot="var(--loss)" label="Keluar" value={formatRupiah(todayExpenseTotal)} />
               <Stat dot={t.chipDot} label="Margin" value={`${marginPercent}%`} />
@@ -138,7 +138,7 @@ export default function HeroVerdict({
 
           {hasWarning && hasData && (
             <div
-              className="inline-flex items-center gap-2 mt-4 px-3 py-1.5 rounded-xl"
+              className="inline-flex items-center gap-2 mt-3 px-3 py-1.5 rounded-xl"
               style={{ background: 'var(--warn-bg)', border: '1px solid var(--warn-border)' }}
             >
               <TriangleAlert size={13} strokeWidth={2.5} color="var(--warn-text)" />

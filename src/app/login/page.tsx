@@ -80,7 +80,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <SubmitButton pendingLabel="Memproses..." disabled={pending} className="btn-primary" style={{ marginTop: '0.5rem' }}>
+            <SubmitButton pendingLabel="Memproses..." disabled={pending} className="btn-primary w-full" style={{ marginTop: '0.5rem' }}>
               Masuk
             </SubmitButton>
           </form>

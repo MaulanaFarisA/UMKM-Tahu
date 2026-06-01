@@ -48,14 +48,14 @@ export default function ActionButtonBig({
   return (
     <Link
       href={href}
-      className={`group relative overflow-hidden rounded-2xl flex items-center gap-4 p-5 transition-all duration-200 hover:-translate-y-1 active:scale-[0.98] tap-highlight-none no-select ${
+      className={`group relative overflow-hidden rounded-2xl flex items-center gap-4 p-4 transition-all duration-200 hover:-translate-y-1 active:scale-[0.98] tap-highlight-none no-select ${
         pulse ? 'action-pulse' : ''
       }`}
       style={{
         background: v.gradient,
         border: `1px solid ${v.border}`,
         boxShadow: v.glow,
-        minHeight: '104px',
+        minHeight: '88px',
       }}
     >
       {/* Sheen highlight */}
@@ -67,10 +67,10 @@ export default function ActionButtonBig({
 
       {/* Icon tile */}
       <span
-        className="relative w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 transition-transform duration-200 group-hover:scale-105 group-hover:rotate-3"
+        className="relative w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 transition-transform duration-200 group-hover:scale-105 group-hover:rotate-3"
         style={{ background: '#FFFFFF', boxShadow: '0 6px 16px rgba(0,0,0,0.12)' }}
       >
-        <Icon size={26} strokeWidth={2.4} color={v.iconColor} />
+        <Icon size={22} strokeWidth={2.4} color={v.iconColor} />
       </span>
 
       {/* Text */}
@@ -85,7 +85,7 @@ export default function ActionButtonBig({
 
       {/* Arrow */}
       <span
-        className="relative w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+        className="relative w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
         style={{ background: 'rgba(255,255,255,0.22)' }}
       >
         <ArrowUpRight size={18} strokeWidth={2.6} color="#FFFFFF" />

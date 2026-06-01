@@ -81,7 +81,7 @@ export default function RegisterPage() {
               <p className="text-xs mt-1.5" style={{ color: 'var(--text-muted)' }}>Minimal 6 karakter</p>
             </div>
 
-            <SubmitButton pendingLabel="Memproses..." disabled={pending} className="btn-primary" style={{ marginTop: '0.5rem' }}>
+            <SubmitButton pendingLabel="Memproses..." disabled={pending} className="btn-primary w-full" style={{ marginTop: '0.5rem' }}>
               Buat Akun
             </SubmitButton>
           </form>

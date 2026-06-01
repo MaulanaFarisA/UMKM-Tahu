@@ -42,8 +42,8 @@ export default function CashflowChart({ income, expense }: CashflowChartProps) {
   }, [total])
 
   // Geometry
-  const size = 168
-  const stroke = 16
+  const size = 140
+  const stroke = 14
   const r = (size - stroke) / 2
   const c = 2 * Math.PI * r
   const gap = total > 0 && income > 0 && expense > 0 ? 0.02 : 0 // small gap between segments
