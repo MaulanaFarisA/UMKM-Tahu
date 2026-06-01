@@ -58,7 +58,7 @@
   --shadow-accent-sm: 0 4px 14px rgba(99,102,241,0.20);
   --shadow-accent-lg: 0 16px 40px rgba(99,102,241,0.28);
   --radius-xs: 4px; --radius-sm: 6px; --radius-md: 10px; --radius-lg: 14px;
-  --radius-xl: 14px; --radius-2xl: 24px; --radius-full: 9999px;
+  --radius-xl: 16px; --radius-2xl: 24px; --radius-full: 9999px;
   --ring-accent: 0 0 0 3px rgba(99,102,241,0.2), 0 0 0 1px rgba(99,102,241,0.6);
   --ring-loss: 0 0 0 3px rgba(244,63,94,0.15), 0 0 0 1px rgba(244,63,94,0.45);
   --ring-profit: 0 0 0 3px rgba(16,185,129,0.15), 0 0 0 1px rgba(16,185,129,0.45);

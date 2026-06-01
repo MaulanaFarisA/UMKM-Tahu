@@ -160,7 +160,7 @@ export default async function HomePage() {
               <Link
                 href="/register"
                 className="btn-primary tap-highlight-none"
-                style={{ width: 'auto', padding: '0.95rem 1.625rem', minHeight: '52px' }}
+                style={{ padding: '0.95rem 1.625rem', minHeight: '52px' }}
               >
                 Mulai Gratis Sekarang
                 <ArrowRight size={16} strokeWidth={2.5} />
@@ -168,7 +168,7 @@ export default async function HomePage() {
               <Link
                 href="/login"
                 className="btn-secondary tap-highlight-none"
-                style={{ width: 'auto', padding: '0.95rem 1.625rem', minHeight: '52px' }}
+                style={{ padding: '0.95rem 1.625rem', minHeight: '52px' }}
               >
                 Sudah punya akun? Masuk
               </Link>

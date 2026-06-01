@@ -85,7 +85,7 @@ function BarButton({ label, pendingLabel, variant }: { label: string; pendingLab
     <button
       type="submit"
       disabled={pending}
-      className={variant === 'profit' ? 'btn-primary' : 'btn-danger'}
+      className={`${variant === 'profit' ? 'btn-primary' : 'btn-danger'} w-full`}
       style={{ minHeight: '52px' }}
     >
       {pending ? pendingLabel : label}
