@@ -228,77 +228,79 @@ export default async function BerandaPage({ searchParams }: PageProps) {
             <h2 className="section-heading">Ringkasan Bulan Ini</h2>
             <p className="text-xs font-medium capitalize" style={{ color: 'var(--text-muted)' }}>{monthLabel}</p>
           </div>
-          <div className="grid grid-roomy lg:grid-cols-[1fr_1.1fr]">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 grid-roomy lg:col-span-1">
-              <div className="card-premium card-roomy card-static relative overflow-hidden">
-                <span className="icon-tile w-8 h-8 mb-3" style={{ background: 'linear-gradient(135deg, #D1FAE5, #A7F3D0)' }}>
-                  <ArrowDownLeft size={15} strokeWidth={2.5} color="#047857" />
-                </span>
-                <p className="text-[0.7rem] font-bold uppercase tracking-wider mb-1" style={{ color: 'var(--text-muted)' }}>Pemasukan</p>
-                <p className="kpi-value" style={{ color: 'var(--text-primary)' }}>{formatRupiah(summary.monthOmzet)}</p>
-              </div>
-              <div className="card-premium card-roomy card-static relative overflow-hidden">
-                <span className="icon-tile w-8 h-8 mb-3" style={{ background: 'linear-gradient(135deg, #FFE4E6, #FECDD3)' }}>
-                  <ArrowUpRight size={15} strokeWidth={2.5} color="#E11D48" />
-                </span>
-                <p className="text-[0.7rem] font-bold uppercase tracking-wider mb-1" style={{ color: 'var(--text-muted)' }}>Pengeluaran</p>
-                <p className="kpi-value" style={{ color: 'var(--text-primary)' }}>{formatRupiah(summary.monthExpenseTotal)}</p>
-              </div>
-              <div
-                className="col-span-2 md:col-span-1 lg:col-span-1 card-roomy relative overflow-hidden rounded-xl"
-                style={{
-                  background: monthNet >= 0
-                    ? 'linear-gradient(140deg, #065F46 0%, #047857 60%, #10B981 100%)'
-                    : 'linear-gradient(140deg, #9F1239 0%, #BE123C 60%, #F43F5E 100%)',
-                  boxShadow: monthNet >= 0 ? '0 12px 28px -10px rgba(5,150,105,0.55)' : '0 12px 28px -10px rgba(225,29,72,0.5)',
-                }}
-              >
-                <span aria-hidden className="texture-dots absolute inset-0 text-white pointer-events-none" style={{ opacity: 0.1 }} />
-                <span className="relative icon-tile w-8 h-8 mb-3" style={{ background: 'rgba(255,255,255,0.18)' }}>
-                  <Wallet size={15} strokeWidth={2.5} color="#fff" />
-                </span>
-                <p className="relative text-[0.7rem] font-bold uppercase tracking-wider mb-1" style={{ color: 'rgba(255,255,255,0.8)' }}>Laba Bersih</p>
-                <p className="relative kpi-value" style={{ color: '#fff' }}>
-                  {monthNet < 0 ? '-' : ''}{formatRupiah(Math.abs(monthNet))}
-                </p>
-                <p className="relative text-[0.7rem] mt-2 font-medium" style={{ color: 'rgba(255,255,255,0.75)' }}>
-                  {monthNet >= 0 ? 'Selisih positif bulan ini' : 'Pengeluaran lebih besar'}
-                </p>
-              </div>
+
+          {/* Three KPI cards — full-width row so values never get clipped */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 grid-roomy">
+            <div className="card-premium card-roomy card-static relative">
+              <span className="icon-tile w-8 h-8 mb-3" style={{ background: 'linear-gradient(135deg, #D1FAE5, #A7F3D0)' }}>
+                <ArrowDownLeft size={15} strokeWidth={2.5} color="#047857" />
+              </span>
+              <p className="text-[0.7rem] font-bold uppercase tracking-wider mb-1.5" style={{ color: 'var(--text-muted)' }}>Pemasukan</p>
+              <p className="kpi-value" style={{ color: 'var(--text-primary)' }}>{formatRupiah(summary.monthOmzet)}</p>
             </div>
 
-            {/* 7-day momentum */}
-            <div className="card-premium card-roomy card-static relative overflow-hidden">
-              <span aria-hidden className="blob" style={{ width: 160, height: 160, top: -60, right: -40, background: weekNet >= 0 ? 'rgba(16,185,129,0.16)' : 'rgba(244,63,94,0.14)' }} />
-              <div className="relative flex items-center justify-between gap-3 mb-3">
-                <div className="flex items-center gap-2.5">
-                  <span className="icon-tile w-9 h-9" style={{ background: 'linear-gradient(135deg, #EEF2FF, #E0E7FF)' }}>
-                    <LineChart size={17} strokeWidth={2.4} color="var(--accent)" />
-                  </span>
-                  <div>
-                    <h3 className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Tren 7 Hari</h3>
-                    <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Laba bersih harian</p>
-                  </div>
-                </div>
-                <span
-                  className="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-bold"
-                  style={{
-                    background: weekNet === 0 ? 'var(--bg-subtle)' : weekNet > 0 ? 'var(--profit-bg)' : 'var(--loss-bg)',
-                    color: weekNet === 0 ? 'var(--text-tertiary)' : weekNet > 0 ? 'var(--profit-text)' : 'var(--loss-text)',
-                    border: `1px solid ${weekNet === 0 ? 'var(--border)' : weekNet > 0 ? 'var(--profit-border)' : 'var(--loss-border)'}`,
-                    fontVariantNumeric: 'tabular-nums',
-                  }}
-                >
-                  {weekNet > 0 ? '+' : weekNet < 0 ? '−' : ''}{formatRupiah(Math.abs(weekNet))}
+            <div className="card-premium card-roomy card-static relative">
+              <span className="icon-tile w-8 h-8 mb-3" style={{ background: 'linear-gradient(135deg, #FFE4E6, #FECDD3)' }}>
+                <ArrowUpRight size={15} strokeWidth={2.5} color="#E11D48" />
+              </span>
+              <p className="text-[0.7rem] font-bold uppercase tracking-wider mb-1.5" style={{ color: 'var(--text-muted)' }}>Pengeluaran</p>
+              <p className="kpi-value" style={{ color: 'var(--text-primary)' }}>{formatRupiah(summary.monthExpenseTotal)}</p>
+            </div>
+
+            <div
+              className="card-roomy relative overflow-hidden rounded-xl"
+              style={{
+                background: monthNet >= 0
+                  ? 'linear-gradient(140deg, #065F46 0%, #047857 60%, #10B981 100%)'
+                  : 'linear-gradient(140deg, #9F1239 0%, #BE123C 60%, #F43F5E 100%)',
+                boxShadow: monthNet >= 0 ? '0 12px 28px -10px rgba(5,150,105,0.55)' : '0 12px 28px -10px rgba(225,29,72,0.5)',
+              }}
+            >
+              <span aria-hidden className="texture-dots absolute inset-0 text-white pointer-events-none" style={{ opacity: 0.1 }} />
+              <span className="relative icon-tile w-8 h-8 mb-3" style={{ background: 'rgba(255,255,255,0.18)' }}>
+                <Wallet size={15} strokeWidth={2.5} color="#fff" />
+              </span>
+              <p className="relative text-[0.7rem] font-bold uppercase tracking-wider mb-1.5" style={{ color: 'rgba(255,255,255,0.8)' }}>Laba Bersih</p>
+              <p className="relative kpi-value" style={{ color: '#fff' }}>
+                {monthNet < 0 ? '-' : ''}{formatRupiah(Math.abs(monthNet))}
+              </p>
+              <p className="relative text-[0.7rem] mt-2 font-medium" style={{ color: 'rgba(255,255,255,0.75)' }}>
+                {monthNet >= 0 ? 'Selisih positif bulan ini' : 'Pengeluaran lebih besar'}
+              </p>
+            </div>
+          </div>
+
+          {/* 7-day momentum — full width below */}
+          <div className="card-premium card-roomy card-static relative overflow-hidden mt-4 md:mt-5">
+            <span aria-hidden className="blob" style={{ width: 200, height: 200, top: -80, right: -50, background: weekNet >= 0 ? 'rgba(16,185,129,0.14)' : 'rgba(244,63,94,0.12)' }} />
+            <div className="relative flex items-center justify-between gap-3 mb-4">
+              <div className="flex items-center gap-2.5">
+                <span className="icon-tile w-9 h-9" style={{ background: 'linear-gradient(135deg, #EEF2FF, #E0E7FF)' }}>
+                  <LineChart size={17} strokeWidth={2.4} color="var(--accent)" />
                 </span>
+                <div>
+                  <h3 className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Tren 7 Hari</h3>
+                  <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Laba bersih harian</p>
+                </div>
               </div>
-              <div className="relative">
-                <TrendSparkline data={summary.dailyTrend} />
-              </div>
-              <div className="relative flex items-center justify-between mt-2">
-                <span className="text-[10px] font-medium" style={{ color: 'var(--text-muted)' }}>7 hari lalu</span>
-                <span className="text-[10px] font-medium" style={{ color: 'var(--text-muted)' }}>Hari ini</span>
-              </div>
+              <span
+                className="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-bold flex-shrink-0"
+                style={{
+                  background: weekNet === 0 ? 'var(--bg-subtle)' : weekNet > 0 ? 'var(--profit-bg)' : 'var(--loss-bg)',
+                  color: weekNet === 0 ? 'var(--text-tertiary)' : weekNet > 0 ? 'var(--profit-text)' : 'var(--loss-text)',
+                  border: `1px solid ${weekNet === 0 ? 'var(--border)' : weekNet > 0 ? 'var(--profit-border)' : 'var(--loss-border)'}`,
+                  fontVariantNumeric: 'tabular-nums',
+                }}
+              >
+                {weekNet > 0 ? '+' : weekNet < 0 ? '−' : ''}{formatRupiah(Math.abs(weekNet))}
+              </span>
+            </div>
+            <div className="relative">
+              <TrendSparkline data={summary.dailyTrend} height={96} />
+            </div>
+            <div className="relative flex items-center justify-between mt-2">
+              <span className="text-[10px] font-medium" style={{ color: 'var(--text-muted)' }}>7 hari lalu</span>
+              <span className="text-[10px] font-medium" style={{ color: 'var(--text-muted)' }}>Hari ini</span>
             </div>
           </div>
         </div>
