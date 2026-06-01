@@ -12,6 +12,13 @@ import {
 } from '@/domain/expense-categories'
 import type { SalesTransaction, ReceivablePayment, Expense } from '@/types/database'
 
+/** Returns the first day of the month after the given one as YYYY-MM-DD. */
+function firstDayOfNextMonth(year: number, month: number): string {
+  const nextYear = month === 12 ? year + 1 : year
+  const nextMonth = month === 12 ? 1 : month + 1
+  return `${nextYear}-${String(nextMonth).padStart(2, '0')}-01`
+}
+
 // ─── Business Profile ─────────────────────────────────────────────────────────
 
 export async function getBusinessProfile() {
@@ -52,15 +59,34 @@ export async function getExpensesByMonth(year: number, month: number) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return [] as Expense[]
 
+  // Use [first day of month, first day of next month) so we never build an
+  // invalid date like "2026-06-31" (which Postgres rejects, silently
+  // returning zero rows and breaking the monthly summary).
   const from = `${year}-${String(month).padStart(2, '0')}-01`
-  const to = `${year}-${String(month).padStart(2, '0')}-31`
+  const to = firstDayOfNextMonth(year, month)
 
   const { data } = await supabase
     .from('expenses')
     .select('*')
     .eq('user_id', user.id)
     .gte('date', from)
-    .lte('date', to)
+    .lt('date', to)
+    .order('date', { ascending: false })
+
+  return (data ?? []) as Expense[]
+}
+
+export async function getExpensesByDateRange(fromInclusive: string, toExclusive: string) {
+  const supabase = await createServerClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return [] as Expense[]
+
+  const { data } = await supabase
+    .from('expenses')
+    .select('*')
+    .eq('user_id', user.id)
+    .gte('date', fromInclusive)
+    .lt('date', toExclusive)
     .order('date', { ascending: false })
 
   return (data ?? []) as Expense[]
@@ -94,15 +120,32 @@ export async function getSalesByMonth(year: number, month: number) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return [] as SalesWithCustomer[]
 
+  // [first day of month, first day of next month) — avoids invalid dates.
   const from = `${year}-${String(month).padStart(2, '0')}-01`
-  const to = `${year}-${String(month).padStart(2, '0')}-31`
+  const to = firstDayOfNextMonth(year, month)
 
   const { data } = await supabase
     .from('sales_transactions')
     .select('*, customer:customers(id, name)')
     .eq('user_id', user.id)
     .gte('date', from)
-    .lte('date', to)
+    .lt('date', to)
+    .order('date', { ascending: false })
+
+  return (data ?? []) as SalesWithCustomer[]
+}
+
+export async function getSalesByDateRange(fromInclusive: string, toExclusive: string) {
+  const supabase = await createServerClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return [] as SalesWithCustomer[]
+
+  const { data } = await supabase
+    .from('sales_transactions')
+    .select('*, customer:customers(id, name)')
+    .eq('user_id', user.id)
+    .gte('date', fromInclusive)
+    .lt('date', toExclusive)
     .order('date', { ascending: false })
 
   return (data ?? []) as SalesWithCustomer[]
@@ -170,13 +213,23 @@ export async function getDashboardSummary() {
   const year = now.getFullYear()
   const month = now.getMonth() + 1
 
-  const [todaySales, monthSales, todayExpenses, monthExpenses, receivables] =
+  // 7-day window: [6 days ago, tomorrow) — inclusive of today, robust across months.
+  const sevenDaysAgo = new Date(now)
+  sevenDaysAgo.setDate(now.getDate() - 6)
+  const trendFrom = todayISOString(sevenDaysAgo)
+  const tomorrow = new Date(now)
+  tomorrow.setDate(now.getDate() + 1)
+  const trendTo = todayISOString(tomorrow)
+
+  const [todaySales, monthSales, todayExpenses, monthExpenses, receivables, trendSales, trendExpenses] =
     await Promise.all([
       getSalesTransactions(today),
       getSalesByMonth(year, month),
       getExpenses(today),
       getExpensesByMonth(year, month),
       getReceivables(),
+      getSalesByDateRange(trendFrom, trendTo),
+      getExpensesByDateRange(trendFrom, trendTo),
     ])
 
   const todayOmzet = todaySales.reduce((s: number, t: SalesWithCustomer) => s + t.total_sales, 0)
@@ -209,11 +262,11 @@ export async function getDashboardSummary() {
 
   // Last 7 days net trend (omzet - expense per day) for the momentum sparkline.
   const salesByDate = new Map<string, number>()
-  for (const s of monthSales) {
+  for (const s of trendSales) {
     salesByDate.set(s.date, (salesByDate.get(s.date) ?? 0) + s.total_sales)
   }
   const expenseByDate = new Map<string, number>()
-  for (const e of monthExpenses) {
+  for (const e of trendExpenses) {
     expenseByDate.set(e.date, (expenseByDate.get(e.date) ?? 0) + e.total)
   }
   const dailyTrend: { date: string; net: number }[] = []
