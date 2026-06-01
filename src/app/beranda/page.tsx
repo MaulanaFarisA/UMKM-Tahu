@@ -236,20 +236,21 @@ export default async function BerandaPage({ searchParams }: PageProps) {
 
             {/* 7-day momentum */}
             <div className="card card-roomy">
-              <div className="flex items-center justify-between gap-3 mb-2">
+              <div className="flex items-center justify-between gap-3 mb-3">
                 <div>
                   <h3 className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Tren 7 Hari</h3>
                   <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Laba bersih harian</p>
                 </div>
                 <span
-                  className="badge-neutral"
+                  className="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-bold"
                   style={{
-                    background: weekNet >= 0 ? 'var(--profit-bg)' : 'var(--loss-bg)',
-                    color: weekNet >= 0 ? 'var(--profit-text)' : 'var(--loss-text)',
-                    border: `1px solid ${weekNet >= 0 ? 'var(--profit-border)' : 'var(--loss-border)'}`,
+                    background: weekNet === 0 ? 'var(--bg-subtle)' : weekNet > 0 ? 'var(--profit-bg)' : 'var(--loss-bg)',
+                    color: weekNet === 0 ? 'var(--text-tertiary)' : weekNet > 0 ? 'var(--profit-text)' : 'var(--loss-text)',
+                    border: `1px solid ${weekNet === 0 ? 'var(--border)' : weekNet > 0 ? 'var(--profit-border)' : 'var(--loss-border)'}`,
+                    fontVariantNumeric: 'tabular-nums',
                   }}
                 >
-                  {weekNet >= 0 ? '+' : '-'}{formatRupiah(Math.abs(weekNet))}
+                  {weekNet > 0 ? '+' : weekNet < 0 ? '−' : ''}{formatRupiah(Math.abs(weekNet))}
                 </span>
               </div>
               <TrendSparkline data={summary.dailyTrend} />
