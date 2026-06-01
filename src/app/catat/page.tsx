@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 import { createServerClient } from '@/lib/supabase-server'
 import AppShell from '@/components/app-shell'
 import Link from 'next/link'
-import { TrendingUp, TrendingDown, ArrowRight, Sparkles, ReceiptText } from 'lucide-react'
+import { TrendingUp, TrendingDown, ArrowRight, Sparkles } from 'lucide-react'
 
 export default async function CatatPage() {
   const supabase = await createServerClient()
@@ -16,15 +16,15 @@ export default async function CatatPage() {
         {/* Header */}
         <div className="pt-1 slide-up-1">
           <div
-            className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 mb-2"
-            style={{ backgroundColor: 'var(--accent-light)', border: '1px solid var(--border-accent)' }}
+            className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 mb-3"
+            style={{ background: 'rgba(255,255,255,0.7)', border: '1px solid var(--border)', backdropFilter: 'blur(8px)' }}
           >
-            <ReceiptText size={12} strokeWidth={2.4} color="var(--accent)" />
-            <span className="text-[11px] font-bold" style={{ color: 'var(--accent-deep)' }}>
-              Struk hidup
+            <Sparkles size={12} strokeWidth={2.4} color="var(--accent)" />
+            <span className="text-[11px] font-bold uppercase tracking-wider text-gradient-accent">
+              Catat transaksi
             </span>
           </div>
-          <p className="page-title">Mau catat apa hari ini?</p>
+          <h1 className="page-title">Mau catat apa hari ini?</h1>
           <p className="page-subtitle mt-1.5" style={{ maxWidth: '36rem' }}>
             Pilih salah satu di bawah. Catat segera supaya angka di Beranda selalu pas.
           </p>

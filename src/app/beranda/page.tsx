@@ -19,6 +19,10 @@ import {
   ChevronRight,
   CircleDollarSign,
   Activity,
+  ArrowDownLeft,
+  ArrowUpRight,
+  Wallet,
+  LineChart,
 } from 'lucide-react'
 
 type PageProps = {
@@ -121,12 +125,12 @@ export default async function BerandaPage({ searchParams }: PageProps) {
 
         {/* Cashflow + activity */}
         <div className="grid grid-roomy md:grid-cols-2 lg:grid-cols-[0.95fr_1.05fr] slide-up-3">
-          <div className="card card-roomy">
+          <div className="card-premium card-roomy card-static">
             <div className="flex items-center justify-between gap-3 mb-5">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--accent-light)' }}>
-                  <Activity size={16} strokeWidth={2.25} color="var(--accent)" />
-                </div>
+                <span className="icon-tile w-9 h-9" style={{ background: 'linear-gradient(135deg, #EEF2FF, #E0E7FF)' }}>
+                  <Activity size={17} strokeWidth={2.4} color="var(--accent)" />
+                </span>
                 <div>
                   <h2 className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Arus Kas Hari Ini</h2>
                   <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Masuk vs keluar</p>
@@ -163,11 +167,11 @@ export default async function BerandaPage({ searchParams }: PageProps) {
           </div>
 
           {/* Activity feed */}
-          <div className="card card-roomy">
+          <div className="card-premium card-roomy card-static">
             <div className="flex items-center gap-2.5 mb-5">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ backgroundColor: 'var(--bg-subtle)' }}>
-                <ReceiptText size={16} strokeWidth={2.25} color="var(--text-secondary)" />
-              </div>
+              <span className="icon-tile w-9 h-9" style={{ background: 'linear-gradient(135deg, #F1F5F9, #E2E8F0)' }}>
+                <ReceiptText size={17} strokeWidth={2.4} color="var(--text-secondary)" />
+              </span>
               <div>
                 <h2 className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Transaksi Terbaru</h2>
                 <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Aktivitas hari ini</p>
@@ -181,23 +185,39 @@ export default async function BerandaPage({ searchParams }: PageProps) {
 
         {/* Receivables spotlight */}
         {summary.unpaidCount > 0 && (
-          <Link href="/piutang" className="block tap-highlight-none slide-up-4">
+          <Link href="/piutang" className="block tap-highlight-none slide-up-4 group">
             <div
-              className="rounded-2xl p-4 flex items-center justify-between gap-3 transition-all hover:shadow-md active:scale-[0.99]"
-              style={{ backgroundColor: 'var(--warn-bg)', border: '1.5px solid var(--warn-border)' }}
+              className="relative overflow-hidden rounded-2xl p-4 md:p-5 flex items-center justify-between gap-3 transition-all hover:-translate-y-0.5"
+              style={{
+                background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)',
+                border: '1px solid var(--warn-border)',
+                boxShadow: '0 8px 20px -10px rgba(217,119,6,0.35)',
+              }}
             >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'var(--warn-bg-deep)' }}>
-                  <CircleDollarSign size={20} strokeWidth={2} color="var(--warn-text)" />
-                </div>
+              <span aria-hidden className="blob" style={{ width: 140, height: 140, top: -50, right: 40, background: 'rgba(245,158,11,0.18)' }} />
+              <div className="relative flex items-center gap-3.5">
+                <span
+                  className="icon-tile w-11 h-11 flex-shrink-0"
+                  style={{ background: 'linear-gradient(135deg, #FBBF24, #F59E0B)', boxShadow: '0 6px 14px -4px rgba(245,158,11,0.6)' }}
+                >
+                  <CircleDollarSign size={20} strokeWidth={2.4} color="#fff" />
+                </span>
                 <div>
-                  <p className="text-xs font-bold uppercase tracking-wide" style={{ color: 'var(--warn-text)' }}>Belum Dibayar</p>
-                  <p className="money-xs mt-0.5" style={{ color: 'var(--warn-text)' }}>
-                    {formatRupiah(summary.totalReceivables)} &middot; {summary.unpaidCount} pembeli
+                  <p className="text-[11px] font-bold uppercase tracking-wider" style={{ color: 'var(--warn-text)', opacity: 0.8 }}>Perlu ditagih</p>
+                  <p className="money-sm mt-0.5" style={{ color: 'var(--warn-text)' }}>
+                    {formatRupiah(summary.totalReceivables)}
+                  </p>
+                  <p className="text-xs font-medium mt-0.5" style={{ color: 'var(--warn-text)', opacity: 0.75 }}>
+                    {summary.unpaidCount} pembeli belum lunas
                   </p>
                 </div>
               </div>
-              <ChevronRight size={18} strokeWidth={2} color="var(--warn-text)" />
+              <span
+                className="relative inline-flex items-center justify-center w-9 h-9 rounded-full flex-shrink-0 transition-transform group-hover:translate-x-1"
+                style={{ background: 'rgba(255,255,255,0.7)', border: '1px solid var(--warn-border)' }}
+              >
+                <ChevronRight size={18} strokeWidth={2.5} color="var(--warn-text)" />
+              </span>
             </div>
           </Link>
         )}
@@ -210,36 +230,55 @@ export default async function BerandaPage({ searchParams }: PageProps) {
           </div>
           <div className="grid grid-roomy lg:grid-cols-[1fr_1.1fr]">
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 grid-roomy lg:col-span-1">
-              <div className="card card-roomy">
-                <p className="text-xs font-medium mb-1.5" style={{ color: 'var(--text-muted)' }}>Pemasukan</p>
-                <p className="money-sm" style={{ color: 'var(--text-primary)' }}>{formatRupiah(summary.monthOmzet)}</p>
+              <div className="card-premium card-roomy card-static relative overflow-hidden">
+                <span className="icon-tile w-8 h-8 mb-3" style={{ background: 'linear-gradient(135deg, #D1FAE5, #A7F3D0)' }}>
+                  <ArrowDownLeft size={15} strokeWidth={2.5} color="#047857" />
+                </span>
+                <p className="text-[0.7rem] font-bold uppercase tracking-wider mb-1" style={{ color: 'var(--text-muted)' }}>Pemasukan</p>
+                <p className="kpi-value" style={{ color: 'var(--text-primary)' }}>{formatRupiah(summary.monthOmzet)}</p>
               </div>
-              <div className="card card-roomy">
-                <p className="text-xs font-medium mb-1.5" style={{ color: 'var(--text-muted)' }}>Pengeluaran</p>
-                <p className="money-sm" style={{ color: 'var(--text-primary)' }}>{formatRupiah(summary.monthExpenseTotal)}</p>
+              <div className="card-premium card-roomy card-static relative overflow-hidden">
+                <span className="icon-tile w-8 h-8 mb-3" style={{ background: 'linear-gradient(135deg, #FFE4E6, #FECDD3)' }}>
+                  <ArrowUpRight size={15} strokeWidth={2.5} color="#E11D48" />
+                </span>
+                <p className="text-[0.7rem] font-bold uppercase tracking-wider mb-1" style={{ color: 'var(--text-muted)' }}>Pengeluaran</p>
+                <p className="kpi-value" style={{ color: 'var(--text-primary)' }}>{formatRupiah(summary.monthExpenseTotal)}</p>
               </div>
               <div
-                className="col-span-2 md:col-span-1 lg:col-span-1 card card-roomy"
+                className="col-span-2 md:col-span-1 lg:col-span-1 card-roomy relative overflow-hidden rounded-xl"
                 style={{
                   background: monthNet >= 0
-                    ? 'linear-gradient(135deg, var(--profit-bg), var(--profit-bg-deep))'
-                    : 'linear-gradient(135deg, var(--loss-bg), var(--loss-bg-deep))',
-                  border: monthNet >= 0 ? '1px solid var(--profit-border)' : '1px solid var(--loss-border)',
+                    ? 'linear-gradient(140deg, #065F46 0%, #047857 60%, #10B981 100%)'
+                    : 'linear-gradient(140deg, #9F1239 0%, #BE123C 60%, #F43F5E 100%)',
+                  boxShadow: monthNet >= 0 ? '0 12px 28px -10px rgba(5,150,105,0.55)' : '0 12px 28px -10px rgba(225,29,72,0.5)',
                 }}
               >
-                <p className="text-xs font-medium mb-1.5" style={{ color: monthNet >= 0 ? 'var(--profit-text)' : 'var(--loss-text)' }}>Laba Bersih</p>
-                <p className="money-sm" style={{ color: monthNet >= 0 ? 'var(--profit-text)' : 'var(--loss-text)' }}>
+                <span aria-hidden className="texture-dots absolute inset-0 text-white pointer-events-none" style={{ opacity: 0.1 }} />
+                <span className="relative icon-tile w-8 h-8 mb-3" style={{ background: 'rgba(255,255,255,0.18)' }}>
+                  <Wallet size={15} strokeWidth={2.5} color="#fff" />
+                </span>
+                <p className="relative text-[0.7rem] font-bold uppercase tracking-wider mb-1" style={{ color: 'rgba(255,255,255,0.8)' }}>Laba Bersih</p>
+                <p className="relative kpi-value" style={{ color: '#fff' }}>
                   {monthNet < 0 ? '-' : ''}{formatRupiah(Math.abs(monthNet))}
+                </p>
+                <p className="relative text-[0.7rem] mt-2 font-medium" style={{ color: 'rgba(255,255,255,0.75)' }}>
+                  {monthNet >= 0 ? 'Selisih positif bulan ini' : 'Pengeluaran lebih besar'}
                 </p>
               </div>
             </div>
 
             {/* 7-day momentum */}
-            <div className="card card-roomy">
-              <div className="flex items-center justify-between gap-3 mb-3">
-                <div>
-                  <h3 className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Tren 7 Hari</h3>
-                  <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Laba bersih harian</p>
+            <div className="card-premium card-roomy card-static relative overflow-hidden">
+              <span aria-hidden className="blob" style={{ width: 160, height: 160, top: -60, right: -40, background: weekNet >= 0 ? 'rgba(16,185,129,0.16)' : 'rgba(244,63,94,0.14)' }} />
+              <div className="relative flex items-center justify-between gap-3 mb-3">
+                <div className="flex items-center gap-2.5">
+                  <span className="icon-tile w-9 h-9" style={{ background: 'linear-gradient(135deg, #EEF2FF, #E0E7FF)' }}>
+                    <LineChart size={17} strokeWidth={2.4} color="var(--accent)" />
+                  </span>
+                  <div>
+                    <h3 className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>Tren 7 Hari</h3>
+                    <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>Laba bersih harian</p>
+                  </div>
                 </div>
                 <span
                   className="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-bold"
@@ -253,8 +292,10 @@ export default async function BerandaPage({ searchParams }: PageProps) {
                   {weekNet > 0 ? '+' : weekNet < 0 ? '−' : ''}{formatRupiah(Math.abs(weekNet))}
                 </span>
               </div>
-              <TrendSparkline data={summary.dailyTrend} />
-              <div className="flex items-center justify-between mt-1">
+              <div className="relative">
+                <TrendSparkline data={summary.dailyTrend} />
+              </div>
+              <div className="relative flex items-center justify-between mt-2">
                 <span className="text-[10px] font-medium" style={{ color: 'var(--text-muted)' }}>7 hari lalu</span>
                 <span className="text-[10px] font-medium" style={{ color: 'var(--text-muted)' }}>Hari ini</span>
               </div>

@@ -42,8 +42,8 @@ export default function CashflowChart({ income, expense }: CashflowChartProps) {
   }, [total])
 
   // Geometry
-  const size = 140
-  const stroke = 14
+  const size = 148
+  const stroke = 15
   const r = (size - stroke) / 2
   const c = 2 * Math.PI * r
   const gap = total > 0 && income > 0 && expense > 0 ? 0.02 : 0 // small gap between segments
@@ -52,7 +52,7 @@ export default function CashflowChart({ income, expense }: CashflowChartProps) {
   const expenseOffset = incomeRatio * c
 
   return (
-    <div className="flex items-center justify-center sm:justify-start gap-5 flex-wrap sm:flex-nowrap">
+    <div className="flex items-center justify-center sm:justify-start gap-6 flex-wrap sm:flex-nowrap">
       <div className="relative flex-shrink-0 mx-auto sm:mx-0" style={{ width: size, height: size }}>
         <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="-rotate-90">
           {/* Track */}
@@ -69,6 +69,7 @@ export default function CashflowChart({ income, expense }: CashflowChartProps) {
                 strokeLinecap="round"
                 strokeDasharray={`${incomeLen} ${c - incomeLen}`}
                 strokeDashoffset={0}
+                style={{ filter: 'drop-shadow(0 2px 5px rgba(16,185,129,0.35))' }}
               />
               <circle
                 cx={size / 2}
@@ -80,6 +81,7 @@ export default function CashflowChart({ income, expense }: CashflowChartProps) {
                 strokeLinecap="round"
                 strokeDasharray={`${expenseLen} ${c - expenseLen}`}
                 strokeDashoffset={-expenseOffset}
+                style={{ filter: 'drop-shadow(0 2px 5px rgba(244,63,94,0.3))' }}
               />
             </>
           ) : null}
@@ -95,26 +97,26 @@ export default function CashflowChart({ income, expense }: CashflowChartProps) {
           </defs>
         </svg>
         {/* Center label */}
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-2">
-          <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>
-            {net >= 0 ? 'Selisih' : 'Selisih'}
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-3">
+          <span className="text-[9px] font-bold uppercase tracking-[0.12em]" style={{ color: 'var(--text-muted)' }}>
+            Selisih
           </span>
           <span
             className="font-extrabold leading-tight mt-0.5"
             style={{
               color: net >= 0 ? 'var(--profit)' : 'var(--loss)',
-              fontSize: 'clamp(0.9rem, 4vw, 1.05rem)',
+              fontSize: 'clamp(0.85rem, 4vw, 1rem)',
               fontVariantNumeric: 'tabular-nums',
               letterSpacing: '-0.02em',
             }}
           >
-            {net < 0 ? '-' : ''}{formatRupiah(Math.abs(net)).replace('Rp', 'Rp ')}
+            {net < 0 ? '-' : ''}{formatRupiah(Math.abs(net))}
           </span>
         </div>
       </div>
 
       {/* Legend */}
-      <div className="flex-1 min-w-0 space-y-3 w-full">
+      <div className="flex-1 min-w-0 space-y-2.5 w-full">
         <LegendRow color="linear-gradient(135deg, #34D399, #059669)" label="Uang Masuk" value={income} pct={Math.round(incomeRatio * 100)} />
         <LegendRow color="linear-gradient(135deg, #FB7185, #E11D48)" label="Uang Keluar" value={expense} pct={Math.round(expenseRatio * 100)} />
       </div>
@@ -124,12 +126,20 @@ export default function CashflowChart({ income, expense }: CashflowChartProps) {
 
 function LegendRow({ color, label, value, pct }: { color: string; label: string; value: number; pct: number }) {
   return (
-    <div className="flex items-center gap-2.5">
-      <span className="w-3 h-3 rounded-md flex-shrink-0" style={{ background: color }} />
+    <div
+      className="flex items-center gap-3 rounded-xl px-3 py-2.5"
+      style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border-soft)' }}
+    >
+      <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ background: color }} />
       <div className="min-w-0 flex-1">
         <div className="flex items-baseline justify-between gap-2">
           <span className="text-xs font-semibold" style={{ color: 'var(--text-secondary)' }}>{label}</span>
-          <span className="text-[11px] font-bold" style={{ color: 'var(--text-muted)' }}>{pct}%</span>
+          <span
+            className="text-[10px] font-bold px-1.5 py-0.5 rounded-md"
+            style={{ color: 'var(--text-tertiary)', background: 'var(--bg-white)' }}
+          >
+            {pct}%
+          </span>
         </div>
         <p className="money-xs mt-0.5" style={{ color: 'var(--text-primary)' }}>{formatRupiah(value)}</p>
       </div>

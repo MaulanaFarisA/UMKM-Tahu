@@ -48,7 +48,7 @@ export default function ActionButtonBig({
   return (
     <Link
       href={href}
-      className={`group relative overflow-hidden rounded-2xl flex items-center gap-4 p-4 transition-all duration-200 hover:-translate-y-1 active:scale-[0.98] tap-highlight-none no-select ${
+      className={`group sheen relative overflow-hidden rounded-2xl flex items-center gap-4 p-4 transition-all duration-200 hover:-translate-y-1 active:scale-[0.98] tap-highlight-none no-select ${
         pulse ? 'action-pulse' : ''
       }`}
       style={{

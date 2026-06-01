@@ -81,22 +81,34 @@ export default function HeroVerdict({
   return (
     <section
       className="relative overflow-hidden rounded-3xl slide-up-1"
-      style={{ background: t.surface, border: `1px solid ${t.border}`, boxShadow: 'var(--shadow-lg)' }}
+      style={{ background: t.surface, border: `1px solid ${t.border}`, boxShadow: 'var(--shadow-xl)' }}
       aria-label="Ringkasan laba hari ini"
     >
       {/* Aurora depth */}
-      <span aria-hidden className="aurora" style={{ width: 280, height: 280, top: -120, right: -60, background: t.auroraA }} />
-      <span aria-hidden className="aurora" style={{ width: 220, height: 220, bottom: -110, left: -40, background: t.auroraB }} />
+      <span aria-hidden className="aurora" style={{ width: 320, height: 320, top: -140, right: -70, background: t.auroraA }} />
+      <span aria-hidden className="aurora" style={{ width: 240, height: 240, bottom: -120, left: -50, background: t.auroraB }} />
+      {/* Decorative dotted texture, top-right */}
+      <span
+        aria-hidden
+        className="texture-dots absolute top-0 right-0 w-40 h-40 pointer-events-none"
+        style={{ color: t.chipDot, opacity: 0.12, maskImage: 'radial-gradient(circle at top right, black, transparent 70%)', WebkitMaskImage: 'radial-gradient(circle at top right, black, transparent 70%)' }}
+      />
 
-      <div className="relative grid lg:grid-cols-[1.15fr_1fr] gap-4 lg:gap-6 p-5 md:p-6">
+      <div className="relative grid lg:grid-cols-[1.15fr_1fr] gap-5 lg:gap-8 p-6 md:p-7 lg:p-8">
         {/* Left: verdict */}
         <div className="min-w-0">
           <div className="flex items-center gap-2.5 flex-wrap">
             <span
-              className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider"
-              style={{ background: t.chipBg, color: t.chipText }}
+              className="inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-bold uppercase tracking-wider"
+              style={{
+                background: 'rgba(255,255,255,0.7)',
+                color: t.chipText,
+                border: `1px solid ${t.border}`,
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+              }}
             >
-              <span className="w-1.5 h-1.5 rounded-full" style={{ background: t.chipDot }} />
+              <span className="w-1.5 h-1.5 rounded-full" style={{ background: t.chipDot, boxShadow: `0 0 0 3px ${t.chipBg}` }} />
               {statusLabel}
             </span>
             <span className="text-xs font-medium capitalize" style={{ color: 'var(--text-tertiary)' }}>
@@ -104,11 +116,11 @@ export default function HeroVerdict({
             </span>
           </div>
 
-          <p className="text-sm font-semibold mt-4" style={{ color: 'var(--text-secondary)' }}>
+          <p className="text-sm font-semibold mt-5" style={{ color: 'var(--text-secondary)' }}>
             {headline}
           </p>
 
-          <div className="flex items-baseline gap-2 mt-1 min-w-0">
+          <div className="flex items-baseline gap-2 mt-1.5 min-w-0">
             {hasData && isLoss && (
               <span className="text-3xl font-extrabold leading-none" style={{ color: t.money, opacity: 0.7 }}>
                 -
@@ -118,14 +130,14 @@ export default function HeroVerdict({
               <CountUp
                 value={Math.abs(netProfit)}
                 className="money-hero block truncate"
-                style={{ color: t.money, fontSize: 'clamp(1.875rem, 8vw, 3.25rem)' }}
+                style={{ color: t.money, fontSize: 'clamp(2rem, 8vw, 3.5rem)' }}
               />
               {isProfit && hasData && <span aria-hidden className="money-sheen" />}
             </span>
           </div>
 
           {hasData ? (
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-3">
+            <div className="flex flex-wrap items-center gap-2 mt-5">
               <Stat dot="var(--profit)" label="Masuk" value={formatRupiah(todayOmzet)} />
               <Stat dot="var(--loss)" label="Keluar" value={formatRupiah(todayExpenseTotal)} />
               <Stat dot={t.chipDot} label="Margin" value={`${marginPercent}%`} />
@@ -138,7 +150,7 @@ export default function HeroVerdict({
 
           {hasWarning && hasData && (
             <div
-              className="inline-flex items-center gap-2 mt-3 px-3 py-1.5 rounded-xl"
+              className="inline-flex items-center gap-2 mt-4 px-3 py-1.5 rounded-xl"
               style={{ background: 'var(--warn-bg)', border: '1px solid var(--warn-border)' }}
             >
               <TriangleAlert size={13} strokeWidth={2.5} color="var(--warn-text)" />
@@ -163,10 +175,13 @@ export default function HeroVerdict({
 
 function Stat({ dot, label, value }: { dot: string; label: string; value: string }) {
   return (
-    <div className="flex items-center gap-2">
+    <div
+      className="inline-flex items-center gap-2 rounded-full pl-2.5 pr-3 py-1.5"
+      style={{ background: 'rgba(255,255,255,0.65)', border: '1px solid rgba(15,23,42,0.06)', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' }}
+    >
       <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: dot }} />
-      <span className="text-sm" style={{ color: 'var(--text-tertiary)' }}>{label}</span>
-      <span className="text-sm font-bold" style={{ color: 'var(--text-primary)' }}>{value}</span>
+      <span className="text-xs font-medium" style={{ color: 'var(--text-tertiary)' }}>{label}</span>
+      <span className="text-xs font-bold" style={{ color: 'var(--text-primary)', fontVariantNumeric: 'tabular-nums' }}>{value}</span>
     </div>
   )
 }

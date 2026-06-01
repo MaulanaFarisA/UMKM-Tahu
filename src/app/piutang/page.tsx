@@ -67,45 +67,37 @@ export default async function PiutangPage({ searchParams }: PageProps) {
         {/* Summary hero — urgency cue for unpaid receivables */}
         {unpaid.length > 0 && (
           <div
-            className="ledger-receipt ledger-hero rounded-2xl p-5 md:p-6 relative overflow-hidden"
+            className="relative overflow-hidden rounded-2xl p-5 md:p-6"
             style={{
-              background: 'linear-gradient(135deg, var(--warn-bg) 0%, var(--warn-bg-deep) 100%)',
-              border: '1.5px solid var(--warn-border)',
-              borderLeft: '4px solid var(--warn)',
+              background: 'linear-gradient(135deg, #B45309 0%, #D97706 55%, #F59E0B 100%)',
+              boxShadow: '0 16px 36px -12px rgba(217,119,6,0.55)',
             }}
           >
-            <div className="flex items-center gap-2.5 mb-3">
-              <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
-                style={{ backgroundColor: 'var(--warn-bg-deep)', border: '1px solid var(--warn-border)' }}
-              >
-                <CircleDollarSign size={16} strokeWidth={2.5} color="var(--warn)" />
-              </div>
+            <span aria-hidden className="texture-dots absolute inset-0 text-white pointer-events-none" style={{ opacity: 0.1 }} />
+            <span aria-hidden className="blob" style={{ width: 200, height: 200, top: -80, right: -50, background: 'rgba(255,255,255,0.25)' }} />
+            <div className="relative flex items-center gap-2.5 mb-3">
+              <span className="icon-tile w-9 h-9" style={{ background: 'rgba(255,255,255,0.2)' }}>
+                <CircleDollarSign size={18} strokeWidth={2.5} color="#fff" />
+              </span>
               <div className="flex-1 min-w-0">
-                <p
-                  className="text-[11px] font-bold uppercase tracking-widest"
-                  style={{ color: 'var(--warn-text)', letterSpacing: '0.08em' }}
-                >
+                <p className="text-[11px] font-bold uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.85)' }}>
                   Total belum dibayar
                 </p>
               </div>
-              <span className="badge-warn">
-                <span
-                  className="w-1.5 h-1.5 rounded-full"
-                  style={{ backgroundColor: 'var(--warn)' }}
-                />
+              <span
+                className="chip"
+                style={{ background: 'rgba(255,255,255,0.2)', color: '#fff' }}
+              >
+                <Users size={11} strokeWidth={2.5} />
                 {unpaid.length} pembeli
               </span>
             </div>
-            <p className="money-lg" style={{ color: 'var(--warn-text)' }}>
+            <p className="relative money-lg" style={{ color: '#fff' }}>
               {formatRupiah(totalUnpaid)}
             </p>
-            <div className="flex items-center gap-1.5 mt-2">
-              <Users size={12} strokeWidth={2.25} color="var(--warn-text)" />
-              <p className="text-xs font-medium" style={{ color: 'var(--warn-text)' }}>
-                Tagih pelan-pelan, arus kas tetap lancar
-              </p>
-            </div>
+            <p className="relative text-xs font-medium mt-2" style={{ color: 'rgba(255,255,255,0.8)' }}>
+              Tagih pelan-pelan, arus kas tetap lancar
+            </p>
           </div>
         )}
 
@@ -145,11 +137,7 @@ export default async function PiutangPage({ searchParams }: PageProps) {
                 return (
                   <div
                     key={r.id}
-                    className="card card-roomy space-y-3"
-                    style={{
-                      borderLeft: '4px solid var(--warn)',
-                      background: 'linear-gradient(135deg, var(--bg-white) 0%, var(--warn-bg) 100%)',
-                    }}
+                    className="card-premium card-roomy card-static space-y-3.5"
                   >
                     {/* Header */}
                     <div className="flex items-center gap-3.5">
@@ -171,79 +159,83 @@ export default async function PiutangPage({ searchParams }: PageProps) {
 
                     {/* Stats row */}
                     <div
-                      className="grid grid-cols-3 gap-2 rounded-xl p-2.5"
-                      style={{ backgroundColor: 'var(--bg-subtle)', border: '1px solid var(--border-soft)' }}
+                      className="grid grid-cols-3 rounded-xl overflow-hidden"
+                      style={{ backgroundColor: 'var(--bg-subtle)', border: '1px solid var(--border)' }}
                     >
-                      <div className="text-center min-w-0">
-                        <p className="text-[10px] uppercase tracking-wider mb-1 font-semibold" style={{ color: 'var(--text-muted)' }}>Total</p>
+                      <div className="text-center min-w-0 px-2 py-2.5">
+                        <p className="text-[10px] uppercase tracking-wider mb-1 font-bold" style={{ color: 'var(--text-muted)' }}>Total</p>
                         <p className="money-xs truncate" style={{ color: 'var(--text-primary)' }}>{formatRupiah(r.total_sales)}</p>
                       </div>
-                      <div className="text-center min-w-0" style={{ borderLeft: '1px solid var(--border)', borderRight: '1px solid var(--border)' }}>
-                        <p className="text-[10px] uppercase tracking-wider mb-1 font-semibold" style={{ color: 'var(--text-muted)' }}>Dibayar</p>
-                        <p className="money-xs truncate" style={{ color: 'var(--profit)' }}>
+                      <div className="text-center min-w-0 px-2 py-2.5" style={{ borderLeft: '1px solid var(--border)', borderRight: '1px solid var(--border)', background: 'var(--profit-bg)' }}>
+                        <p className="text-[10px] uppercase tracking-wider mb-1 font-bold" style={{ color: 'var(--profit-text)', opacity: 0.7 }}>Dibayar</p>
+                        <p className="money-xs truncate" style={{ color: 'var(--profit-text)' }}>
                           {formatRupiah(totalPaid)}
                         </p>
                       </div>
-                      <div className="text-center min-w-0">
-                        <p className="text-[10px] uppercase tracking-wider mb-1 font-semibold" style={{ color: 'var(--text-muted)' }}>Sisa</p>
+                      <div className="text-center min-w-0 px-2 py-2.5" style={{ background: 'var(--warn-bg)' }}>
+                        <p className="text-[10px] uppercase tracking-wider mb-1 font-bold" style={{ color: 'var(--warn-text)', opacity: 0.7 }}>Sisa</p>
                         <p className="money-xs truncate" style={{ color: 'var(--warn-text)' }}>{formatRupiah(r.remaining)}</p>
                       </div>
                     </div>
 
-                    {/* Payment form */}
-                    <form action={paymentAction} className="space-y-2">
-                      <input type="hidden" name="sales_transaction_id" value={r.id} />
-                      <input type="hidden" name="date" value={today} />
-                      <label htmlFor={`amount-${r.id}`} className="sr-only">
-                        Jumlah pembayaran untuk {r.customer?.name ?? 'pembeli'}
-                      </label>
-                      <div className="flex gap-2">
-                        <div className="relative flex-1">
-                          <span
-                            className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold pointer-events-none"
-                            style={{ color: 'var(--text-tertiary)' }}
-                          >Rp</span>
-                          <input
-                            id={`amount-${r.id}`}
-                            name="amount"
-                            type="number"
-                            inputMode="numeric"
-                            min="1"
-                            max={r.remaining}
-                            required
-                            placeholder="Jumlah bayar"
-                            className="input-field"
-                            style={{ paddingLeft: '2.25rem' }}
-                          />
+                    {/* Payment action area */}
+                    <div className="rounded-xl p-3 space-y-2.5" style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border)' }}>
+                      <form action={paymentAction} className="space-y-1.5">
+                        <input type="hidden" name="sales_transaction_id" value={r.id} />
+                        <input type="hidden" name="date" value={today} />
+                        <label htmlFor={`amount-${r.id}`} className="sr-only">
+                          Jumlah pembayaran untuk {r.customer?.name ?? 'pembeli'}
+                        </label>
+                        <div className="flex gap-2">
+                          <div className="relative flex-1">
+                            <span
+                              className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold pointer-events-none"
+                              style={{ color: 'var(--text-tertiary)' }}
+                            >Rp</span>
+                            <input
+                              id={`amount-${r.id}`}
+                              name="amount"
+                              type="number"
+                              inputMode="numeric"
+                              min="1"
+                              max={r.remaining}
+                              required
+                              placeholder="Jumlah bayar"
+                              className="input-field"
+                              style={{ paddingLeft: '2.25rem' }}
+                            />
+                          </div>
+                          <SubmitButton
+                            pendingLabel="..."
+                            className="btn-premium sheen flex-shrink-0"
+                            style={{ minWidth: '92px' }}
+                            aria-label={`Catat pembayaran dari ${r.customer?.name ?? 'pembeli'}`}
+                          >
+                            <Send size={15} strokeWidth={2.4} />
+                            Bayar
+                          </SubmitButton>
                         </div>
-                        <SubmitButton
-                          pendingLabel="Mencatat..."
-                          className="btn-primary flex-shrink-0"
-                          style={{ minWidth: '52px', padding: '0 1rem' }}
-                          aria-label={`Catat pembayaran dari ${r.customer?.name ?? 'pembeli'}`}
-                        >
-                          <Send size={15} strokeWidth={2.25} />
-                          <span className="hidden sm:inline">Bayar</span>
-                        </SubmitButton>
-                      </div>
-                      <p className="text-xs" style={{ color: 'var(--text-tertiary)' }}>
-                        Maks. {formatRupiah(r.remaining)} · isi sebagian juga boleh
-                      </p>
-                    </form>
-                    <form action={paymentAction}>
-                      <input type="hidden" name="sales_transaction_id" value={r.id} />
-                      <input type="hidden" name="date" value={today} />
-                      <input type="hidden" name="amount" value={r.remaining} />
-                      <div className="flex justify-end">
+                        <p className="text-[11px]" style={{ color: 'var(--text-muted)' }}>
+                          Maks. {formatRupiah(r.remaining)} · isi sebagian juga boleh
+                        </p>
+                      </form>
+
+                      <div className="h-px" style={{ background: 'var(--border)' }} />
+
+                      <form action={paymentAction}>
+                        <input type="hidden" name="sales_transaction_id" value={r.id} />
+                        <input type="hidden" name="date" value={today} />
+                        <input type="hidden" name="amount" value={r.remaining} />
                         <SubmitButton
                           pendingLabel="Melunasi..."
-                          className="btn-secondary"
+                          className="w-full inline-flex items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-bold transition-all active:scale-[0.98]"
+                          style={{ background: 'var(--profit-bg)', color: 'var(--profit-text)', border: '1px solid var(--profit-border)' }}
                         >
                           <CheckCircle2 size={15} strokeWidth={2.5} />
                           Lunasi tagihan ini
                         </SubmitButton>
-                      </div>
-                    </form>
+                      </form>
+                    </div>
                   </div>
                 )
               })}

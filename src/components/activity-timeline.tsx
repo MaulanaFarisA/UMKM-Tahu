@@ -40,13 +40,14 @@ export default function ActivityTimeline({ items }: { items: ActivityItem[] }) {
         const isSale = item.type === 'sale'
         const time = formatTime(item.createdAt)
         return (
-          <li key={item.id} className="relative flex items-center gap-3 py-2" style={{ animation: `slideUp 0.4s var(--ease-spring) ${0.05 * idx}s both` }}>
+          <li key={item.id} className="relative flex items-center gap-3 py-1.5" style={{ animation: `slideUp 0.4s var(--ease-spring) ${0.05 * idx}s both` }}>
             {/* Node */}
             <span
               className="relative z-10 w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
               style={{
                 background: isSale ? 'var(--profit-bg)' : 'var(--loss-bg)',
                 border: `2px solid ${isSale ? 'var(--profit-border)' : 'var(--loss-border)'}`,
+                boxShadow: '0 0 0 3px var(--bg-white)',
               }}
             >
               {isSale ? (
@@ -56,16 +57,25 @@ export default function ActivityTimeline({ items }: { items: ActivityItem[] }) {
               )}
             </span>
             {/* Body */}
-            <div className="min-w-0 flex-1">
-              <p className="text-sm font-semibold truncate" style={{ color: 'var(--text-primary)' }}>{item.label}</p>
-              <p className="text-xs truncate" style={{ color: 'var(--text-tertiary)' }}>
-                {item.meta}{time ? ` · ${time}` : ''}
-              </p>
+            <div className="min-w-0 flex-1 rounded-lg px-2 py-1.5 -mx-2 transition-colors hover:bg-[var(--bg-subtle)]">
+              <div className="flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold truncate" style={{ color: 'var(--text-primary)' }}>{item.label}</p>
+                  <p className="text-xs truncate" style={{ color: 'var(--text-tertiary)' }}>
+                    {item.meta}{time ? ` · ${time}` : ''}
+                  </p>
+                </div>
+                <span
+                  className="money-xs flex-shrink-0 px-2 py-1 rounded-md"
+                  style={{
+                    color: isSale ? 'var(--profit-text)' : 'var(--loss-text)',
+                    background: isSale ? 'var(--profit-bg)' : 'var(--loss-bg)',
+                  }}
+                >
+                  {isSale ? '+' : '-'}{formatRupiah(item.amount)}
+                </span>
+              </div>
             </div>
-            {/* Amount */}
-            <p className="money-xs flex-shrink-0" style={{ color: isSale ? 'var(--profit)' : 'var(--loss)' }}>
-              {isSale ? '+' : '-'}{formatRupiah(item.amount)}
-            </p>
           </li>
         )
       })}
